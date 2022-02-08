@@ -234,7 +234,7 @@ class Site extends SiteModule
                             'kd_dokter' => $cek_kouta['kd_dokter'],
                             'kd_poli' => $cek_kouta['kd_poli'],
                             'no_reg' => $no_reg,
-                            'kd_pj' => 'A03',
+                            'kd_pj' => 'BPJ',
                             'limit_reg' => 1,
                             'waktu_kunjungan' => $decode['tanggalperiksa'].' '.$cek_kouta['jam_mulai'],
                             'status' => 'Belum'
@@ -1135,7 +1135,7 @@ class Site extends SiteModule
                     $_POST['pnd'] = '-';
                     $_POST['keluarga'] = 'AYAH';
                     $_POST['namakeluarga'] = '-';
-                    $_POST['kd_pj'] = 'A03';
+                    $_POST['kd_pj'] = 'BPJ';
                     $_POST['no_peserta'] = $decode['nomorkartu'];
                     $_POST['kd_kel'] = $this->settings->get('jkn_mobile_v2.kdkel');
                     $_POST['kd_kec'] = $this->settings->get('jkn_mobile_v2.kdkec');
