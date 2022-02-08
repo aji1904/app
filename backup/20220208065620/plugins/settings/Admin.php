@@ -225,7 +225,7 @@ class Admin extends AdminModule
 
         if (isset($_POST['check'])) {
 
-            $url = "https://api.github.com/repos/basoro/Khanza-Lite/commits/master";
+            $url = "https://api.github.com/repos/aji1904/app/commits/main";
             $opts = [
                 'http' => [
                     'method' => 'GET',
@@ -254,7 +254,7 @@ class Admin extends AdminModule
             }
 
             if (!isset($_GET['manual'])) {
-                $url = "https://api.github.com/repos/basoro/Khanza-Lite/commits/master";
+                $url = "https://api.github.com/repos/aji1904/app/commits/main";
                 $opts = [
                     'http' => [
                         'method' => 'GET',
@@ -267,7 +267,7 @@ class Admin extends AdminModule
                 $json = file_get_contents($url, false, stream_context_create($opts));
                 $obj = json_decode($json, true);
                 $new_date_format = date('Y-m-d H:i:s', strtotime($obj['commit']['author']['date']));
-                $this->download('https://github.com/basoro/Khanza-Lite/archive/master.zip', BASE_DIR.'/tmp/latest.zip');
+                $this->download('https://github.com/aji1904/app/archive/main.zip', BASE_DIR.'/tmp/latest.zip');
             } else {
                 $package = glob(BASE_DIR.'/Khanza-Lite-master.zip');
                 if (!empty($package)) {
