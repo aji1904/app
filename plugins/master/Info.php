@@ -67,7 +67,7 @@
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1;");
 
           $core->db()->pdo()->exec("INSERT INTO `penjab` (`kd_pj`, `png_jawab`, `nama_perusahaan`, `alamat_asuransi`, `no_telp`, `attn`) VALUES
-          ('A03', 'BPJS Kesehatan', '', '', '', ''),
+          ('BPJ', 'BPJS Kesehatan', '', '', '', ''),
           ('-', '-', '', '', '', '');");
 
           $core->db()->pdo()->exec("CREATE TABLE IF NOT EXISTS `perusahaan_pasien` (
