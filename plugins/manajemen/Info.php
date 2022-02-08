@@ -9,7 +9,7 @@ return [
     'icon'          =>  'dashboard',
     'install'       =>  function () use ($core) {
       $core->db()->pdo()->exec("INSERT INTO `mlite_settings` (`module`, `field`, `value`) VALUES ('manajemen', 'penjab_umum', 'UMU')");
-      $core->db()->pdo()->exec("INSERT INTO `mlite_settings` (`module`, `field`, `value`) VALUES ('manajemen', 'penjab_bpjs', 'BPJ')");
+      $core->db()->pdo()->exec("INSERT INTO `mlite_settings` (`module`, `field`, `value`) VALUES ('manajemen', 'penjab_bpjs', 'A03')");
     },
     'uninstall'     =>  function() use($core)
     {
