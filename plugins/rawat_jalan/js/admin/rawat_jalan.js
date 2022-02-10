@@ -747,6 +747,23 @@ $("#display").on("click",".panggil", function(event){
 });
 // akhir kode panggil
 
+// ketika tombol panggil ditekan
+$("#display").on("click",".panggil_farmasi", function(event){
+  event.preventDefault();
+
+  var nm_pasien 	= $(this).attr("data-nm_pasien");
+  var nm_poli = $(this).attr("data-nm_poli");
+  var no_reg = $(this).attr("data-no_reg");
+  function play (){
+    responsiveVoice.speak(
+      "Atas nama, "+nm_pasien + ", Obat anda Telah Shiap" ,"Indonesian Male", {pitch: 1,rate: 0.8,volume: 2}
+    );
+  }
+  play();
+
+});
+// akhir kode panggil
+
 // ketika tombol simpan diklik
 $("#form_rincian").on("click", "#simpan_rincian", function(event){
   var baseURL = mlite.url + '/' + mlite.admin;

@@ -21,10 +21,10 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="jk" class="col-sm-3 control-label">Sex</label>
+            <label for="jk" class="col-sm-3 control-label">Jenis Kelamin</label>
             <div class="col-sm-4">
-              <label class="radio-inline"><input type="radio" name="jk" value="L" {if: $pasien.jk == 'L'}checked{/if}><span class="fa fa-male"></span></label>
-              <label class="radio-inline"><input type="radio" name="jk" value="P" {if: $pasien.jk == 'P'}checked{/if}><span class="fa fa-female"></span></label>
+              <label class="radio-inline"><input type="radio" name="jk" value="L" {if: $pasien.jk == 'L'}checked{/if}><span class="fa fa-male"></span> (Pria)</label>
+              <label class="radio-inline"><input type="radio" name="jk" value="P" {if: $pasien.jk == 'P'}checked{/if}><span class="fa fa-female"></span> (Wanita)</label>
             </div>
             <label for="tgl_lahir" class="col-sm-2 control-label">Tgl. Lahir</label>
             <div class="col-sm-3">
@@ -83,7 +83,7 @@
           </div>
           <div class="form-group">
             <label for="asuransi" class="col-sm-3 control-label">Penjamin</label>
-            <div class="col-sm-4">
+            <div class="col-sm-4" >
               <select class="form-control" name="kd_pj">
                 {loop: $penjab}
                 <option value="{$value.kd_pj}" {if: $pasien.kd_pj == $value.kd_pj}selected{/if}>{$value.png_jawab}</option>
@@ -92,7 +92,7 @@
             </div>
             <label for="no_peserta" class="col-sm-2 control-label">No. Peserta</label>
             <div class="col-sm-3">
-              <input type="text" name="no_peserta" id="no_peserta" class="form-control noKartu" value="{$pasien.no_peserta}">
+              <input type="text" name="no_peserta" id="no_peserta" class="form-control noKartu" value="{$pasien.no_peserta}" title="Tekan ENTER untuk menampilkan data BPJS">
             </div>
           </div>
         </div>
@@ -122,7 +122,7 @@
           <div class="form-group">
             <label for="no_ktp" class="col-sm-3 control-label">Nomor KTP</label>
             <div class="col-sm-9">
-              <input type="text" name="no_ktp" id="no_ktp" class="form-control no_ktp" value="{$pasien.no_ktp}">
+              <input type="text" name="no_ktp" id="no_ktp" class="form-control no_ktp" value="{$pasien.no_ktp}" title="Tekan ENTER untuk menampilkan data BPJS">
             </div>
           </div>
           <div class="form-group">
@@ -153,7 +153,7 @@
                 <input type="hidden" name="kd_kec" id="kd_kec" class="form-control" value="{$pasien.kd_kec}" />
                 <ul class="list-group" id="kecamatanList" style="z-index:1000;position:absolute;width:100%;"></ul>
               </div>
-              <label for="desa" class="col-sm-1 control-label">Desa</label>
+              <label for="desa" class="col-sm-1 control-label">Kel.</label>
               <div class="col-sm-4">
                 <input type="text" name="nm_kel" id="nm_kel" class="form-control" value="{$pasien.kelurahan.nm_kel}" />
                 <input type="hidden" name="kd_kel" id="kd_kel" class="form-control" value="{$pasien.kd_kel}" />
