@@ -747,23 +747,6 @@ $("#display").on("click",".panggil", function(event){
 });
 // akhir kode panggil
 
-// ketika tombol panggil ditekan
-$("#display").on("click",".panggil_farmasi", function(event){
-  event.preventDefault();
-
-  var nm_pasien 	= $(this).attr("data-nm_pasien");
-  var nm_poli = $(this).attr("data-nm_poli");
-  var no_reg = $(this).attr("data-no_reg");
-  function play (){
-    responsiveVoice.speak(
-      "Atas nama, "+nm_pasien + ", Obat anda Telah Shiap" ,"Indonesian Male", {pitch: 1,rate: 0.8,volume: 2}
-    );
-  }
-  play();
-
-});
-// akhir kode panggil
-
 // ketika tombol simpan diklik
 $("#form_rincian").on("click", "#simpan_rincian", function(event){
   var baseURL = mlite.url + '/' + mlite.admin;
@@ -869,6 +852,8 @@ $("#form_kontrol").on("click", "#simpan_kontrol", function(event){
   var terapi          = $('input:text[name=terapi]').val();
   var alasan1         = $('textarea[name=alasan1]').val();
   var rtl1            = $('textarea[name=rtl1]').val();
+  var poli            = $('select[name=poli]').val();
+  var dokter          = $('select[name=dokter]').val();
 
   var url = baseURL + '/rawat_jalan/savekontrol?t=' + mlite.token;
   $.post(url, {no_rawat : no_rawat,
@@ -878,7 +863,9 @@ $("#form_kontrol").on("click", "#simpan_kontrol", function(event){
   diagnosa : diagnosa,
   terapi  : terapi,
   alasan1      : alasan1,
-  rtl1          : rtl1
+  rtl1          : rtl1,
+  dokter : dokter,
+  poli : poli 
   }, function(data) {
     console.log(data);
     // tampilkan data

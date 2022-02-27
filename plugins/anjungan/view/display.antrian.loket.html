@@ -107,7 +107,7 @@
           <a href="{?=url()?}/anjungan/loket?show=panggil_loket" target="_blank">
             <div class="panel border-success">
               <div class="panel-body text-success">
-                <div class="no_antrian">A<span class="antrian_loket"><span></div>
+                <div class="no_antrian">A<span class="antrian_Loket"><span></div>
               </div>
               <div class="panel-footer bg-transparent border-success">
                 <div class="no_loket">Loket <span class="get_loket"><span></div>
@@ -117,7 +117,7 @@
           <a href="{?=url()?}/anjungan/loket?show=panggil_cs" target="_blank">
             <div class="panel border-success">
               <div class="panel-body text-success">
-                <div class="no_antrian">B<span class="antrian_cs"><span></div>
+                <div class="no_antrian">B<span class="antrian_CS"><span></div>
               </div>
               <div class="panel-footer bg-transparent border-success">
                 <div class="no_loket">Loket <span class="get_cs"><span></div>
@@ -161,27 +161,29 @@
     <div class="row">
       <div class="card-deck">
           {loop: $loket}
-          <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mb-5">
-            <div class="panel" style="color:#000;">
-              <div class="panel-heading" style="font-size:32px;">Loket {$value}</div>
-              <div class="panel-body">
-                <h5 class="panel-title" style="font-size:72px;">{?=strtoupper($namaloket)?}{$antrian}</h5>
-              </div>
-              <div class="panel-footer">
-                <div class="btn-group btn-group-justified">
-                  <a href="#" class="btn btn-primary" style="font-size:32px;">{$noantrian}</a>
-                  <a href="#" class="btn btn-primary" style="font-size:32px;" onclick="panggil({$antrian})"><i class="fa fa-bullhorn"></i></a>
-                  <a href="{?=url()?}/anjungan/loket?show={$panggil_loket}&loket={$value}" class="btn btn-primary" style="font-size:32px;"><i class="fa fa-forward"></i></a>
+          <div class="{if: isset($_GET['loket']) && $_GET['loket'] != $value}hidden{/if}">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mb-5">
+              <div class="panel" style="color:#000;">
+                <div class="panel-heading" style="font-size:32px;">Loket {$value}</div>
+                <div class="panel-body">
+                  <h5 class="panel-title" style="font-size:72px;">{?=strtoupper($namaloket)?}{$antrian}</h5>
                 </div>
-                <br>
-                <div class="col" id="form_simpan_no_rkm_medis">
-                    <input type="hidden" name="noantrian" value="{$antrian}">
-                    <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg" name="no_rkm_medis" placeholder="Input Nomor RM">
-                        <span class="input-group-btn"><!-- Append button addon using class input-group-lg -->
-                            <button class="btn btn-danger simpan_no_rkm_medis">Simpan</button>
-                        </span>
-                    </div>
+                <div class="panel-footer">
+                  <div class="btn-group btn-group-justified">
+                    <a href="#" class="btn btn-primary" style="font-size:32px;">{$noantrian}</a>
+                    <a href="#" class="btn btn-primary" style="font-size:32px;" onclick="panggil({$antrian})"><i class="fa fa-bullhorn"></i></a>
+                    <a href="{?=url()?}/anjungan/loket?show={$panggil_loket}&loket={$value}" class="btn btn-primary" style="font-size:32px;"><i class="fa fa-forward"></i></a>
+                  </div>
+                  <br>
+                  <div class="col" id="form_simpan_no_rkm_medis_{$value}">
+                      <input type="hidden" name="noantrian" value="{$antrian}">
+                      <div class="input-group input-group-lg">
+                          <input type="text" class="form-control form-control-lg" name="no_rkm_medis_{$value}" placeholder="Input Nomor RM">
+                          <span class="input-group-btn"><!-- Append button addon using class input-group-lg -->
+                              <button class="btn btn-danger simpan_no_rkm_medis_{$value}">Simpan</button>
+                          </span>
+                      </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -294,8 +296,8 @@
   }
 
   function updateLayar(type, nomor, loket) {
-    $('.antrian_' + type.toLowerCase()).html(nomor);
-    $('.get_' + type.toLowerCase()).html(loket);
+    $('.antrian_' + type).html(nomor);
+    $('.get_' + type).html(loket);
   }
 
   function panggil(data) {
@@ -318,7 +320,7 @@
 
     const playPromise = audio.play();
     //if (playPromise !== null){
-    //    playPromise.catch(() => { media.play(); })
+    //    playPromise.catch(() => { audio.play(); })
     //}
 
     if (callback) {
@@ -377,7 +379,7 @@
     {if: isset($_GET['loket']) && $_GET['loket'] !=''}
   	var loket = "{?=$_GET['loket']?}";
     {/if}
-    //alert('Panggil ' + loket + ' - ' + noantrian);
+    alert('Panggil ' + loket + ' - ' + noantrian);
   	$.ajax({
   		url: '{?=url()?}/anjungan/setpanggil',
   		dataType: 'json',
@@ -394,13 +396,16 @@
   		}
   	});
   }
-  $("#form_simpan_no_rkm_medis").on("click", ".simpan_no_rkm_medis", function(event){
+  {loop: $loket}
+  $("#form_simpan_no_rkm_medis_{$value}").on("click", ".simpan_no_rkm_medis_{$value}", function(event){
     var noantrian = $('input:hidden[name=noantrian]').val();
-    var no_rkm_medis = $('input:text[name=no_rkm_medis]').val();
+    var no_rkm_medis = $('input:text[name=no_rkm_medis_{$value}]').val();
+    var type = '{?=str_replace("panggil_","",$_GET['show'])?}';
+    alert(no_rkm_medis);
     $.ajax({
         url: '{?=url()?}/anjungan/simpannorm',
         dataType: 'json',
-        data: { noantrian: noantrian, no_rkm_medis: no_rkm_medis },
+        data: { noantrian: noantrian, type: type, no_rkm_medis: no_rkm_medis },
         success: function(xhr) {
             console.log(xhr.status);
             if(xhr.status == true) {
@@ -415,6 +420,7 @@
         }
     });
   });
+  {/loop}
   </script>
   {/if}
 </body>

@@ -15,7 +15,7 @@
           <th style="white-space: nowrap;">Status</th>
         </tr>
       </thead>
-      <tbody style="cursor: pointer;">
+      <tbody>
         {loop: $rawat_inap.list}
         <tr{if: $value.stts_pulang != '-'} style="background-color: #dff0d8 !important;"{/if}>
           <td style="white-space: nowrap;">
@@ -52,7 +52,7 @@
             </ul>
           </td>
           <td style="white-space: nowrap;">
-          {if: $value.kd_pj == 'A03'}
+          {if: $value.kd_pj == 'BPJ'}
             {if: $cek_vclaim}
               <button type="button" name="button" class="btn btn-xs btn-primary sep"
                 data-no_rkm_medis="{$value.no_rkm_medis}"

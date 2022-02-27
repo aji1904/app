@@ -1,6 +1,6 @@
 <p align="right">
     <b>Codename: mLITE</b><br>
-    Modular Khanza LITE vERSI RS BUNDA MEDIKA JAKABARING
+    Modular Khanza LITE
 </p>
 
 <p>

@@ -44,7 +44,6 @@ class Site extends SiteModule
         $this->route('anjungan/sep/bikin/(:str)/(:int)', 'getSepMandiriBikin');
         $this->route('anjungan/sep/savesep', 'postSaveSep');
         $this->route('anjungan/sep/cetaksep/(:str)', 'getCetakSEP');
-        $this->route('anjungan/bikinkontrol', 'BikinKontrol');
     }
 
     public function getIndex()
@@ -819,10 +818,16 @@ class Site extends SiteModule
 
     public function getSimpanNoRM()
     {
-      if(!isset($_GET['no_rkm_medis']) || $_GET['no_rkm_medis'] == '') die(json_encode(array('status' => false)));
+      if(!isset($_GET['no_rkm_medis']) || $_GET['no_rkm_medis'] == '') die(json_encode(array('status' => false,'message' => 'Gagal Type')));
+      if(!isset($_GET['type']) || $_GET['type'] == '') die(json_encode(array('status' => false,'message' => 'Gagal Type')));
+      $type = 'CS';
+      if($_GET['type'] == 'loket') {
+        $type = 'Loket';
+      }
+
       $noantrian  = $_GET['noantrian'];
       $no_rkm_medis = $_GET['no_rkm_medis'];
-      $query = $this->db('mlite_antrian_loket')->where('noantrian', $noantrian)->where('postdate', date('Y-m-d'))->update('no_rkm_medis', $no_rkm_medis);
+      $query = $this->db('mlite_antrian_loket')->where('noantrian', $noantrian)->where('type', $type)->where('postdate', date('Y-m-d'))->update('no_rkm_medis', $no_rkm_medis);
       if($query) {
           $res = [
               'status' => true,
@@ -1573,11 +1578,11 @@ class Site extends SiteModule
                 $decompress = decompress($stringDecrypt);
                 $sep_response = json_decode($decompress, true);
               } else {
-                $sep_response = "Sambungan ke server BPJS sedang ada gangguan. Silahkan ulangi lagi.";
+                $sep_response = "Sambungan ke server BPJS sedang ada gangguan. Silahkan ulangi lagi dengan menekan tombol REFRESH";
               }
             }
           else:
-            $sep_response = "Sambungan ke server BPJS sedang ada gangguan. Silahkan ulangi lagi.";
+            $sep_response = "Sambungan ke server BPJS sedang ada gangguan. Silahkan ulangi lagi dengan menekan tombol REFRESH";
           endif;
       }
 
@@ -1972,6 +1977,15 @@ class Site extends SiteModule
         $data_sep['potensi_prb'] = $potensi_prb['prb'];
 
         echo $this->draw('cetak.sep.html', ['data_sep' => $data_sep]);
+        $this->db('mutasi_berkas')->save([
+          'no_rawat' => $_POST['no_rawat'],
+          'status' => 'Sudah Dikirim',
+          'dikirim' => date('Y-m-d H:i:s'),
+          'diterima' => '0000-00-00 00:00:00',
+          'kembali' => '0000-00-00 00:00:00',
+          'tidakada' => '0000-00-00 00:00:00',
+          'ranap' => '0000-00-00 00:00:00'
+        ]);
         exit();
     }
 
@@ -1984,8 +1998,7 @@ class Site extends SiteModule
 
       date_default_timezone_set('UTC');
       $tStamp = strval(time() - strtotime('1970-01-01 00:00:00'));
-      //=====KEY====/
-      $key = $this->settings->get('settings.BpjsConsID') . $this->settings->get('settings.BpjsSecretKey') . $tStamp;
+      $key = $this->consid.$this->secretkey.$tStamp;
       $_POST['kdppkpelayanan'] = $this->settings->get('settings.ppk_bpjs');
       $_POST['nmppkpelayanan'] = $this->settings->get('settings.nama_instansi');
       $_POST['sep_user']  = 'SEP Mandiri';
