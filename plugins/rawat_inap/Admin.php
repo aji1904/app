@@ -159,12 +159,14 @@ class Admin extends AdminModule
     {
       $settings = $this->settings('settings');
       $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
-      $rawat_inap = $this->db('reg_periksa')
-        ->join('poliklinik', 'poliklinik.kd_poli=reg_periksa.kd_poli')
+      $rawat_inap = $this->db('kamar_inap')
+        ->join('reg_periksa', 'reg_periksa.no_rawat=kamar_inap.no_rawat')
         ->join('pasien', 'pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
-        ->join('dokter', 'dokter.kd_dokter=reg_periksa.kd_dokter')
+        ->join('kamar', 'kamar.kd_kamar=kamar_inap.kd_kamar')
+        ->join('dpjp_ranap', 'dpjp_ranap.no_rawat=kamar_inap.no_rawat')
+        ->join('dokter', 'dokter.kd_dokter=dpjp_ranap.kd_dokter')
         ->join('penjab', 'penjab.kd_pj=reg_periksa.kd_pj')
-        ->where('no_rawat', $_GET['no_rawat'])
+        ->where('kamar_inap.no_rawat', $_GET['no_rawat'])
         ->oneArray();
       echo $this->draw('label.html', ['rawat_inap' => $rawat_inap]);
       exit();
