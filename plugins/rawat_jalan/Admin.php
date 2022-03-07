@@ -859,6 +859,21 @@ class Admin extends AdminModule
       exit();
     }
 
+    public function getLabel()
+    {
+      $settings = $this->settings('settings');
+      $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
+      $rawat_jalan = $this->db('reg_periksa')
+        ->join('poliklinik', 'poliklinik.kd_poli=reg_periksa.kd_poli')
+        ->join('pasien', 'pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+        ->join('dokter', 'dokter.kd_dokter=reg_periksa.kd_dokter')
+        ->join('penjab', 'penjab.kd_pj=reg_periksa.kd_pj')
+        ->where('no_rawat', $_GET['no_rawat'])
+        ->oneArray();
+      echo $this->draw('label.html', ['rawat_jalan' => $rawat_jalan]);
+      exit();
+    }
+
     public function postHapus()
     {
       $this->db('reg_periksa')->where('no_rawat', $_POST['no_rawat'])->delete();

@@ -331,7 +331,7 @@ class Admin extends AdminModule
               echo '{
               	"metaData": {
               		"code": "5000",
-              		"message": "ERROR"
+              		"message": "ERROR SERVICE BPJS"
               	},
               	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
             }
@@ -529,7 +529,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -568,7 +568,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -606,7 +606,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -644,7 +644,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -682,7 +682,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -721,7 +721,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -760,7 +760,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -799,7 +799,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -838,7 +838,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -877,7 +877,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -916,7 +916,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -955,7 +955,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -994,7 +994,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1033,7 +1033,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1072,7 +1072,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1111,7 +1111,7 @@ class Admin extends AdminModule
           echo '{
             "metaData": {
               "code": "5000",
-              "message": "ERROR"
+              "message": "ERROR SERVICE BPJS"
             },
             "response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
         }
@@ -1150,7 +1150,7 @@ class Admin extends AdminModule
           echo '{
           	"metaData": {
           		"code": "5000",
-          		"message": "ERROR"
+          		"message": "ERROR SERVICE BPJS"
           	},
           	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
         }
@@ -1258,7 +1258,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1308,7 +1308,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1347,7 +1347,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1386,7 +1386,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1424,7 +1424,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1462,7 +1462,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1500,7 +1500,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1539,7 +1539,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1578,7 +1578,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1617,7 +1617,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1656,7 +1656,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1701,7 +1701,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1746,7 +1746,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1815,7 +1815,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1877,7 +1877,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1916,7 +1916,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1955,7 +1955,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -1994,7 +1994,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -2033,7 +2033,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -2072,7 +2072,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -2111,7 +2111,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -2150,7 +2150,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -2189,7 +2189,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
@@ -2338,7 +2338,7 @@ class Admin extends AdminModule
           $data = '{
             "metaData": {
               "code": "5000",
-              "message": "ERROR"
+              "message": "ERROR SERVICE BPJS"
             },
             "response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           $data = json_decode($data, true);
@@ -2376,7 +2376,7 @@ class Admin extends AdminModule
           $data_rujukan = '{
             "metaData": {
               "code": "5000",
-              "message": "ERROR"
+              "message": "ERROR SERVICE BPJS"
             },
             "response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           $data_rujukan = json_decode($data_rujukan, true);
@@ -2623,7 +2623,7 @@ class Admin extends AdminModule
             echo '{
             	"metaData": {
             		"code": "5000",
-            		"message": "ERROR"
+            		"message": "ERROR SERVICE BPJS"
             	},
             	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
           }
