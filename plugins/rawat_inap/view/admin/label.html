@@ -1,0 +1,85 @@
+
+<!doctype html>
+<html lang="id">
+	<head>
+		<title>LABEL</title>
+		<meta charset="UTF-8">
+    <link href="{?=url()?}/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<script src="{?=url()?}/assets/jscripts/barcode.js"></script>
+
+	<style>
+	td {border: none; padding: 0px; max-width: 5.5cm;}
+	span {height: 14px;}
+	.float{
+		position:fixed;
+		width:120px;
+		height:40px;
+		bottom:40px;
+		right:40px;
+		background-color:#4C9A2A;
+		color:#FFF;
+		text-align:center;
+		box-shadow: 2px 2px 3px #999;
+	}
+	</style>
+
+	<script>
+	function printContent(el){
+	var restorepage = document.body.innerHTML;
+	var printcontent = document.getElementById(el).innerHTML;
+	document.body.innerHTML = printcontent;
+	window.print();
+	document.body.innerHTML = restorepage; window.close();
+	}
+	</script>
+	</head>
+
+	<body>
+		<div id="faktur" style="border: solid 1px; height:3cm; max-height: 3cm; width:6cm;max-width: 6cm; padding: 4px;">
+		<center>
+			<table style="font-size: 9.5pt; font-weight: bold;" rules='rows'>
+				<tr>
+					<td>
+						<span class="pull-left" style="max-width: 180px; white-space: nowrap; width: 180px; overflow: hidden; text-overflow: clip;">{$rawat_inap.nm_pasien}</span><span class="pull-right">({$rawat_inap.jk})</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="pull-left">{$rawat_inap.tgl_lahir} / {$rawat_inap.png_jawab}</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="pull-left">{$rawat_inap.no_rkm_medis} / {$rawat_inap.nm_poli}</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="pull-left">{$rawat_inap.no_rawat} / ({$rawat_inap.umurdaftar}{$rawat_inap.sttsumur})</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="pull-left" style="max-width: 180px; white-space: nowrap; width: 180px; overflow: hidden; text-overflow: clip;">{$rawat_inap.nm_dokter}</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="pull-left" style="position: absolute; z-index: -1;"><svg id="barcode"></svg></span>
+					</td>
+				</tr>
+			</table>
+		</center>
+		</div>
+		<script>
+			JsBarcode("#barcode", "{$rawat_inap.no_rkm_medis}", {
+				height: 28,
+				displayValue:false,
+			});
+		</script>
+
+		<button onclick="printContent('faktur')" type="button" class="btn btn-danger center-block float"><span class="glyphicon glyphicon-print"></span> Cetak</button>
+
+</body>
+</html>
+

@@ -155,6 +155,21 @@ class Admin extends AdminModule
         }
     }
 
+    public function getLabel()
+    {
+      $settings = $this->settings('settings');
+      $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
+      $rawat_inap = $this->db('reg_periksa')
+        ->join('poliklinik', 'poliklinik.kd_poli=reg_periksa.kd_poli')
+        ->join('pasien', 'pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+        ->join('dokter', 'dokter.kd_dokter=reg_periksa.kd_dokter')
+        ->join('penjab', 'penjab.kd_pj=reg_periksa.kd_pj')
+        ->where('no_rawat', $_GET['no_rawat'])
+        ->oneArray();
+      echo $this->draw('label.html', ['rawat_inap' => $rawat_inap]);
+      exit();
+    }
+
     public function anyForm()
     {
 
