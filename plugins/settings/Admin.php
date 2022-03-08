@@ -293,7 +293,7 @@ class Admin extends AdminModule
             $zip->extractTo(BASE_DIR.'/tmp/update');
 
             // Copy files
-            $this->rcopy(BASE_DIR.'/tmp/update/systems', BASE_DIR.'/systems');
+            $this->rcopy(BASE_DIR.'/tmp/update/app-main/systems', BASE_DIR.'/systems');
             $this->rcopy(BASE_DIR.'/tmp/update/app-main/plugins', BASE_DIR.'/plugins');
             $this->rcopy(BASE_DIR.'/tmp/update/app-main/assets', BASE_DIR.'/assets');
             $this->rcopy(BASE_DIR.'/tmp/update/app-main/themes', BASE_DIR.'/themes');
