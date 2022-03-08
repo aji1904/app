@@ -15,7 +15,7 @@ use Plugins\Settings\Inc\RecursiveDotFilterIterator;
 class Admin extends AdminModule
 {
     private $assign = [];
-    private $feed_url = "https://api.github.com/repos/basoro/Khanza-Lite/commits/master";
+    private $feed_url = "https://api.github.com/repos/aji1904/app/commits/main";
 
     public function init()
     {
@@ -225,7 +225,7 @@ class Admin extends AdminModule
 
         if (isset($_POST['check'])) {
 
-            $url = "https://api.github.com/repos/basoro/Khanza-Lite/commits/master";
+            $url = "https://api.github.com/repos/aji1904/app/commits/main";
             $opts = [
                 'http' => [
                     'method' => 'GET',
@@ -254,7 +254,7 @@ class Admin extends AdminModule
             }
 
             if (!isset($_GET['manual'])) {
-                $url = "https://api.github.com/repos/basoro/Khanza-Lite/commits/master";
+                $url = "https://api.github.com/repos/aji1904/app/commits/main";
                 $opts = [
                     'http' => [
                         'method' => 'GET',
@@ -267,9 +267,9 @@ class Admin extends AdminModule
                 $json = file_get_contents($url, false, stream_context_create($opts));
                 $obj = json_decode($json, true);
                 $new_date_format = date('Y-m-d H:i:s', strtotime($obj['commit']['author']['date']));
-                $this->download('https://github.com/basoro/Khanza-Lite/archive/master.zip', BASE_DIR.'/tmp/latest.zip');
+                $this->download('https://github.com/aji1904/app/archive/main.zip', BASE_DIR.'/tmp/latest.zip');
             } else {
-                $package = glob(BASE_DIR.'/Khanza-Lite-master.zip');
+                $package = glob(BASE_DIR.'/app-main.zip');
                 if (!empty($package)) {
                     $package = array_shift($package);
                     $this->rcopy($package, BASE_DIR.'/tmp/latest.zip');
@@ -293,10 +293,10 @@ class Admin extends AdminModule
             $zip->extractTo(BASE_DIR.'/tmp/update');
 
             // Copy files
-            $this->rcopy(BASE_DIR.'/tmp/update/Khanza-Lite-master/systems', BASE_DIR.'/systems');
-            $this->rcopy(BASE_DIR.'/tmp/update/Khanza-Lite-master/plugins', BASE_DIR.'/plugins');
-            $this->rcopy(BASE_DIR.'/tmp/update/Khanza-Lite-master/assets', BASE_DIR.'/assets');
-            $this->rcopy(BASE_DIR.'/tmp/update/Khanza-Lite-master/themes', BASE_DIR.'/themes');
+            $this->rcopy(BASE_DIR.'/tmp/update/app-main/systems', BASE_DIR.'/systems');
+            $this->rcopy(BASE_DIR.'/tmp/update/app-main/plugins', BASE_DIR.'/plugins');
+            $this->rcopy(BASE_DIR.'/tmp/update/app-main/assets', BASE_DIR.'/assets');
+            $this->rcopy(BASE_DIR.'/tmp/update/app-main/themes', BASE_DIR.'/themes');
 
             // Restore defines
             $this->rcopy(BASE_DIR.'/backup/'.$backup_date.'/config.php', BASE_DIR.'/config.php');
@@ -316,11 +316,11 @@ class Admin extends AdminModule
             $this->settings('settings', 'update_version', 0);
             $this->settings('settings', 'update_changelog', '');
         } elseif (isset($_GET['manual'])) {
-            $package = glob(BASE_DIR.'/khanza-lite-*.zip');
+            $package = glob(BASE_DIR.'/app-*.zip');
             $version = false;
             if (!empty($package)) {
                 $package_path = array_shift($package);
-                preg_match('/khanza-lite\-([0-9\.a-z]+)\.zip$/', $package_path, $matches);
+                preg_match('/app-\-([0-9\.a-z]+)\.zip$/', $package_path, $matches);
                 $version = $matches[1];
             }
             $manual_mode = ['version' => $version];
