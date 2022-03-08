@@ -1,3 +1,5 @@
+<script src="{?=url()?}/assets/jscripts/sweetalert.js"></script>
+
 <div id="form_sep">
   <div class="col-md-3">
     <div class="panel panel-default">
@@ -635,11 +637,12 @@
     var no_sep = $(this).attr("data-no_sep");
     $.post(url, {
       no_sep: no_sep
-    } ,function(data) {
-      $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-      "Data rincian SEP telah dihapus!"+
-      "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-      "</div>").show();
+    } ,function(data) {      
+      Swal.fire(
+        'Good job!',
+        'SEP Berhasil dihapus',
+        'success'
+      );
     });
   });
 </script>
@@ -780,7 +783,13 @@
       success: function(result){
         var messages = result.split(' ');
         if (messages.length == 1) {
+          Swal.fire(
+            'Good job!',
+            'SEP Berhasil disimpan',
+            'success'
+          );
           window.open(baseURL + '/vclaim/cetaksep/' + result + '?t=' + mlite.token);
+          window.open(baseURL + '/vclaim/cetaksjp/' + result + '?t=' + mlite.token);
         } else if(messages.length > 1) {
           alert(result)
         } else {
