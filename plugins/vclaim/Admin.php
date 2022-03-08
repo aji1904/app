@@ -393,20 +393,47 @@ class Admin extends AdminModule
         }
         $batas_rujukan = strtotime('+87 days', strtotime($data_sep['tglrujukan']));
 
-        $qr=QRCode::getMinimumQRCode($data_sep['no_sep'],QR_ERROR_CORRECT_LEVEL_L);
-        //$qr=QRCode::getMinimumQRCode('Petugas: '.$this->core->getUserInfo('fullname', null, true).'; Lokasi: '.UPLOADS.'/invoices/'.$result['kd_billing'].'.pdf',QR_ERROR_CORRECT_LEVEL_L);
-        $im=$qr->createImage(4,4);
-        imagepng($im,'/admin/tmp/qrcode.png');
-        imagedestroy($im);
+        // $qr=QRCode::getMinimumQRCode($data_sep['no_sep'],QR_ERROR_CORRECT_LEVEL_L);
+        // //$qr=QRCode::getMinimumQRCode('Petugas: '.$this->core->getUserInfo('fullname', null, true).'; Lokasi: '.UPLOADS.'/invoices/'.$result['kd_billing'].'.pdf',QR_ERROR_CORRECT_LEVEL_L);
+        // $im=$qr->createImage(4,4);
+        // imagepng($im,'/admin/tmp/qrcode.png');
+        // imagedestroy($im);
 
-        $image = "/admin/tmp/qrcode.png";
+        // $image = "/admin/tmp/qrcode.png";
 
-        $data_sep['qrCode'] = $image;
+        // $data_sep['qrCode'] = $image;
         $data_sep['batas_rujukan'] = date('Y-m-d', $batas_rujukan);
         $potensi_prb = $this->db('bpjs_prb')->where('no_sep', $no_sep)->oneArray();
         $data_sep['potensi_prb'] = $potensi_prb['prb'];
 
         echo $this->draw('cetak.sep.html', ['data_sep' => $data_sep]);
+        exit();
+    }
+
+    public function getCetakSJP($no_sep)
+    {
+        $settings = $this->settings('settings');
+        $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
+        $data_sep = $this->db('bridging_sep')->where('no_sep', $no_sep)->oneArray();
+        if(!$data_sep) {
+          $data_sep = $this->db('bridging_sep_internal')->where('no_sep', $no_sep)->oneArray();
+        }
+        $batas_rujukan = strtotime('+87 days', strtotime($data_sep['tglrujukan']));
+
+        // $qr=QRCode::getMinimumQRCode($data_sep['no_sep'],QR_ERROR_CORRECT_LEVEL_L);
+        // //$qr=QRCode::getMinimumQRCode('Petugas: '.$this->core->getUserInfo('fullname', null, true).'; Lokasi: '.UPLOADS.'/invoices/'.$result['kd_billing'].'.pdf',QR_ERROR_CORRECT_LEVEL_L);
+        // $im=$qr->createImage(4,4);
+        // imagepng($im,'/admin/tmp/qrcode.png');
+        // imagedestroy($im);
+
+        // $image = "/admin/tmp/qrcode.png";
+
+        // $data_sep['qrCode'] = $image;
+        $data_sep['batas_rujukan'] = date('Y-m-d', $batas_rujukan);
+        $potensi_prb = $this->db('bpjs_prb')->where('no_sep', $no_sep)->oneArray();
+        $data_sep['potensi_prb'] = $potensi_prb['prb'];
+
+        echo $this->draw('cetak.sjp.html', ['data_sep' => $data_sep]);
         exit();
     }
 

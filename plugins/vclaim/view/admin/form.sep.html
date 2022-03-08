@@ -616,6 +616,16 @@
     window.open(baseURL + '/vclaim/cetaksep/' + no_sep + '?t=' + mlite.token);
   });
 </script>
+
+<script type="text/javascript">
+  $("#form_sep").on("click",".print_sjp", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_sep = $(this).attr("data-no_sep");
+    window.open(baseURL + '/vclaim/cetaksjp/' + no_sep + '?t=' + mlite.token);
+  });
+</script>
+
 <script type="text/javascript">
   // ketika tombol hapus ditekan
   $("#form_sep").on("click",".hapus_sep", function(event){
@@ -1082,7 +1092,7 @@
                 output+="No. Rjk : " + histori[i].noRujukan + "<br/>";
                 output+="PPK Pelayanan : " + histori[i].ppkPelayanan;
                 output+="</div>";
-                output+="<div class=\"panel-footer\"><button class=\"btn btn-success btn-xs ubah_sep\" data-diagnosa=" + histori[i].diagnosa + " data-poli=" + histori[i].poli + " data-tgl_sep=" + histori[i].tglSep + " data-no_sep=" + histori[i].noSep + " data-no_rujukan=" + histori[i].noRujukan + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">Cetak</button></div>";
+                output+="<div class=\"panel-footer\"><button class=\"btn btn-success btn-xs ubah_sep\" data-diagnosa=" + histori[i].diagnosa + " data-poli=" + histori[i].poli + " data-tgl_sep=" + histori[i].tglSep + " data-no_sep=" + histori[i].noSep + " data-no_rujukan=" + histori[i].noRujukan + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button></div>";
             }
             output+="</div>";
             $("#histori_pelayanan").html(output).show();
