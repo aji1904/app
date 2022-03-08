@@ -23,8 +23,8 @@
           <div class="form-group">
             <label for="jk" class="col-sm-3 control-label">Sex</label>
             <div class="col-sm-4">
-              <label class="radio-inline"><input type="radio" name="jk" value="L" {if: $pasien.jk == 'L'}checked{/if}><span class="fa fa-male"> (Pria)</span></label>
-              <label class="radio-inline"><input type="radio" name="jk" value="P" {if: $pasien.jk == 'P'}checked{/if}><span class="fa fa-female"> (Wanita)</span></label>
+              <label class="radio-inline"><input class="L" type="radio" name="jk" value="L" {if: $pasien.jk == 'L'}checked{/if}><span class="fa fa-male"> (Pria)</span></label>
+              <label class="radio-inline"><input class="P" type="radio" name="jk" value="P" {if: $pasien.jk == 'P'}checked{/if}><span class="fa fa-female"> (Wanita)</span></label>
             </div>
             <label for="tgl_lahir" class="col-sm-2 control-label">Tgl. Lahir</label>
             <div class="col-sm-3">
@@ -355,6 +355,11 @@
           $('.nama').val(data.response.peserta.nama);
           $('.noKartu').val(data.response.peserta.noKartu);
           $('.sex').val(data.response.peserta.sex);
+          if (data.response.peserta.sex == "L") {
+            $('.L').attr( 'checked', true );
+          } else {
+            $('.P').attr( 'checked', true );
+          }
           $('.tgl_lahir').val(data.response.peserta.tglLahir);
           $('.noTelepon').val(data.response.peserta.mr.noTelepon);
         } else {
@@ -381,6 +386,11 @@
           $('.nama').val(data.response.peserta.nama);
           $('.no_ktp').val(data.response.peserta.nik);
           $('.sex').val(data.response.peserta.sex);
+          if (data.response.peserta.sex == "L") {
+            $('.L').attr( 'checked', true );
+          } else {
+            $('.P').attr( 'checked', true );
+          }
           $('.tgl_lahir').val(data.response.peserta.tglLahir);
           $('.noTelepon').val(data.response.peserta.mr.noTelepon);
         } else {
