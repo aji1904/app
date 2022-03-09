@@ -918,7 +918,7 @@ $('body').on('hidden.bs.modal', '.modal', function () {
     $(this).removeData('bs.modal');
 });
 
-$("#display").on("click",".label", function(event){
+$("#display").on("click",".labels", function(event){
   var baseURL = mlite.url + '/' + mlite.admin;
   event.preventDefault();
   var no_rawat = $(this).attr("data-no_rawat");

@@ -134,7 +134,7 @@ $("#display").on("click",".antrian", function(event){
   window.open(baseURL + '/rawat_jalan/antrian?no_rawat=' + no_rawat + '&t=' + mlite.token);
 });
 
-$("#display").on("click",".label", function(event){
+$("#display").on("click",".labels", function(event){
   var baseURL = mlite.url + '/' + mlite.admin;
   event.preventDefault();
   var no_rawat = $(this).attr("data-no_rawat");
