@@ -105,7 +105,6 @@
       dokter : dokter,
       poli : poli
     } ,function(data) {
-        // alert(data);
         $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
         Swal.fire(
           'Good job!',

@@ -2269,7 +2269,6 @@ class Admin extends AdminModule
         $url = $this->api_url.'RencanaKontrol/InsertSPRI';
         $output = BpjsService::post($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
         $data = json_decode($output, true);
-        //echo $data['metaData']['message'];
         if ($data == NULL) {
           echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';
         } else if ($data['metaData']['code'] == 200) {
@@ -2277,7 +2276,7 @@ class Admin extends AdminModule
           $decompress = '""';
           $decompress = decompress($stringDecrypt);
           $spri = json_decode($decompress, true);
-          //echo $spri['noSPRI'];
+          echo $spri['noSPRI'];
           $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter_bpjs', $_POST['dokter'])->oneArray();
           $maping_poli_bpjs = $this->db('maping_poli_bpjs')->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
 
