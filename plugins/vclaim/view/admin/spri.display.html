@@ -1,26 +1,48 @@
-  <table class="table">
-    <thead>
-      <tr>
-        <th>No Rawat</th>
-        <th>No Kartu</th>
-        <th>No Surat</th>
-        <th>Tgl. Surat</th>
-        <th>Tgl. Periksa</th>
-        <th>Dokter</th>
-        <th>Poli</th>
-      </tr>
-    </thead>
-    <tbody>
-      {loop: $spri}
-      <tr>
-        <td>{$value.no_rawat}</td>
-        <td>{$value.no_kartu}</td>
-        <td class="pilih_nosurat" data-no_surat="{$value.no_surat}">{$value.no_surat}</td>
-        <td>{$value.tgl_surat}</td>
-        <td>{$value.tgl_rencana}</td>
-        <td>{$value.nm_dokter_bpjs}</td>
-        <td>{$value.nm_poli_bpjs}</td>
-      </tr
-      {/loop}
-    </tbody>
-  </table>
+<table class="table table-striped no-padding dataTables">
+  <thead>
+    <tr>
+      <th>Hapus</th>
+      <th>Edit</th>
+      <th>Cetak</th>
+      <th>No_Rawat</th>
+      <th>No_Kartu</th>
+      <th>No_Surat</th>
+      <th>Tgl.Surat</th>
+      <th>Tgl.Periksa</th>
+      <th>Dokter</th>
+      <th>Poli</th>
+    </tr>
+  </thead>
+  <tbody>
+    {loop: $spri}
+    <tr>
+      <td>
+        <button type="button" name="button" class="btn btn-xs btn-danger"><span class="fa fa-trash"></span> Hapus</button> 
+      </td>
+      <td>
+        <button type="button" name="button" class="btn btn-xs btn-info"><span class="fa fa-pencil"></span> Edit</button>
+      </td>
+      <td>
+        <button type="button" name="button" class="btn btn-xs btn-success"><span class="fa fa-print"></span> Cetak</button>
+      </td>
+      <td>{$value.no_rawat}</td>
+      <td>{$value.no_kartu}</td>
+      <td class="pilih_nosurat" data-no_surat="{$value.no_surat}">
+        {$value.no_surat}
+      </td>
+      <td>{$value.tgl_surat}</td>
+      <td>{$value.tgl_rencana}</td>
+      <td>{$value.nm_dokter_bpjs}</td>
+      <td>{$value.nm_poli_bpjs}</td>
+    </tr>
+    {/loop}
+  </tbody>
+</table>
+
+<script>
+  $(".dataTables").DataTable({
+    "scrollX": true,
+    "retrieve": true,
+    "paging": false
+  });
+</script>
