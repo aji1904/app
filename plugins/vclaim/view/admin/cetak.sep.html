@@ -330,11 +330,15 @@
               <td valign="top">
                 :
               </td>
-              <td width="550" valign="top">
-                -
+              <td width="280" valign="top" style="max-width: 280px;">
+                {$data_sep.catatan}
               </td>
-              <td width="200" halign="center" valign="bottom">
+              <td width="200" halign="center" valign="bottom" style="text-align: center;">
                 Pasien/Keluarga Pasien
+              </td>
+              <td width="200" halign="center" valign="bottom" style="text-align: center;">
+                
+                Petugas
               </td>
             </tr>
           </table>
@@ -344,7 +348,7 @@
         <td>
           <table>
             <tr>
-              <td width="720" height="0">
+              <td width="460" height="0">
                 <i style="font-size:11px;">
                   *Saya Menyetujui BPJS Kesehatan menggunakan informasi Medis Pasien jika diperlukan.<br>
                   **SEP bukan sebagai bukti penjaminan peserta<br>
@@ -352,14 +356,23 @@
                   Masa berlaku {$data_sep.tglrujukan} s/d {$data_sep.batas_rujukan}
                 </i>
               </td>
-              <td valign="bottom" halign="center" padding="0" margin="0">
+              <td valign="bottom" width="200"  halign="center" padding="0" margin="0" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: clip;">
                 <center>
-                  <div id="qrcode" style="padding: 5px 0px;"></div>
+                  <div id="qrcode" style="padding-bottom: 10px;"></div>
                   <!-- <div id="qrcodeSEP" style="margin-top:10px;width:80px;"></div><br> -->
                   {$data_sep.nama_pasien}<br>
                 </center>
                 -----------------------------------
               </td>
+              <td valign="bottom" width="200" halign="center" padding="0" margin="0" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: clip;">
+                <center>
+                  <div id="qrcode_pendaftaran" style="padding-bottom: 10px;"></div>
+                  <!-- <div id="qrcodeSEP" style="margin-top:10px;width:80px;"></div><br> -->
+                  {$data_sep.user}<br>
+                </center>
+                -----------------------------------
+              </td>
+              
             </tr>
           </table>
         </td>
@@ -534,8 +547,17 @@
   <script type="text/javascript">
     var qrcode = new QRCode(document.getElementById("qrcode"), {
 	  text: "{$data_sep.no_sep}",
-      width: 100,
-      height: 100,
+      width: 80,
+      height: 80,
+      colorDark : "#000000",
+      colorLight : "#ffffff",
+      correctLevel : QRCode.CorrectLevel.L
+    });
+
+    var qrcode = new QRCode(document.getElementById("qrcode_pendaftaran"), {
+	  text: "{$data_sep.user}",
+      width: 80,
+      height: 80,
       colorDark : "#000000",
       colorLight : "#ffffff",
       correctLevel : QRCode.CorrectLevel.L
