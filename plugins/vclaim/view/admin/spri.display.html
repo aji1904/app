@@ -18,13 +18,13 @@
     {loop: $spri}
     <tr>
       <td>
-        <button type="button" name="button" class="btn btn-xs btn-danger hapus" data-no_surat="{$value.no_surat}" data-no_kartu="{$value.no_kartu}" data-no_rawat="{$value.no_rawat}"><span class="fa fa-trash"></span> Hapus</button> 
+        <button type="button" name="button" class="btn btn-xs btn-danger hapus" data-no_surat="{$value.no_surat}"><span class="fa fa-trash"></span> Hapus</button> 
       </td>
       <td>
-        <button type="button" name="button" class="btn btn-xs btn-info"><span class="fa fa-pencil"></span> Edit</button>
+        <button type="button" name="button" class="btn btn-xs btn-info edit" data-no_surat="{$value.no_surat}"><span class="fa fa-pencil"></span> Edit</button>
       </td>
       <td>
-        <button type="button" name="button" class="btn btn-xs btn-success"><span class="fa fa-print"></span> Cetak</button>
+        <button type="button" name="button" class="btn btn-xs btn-success cetak" data-no_surat="{$value.no_surat}"><span class="fa fa-print"></span> Cetak</button>
       </td>
       <td>{$value.no_rawat}</td>
       <td>{$value.nm_pasien}</td>
@@ -76,3 +76,13 @@
     })
   })
 </script>
+<script>
+  $(".displaySPRI").on('click','.cetak', function() {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    let no_surat = $(this).attr("data-no_surat");
+    window.open(baseURL + '/vclaim/cetakspri/' + no_surat + '?t=' + mlite.token);
+    // console.log(no_surat);
+  })
+</script>
+

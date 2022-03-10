@@ -437,6 +437,19 @@ class Admin extends AdminModule
         exit();
     }
 
+    public function getCetakSPRI($no_surat)
+    {
+        $settings = $this->settings('settings');
+        $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
+        $data_spri= $this->db('bridging_surat_pri_bpjs')
+        ->join('reg_periksa', 'reg_periksa.no_rawat=bridging_surat_pri_bpjs.no_rawat')
+        ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+        ->where('no_surat', $no_surat)->oneArray();
+    
+        echo $this->draw('cetak.spri.html', ['data_spri' => $data_spri]);
+        exit();
+    }
+
     public function postSyncSEP()
     {
         $_POST['kdppkpelayanan'] = $this->settings->get('settings.ppk_bpjs');
@@ -2285,6 +2298,7 @@ class Admin extends AdminModule
           // echo $spri['noSPRI'];
           $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter_bpjs', $_POST['dokter'])->oneArray();
           $maping_poli_bpjs = $this->db('maping_poli_bpjs')->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
+          $diagnosa_pasien =  $this->db('bridging_sep')->where('no_rawat', revertNorawat($no_rawat))->oneArray();
 
           $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')->save([
             'no_rawat' => revertNorawat($no_rawat),
@@ -2296,8 +2310,8 @@ class Admin extends AdminModule
             'nm_dokter_bpjs' => $maping_dokter_dpjpvclaim['nm_dokter_bpjs'],
             'kd_poli_bpjs' => $_POST['poli'],
             'nm_poli_bpjs' => $maping_poli_bpjs['nm_poli_bpjs'],
-            'diagnosa' => '-',
-            'no_sep' => '-'
+            'diagnosa' => $diagnosa_pasien['diagawal'].' - '.$diagnosa_pasien['nmdiagnosaawal'],
+            'no_sep' => $diagnosa_pasien['no_sep']
           ]);
         } else{
           echo $data['metaData']['message'];
