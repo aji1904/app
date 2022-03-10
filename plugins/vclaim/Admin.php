@@ -2266,6 +2266,35 @@ class Admin extends AdminModule
       exit();
     }
 
+    public function getSuratPRB($no_kartu, $no_rawat)
+    {
+      $this->_addHeaderFiles();
+      $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();
+      $maping_poli_bpjs = $this->db('maping_poli_bpjs')->toArray();
+      $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')->where('no_kartu', $no_kartu)->toArray();
+      $this->tpl->set('spri', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_pri_bpjs)));
+      $this->tpl->set('maping_dokter_dpjpvclaim', $this->tpl->noParse_array(htmlspecialchars_array($maping_dokter_dpjpvclaim)));
+      $this->tpl->set('maping_poli_bpjs', $this->tpl->noParse_array(htmlspecialchars_array($maping_poli_bpjs)));
+      $this->tpl->set('no_kartu', $no_kartu);
+      $this->tpl->set('no_rawat', revertNorawat($no_rawat));
+      echo $this->draw('suratprb.html');
+      exit();
+    }
+
+    public function getPRBDisplay($no_kartu, $no_rawat)
+    {
+      $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')
+      ->join('reg_periksa', 'reg_periksa.no_rawat=bridging_surat_pri_bpjs.no_rawat')
+      ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+      ->where('no_kartu', $no_kartu)->toArray();
+
+      $this->tpl->set('no_kartu', $no_kartu);
+      $this->tpl->set('no_rawat', revertNorawat($no_rawat));
+      $this->tpl->set('spri', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_pri_bpjs)));
+      echo $this->draw('prb.display.html');
+      exit();
+    }
+
     public function getSPRIDisplay($no_kartu, $no_rawat)
     {
       $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')

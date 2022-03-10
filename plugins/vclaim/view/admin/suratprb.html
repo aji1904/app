@@ -1,24 +1,18 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span> Tutup</button>
-    <h4 class="modal-title">Riwayat Kontrol</h4>
+    <h4 class="modal-title">Riwayat Program Rujuk Balik</h4>
 </div>
 <div class="modal-body">
 
-  <div id="form_skontrol">
+  <div id="form_prb">
     <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="row clearfix">
-              <div class="col-md-12">
-                  <div class="form-group">
-                      <label>Nomor SEP</label>
-                      <input type="text" name="no_sep" id="no_sep" class="form-control" />
-                  </div>
-              </div>
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Dokter</label>
-                      <select class="form-control" name="dokter" id="dokter" data-use-search="true">
+                      <select class="form-control" name="dokter" id="dokter" data-use-search="true" required>
                         {loop: $maping_dokter_dpjpvclaim}
                         <option value="{$value.kd_dokter_bpjs}">{$value.nm_dokter_bpjs}</option>
                         {/loop}
@@ -27,8 +21,8 @@
               </div>
               <div class="col-md-6">
                   <div class="form-group">
-                      <label>Poli/Unit</label>
-                      <select class="form-control" name="poli" id="poli" data-use-search="true">
+                      <label>Program PRB</label>
+                      <select class="form-control" name="poli" id="poli" data-use-search="true" required>
                         {loop: $maping_poli_bpjs}
                         <option value="{$value.kd_poli_bpjs}">{$value.nm_poli_bpjs}</option>
                         {/loop}
@@ -37,21 +31,21 @@
               </div>
               <div class="col-md-6">
                   <div class="form-group">
-                      <label>Tanggal Surat</label>
-                      <input type="text" name="tanggal_rujukan" id="tanggal_rujukan" class="form-control tanggal"/>
+                      <label>Keterangan</label>
+                      <input type="text" name="keterangan" class="form-control" />
                   </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
-                      <label>Tanggal Kontrol</label>
-                      <input type="text" name="tanggal_datang" id="tanggal_datang" class="form-control tanggal"/>
+                      <label>Saran</label>
+                      <input type="text" name="saran" class="form-control" />
                   </div>
               </div>
           </div>
           <div class="row clearfix">
               <div class="col-md-12">
-                  <button type="button" class="btn btn-primary" id="simpan_kontrol">Simpan</button>
-                  <button type="button" class="btn btn-primary" id="load_kontrol">Load</button>
+                  <button type="button" class="btn btn-primary" id="simpan_spri">Simpan</button>
+                  <button type="button" class="btn btn-primary" id="load_spri">Load</button>
               </div>
           </div>
         </div>
@@ -60,7 +54,7 @@
   </div>
   <br><br>
 
-  <div id="kontroldisplay">
+  <div id="spridisplay">
   </div>
 </div>
 <div class="modal-footer">
@@ -82,43 +76,40 @@
    });
 </script>
 <script type="text/javascript">
-  $("#form_skontrol").on("click","#load_kontrol", function(event){
+  $("#form_spri").on("click","#load_spri", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
+    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
   });
 
   $(document).ready(function() {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
+    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
   });
 
-  $("#form_skontrol").on("click","#simpan_kontrol", function(event){
+  $("#form_spri").on("click","#simpan_spri", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    var no_sep          = $('#no_sep').val();
+
     var tanggal_surat   = $('#tanggal_rujukan').val();
     var tanggal_periksa = $('#tanggal_datang').val();
     var poli            = $('#poli').val();
     var dokter          = $('#dokter').val();
-    // alert(tanggal_periksa)
 
-    var url = baseURL + '/vclaim/savekontrol?t=' + mlite.token;
+    var url = baseURL + '/vclaim/savespri/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
 
     $.post(url,{
-      no_sep: no_sep,
       tanggal_surat : tanggal_surat,
       tanggal_periksa : tanggal_periksa,
       dokter : dokter,
       poli : poli
     } ,function(data) {
-        // alert(data);
-        $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
-        if (data == "") {
+      $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+      if (data == "") {
         Swal.fire(
           'Good job!',
-          'Surat Kontrol berhasil disimpan',
+          'SPRI berhasil disimpan',
           'success'
         )
       } else {
@@ -132,9 +123,9 @@
 
   });
 
-  $("#kontroldisplay").on("click", ".pilih_nosurat", function(event){
+  $("#spridisplay").on("click", ".pilih_nosurat", function(event){
     var no_surat = $(this).attr("data-no_surat");
     $('input:text[name=sep_nomor_skdp]').val(no_surat);
-    $('#kontrolModal').modal('hide');
+    $('#spriModal').modal('hide');
   });
 </script>
