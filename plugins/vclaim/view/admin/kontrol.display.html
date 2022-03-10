@@ -1,48 +1,87 @@
-<table class="table table-striped no-padding dataTables">
-    <thead>
-      <tr>
-        <th>Hapus</th>
-        <th>Edit</th>
-        <th>Cetak</th>
-        <th>No_Rawat</th>
-        <th>No_SEP</th>
-        <th>No_Surat</th>
-        <th>Tgl.Surat</th>
-        <th>Tgl.Periksa</th>
-        <th>Dokter</th>
-        <th>Poli</th>
-      </tr>
-    </thead>
-    <tbody>
-      {loop: $kontrol}
-      <tr>
-        <td>
-          <button type="button" name="button" class="btn btn-xs btn-danger"><span class="fa fa-trash"></span> Hapus</button> 
-        </td>
-        <td>
-          <button type="button" name="button" class="btn btn-xs btn-info"><span class="fa fa-pencil"></span> Edit</button>
-        </td>
-        <td>
-          <button type="button" name="button" class="btn btn-xs btn-success"><span class="fa fa-print"></span> Cetak</button>
-        </td>
-        <td>{$value.no_rawat}</td>
-        <td>{$value.no_sep}</td>
-        <td class="pilih_nosurat" data-no_surat="{$value.no_surat}">{$value.no_surat}</td>
-        <td>{$value.tgl_surat}</td>
-        <td>{$value.tgl_rencana}</td>
-        <td>{$value.nm_dokter_bpjs}</td>
-        <td>{$value.nm_poli_bpjs}</td>
-      </tr>
-      {/loop}
-    </tbody>
-  </table>
-  
-  <script>
-    $(".dataTables").DataTable({
-      "scrollX": true,
-      "retrieve": true,
-      "paging": false,
-      bSort: false,
-    });
-  </script>
-  
+<table class="table table-striped no-padding dataTables displayKontrol">
+  <thead>
+    <tr>
+      <th>Hapus</th>
+      <th>Edit</th>
+      <th>Cetak</th>
+      <th>No_Rawat</th>
+      <th>Nama</th>
+      <th>No_Surat</th>
+      <th>No_Kartu</th>
+      <th>Tgl.Surat</th>
+      <th>Tgl.Periksa</th>
+      <th>Dokter</th>
+      <th>Poli</th>
+    </tr>
+  </thead>
+  <tbody>
+    {loop: $kontrol}
+    <tr>
+      <td>
+        <button type="button" name="button" class="btn btn-xs btn-danger hapus" data-no_surat="{$value.no_surat}"><span class="fa fa-trash"></span> Hapus</button> 
+      </td>
+      <td>
+        <button type="button" name="button" class="btn btn-xs btn-info edit" data-no_surat="{$value.no_surat}"><span class="fa fa-pencil"></span> Edit</button>
+      </td>
+      <td>
+        <button type="button" name="button" class="btn btn-xs btn-success cetak" data-no_surat="{$value.no_surat}"><span class="fa fa-print"></span> Cetak</button>
+      </td>
+      <td>{$value.no_rawat}</td>
+      <td>{$value.nm_pasien}</td>
+      <td>{$value.no_surat}</td>
+      <td>{$value.no_kartu}</td>
+      <td>{$value.tgl_surat}</td>
+      <td>{$value.tgl_rencana}</td>
+      <td>{$value.nm_dokter_bpjs}</td>
+      <td>{$value.nm_poli_bpjs}</td>
+    </tr>
+    {/loop}
+  </tbody>
+</table>
+
+<script>
+  $(".dataTables").DataTable({
+    "scrollX": true,
+    "retrieve": true,
+    "paging": false,
+    
+  });
+</script>
+<script>
+  $(".displayKontrol").on('click','.hapus', function() {
+    
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var url = baseURL + '/vclaim/hapuskontrol?t=' + mlite.token;
+    let no_surat = $(this).attr("data-no_surat");
+    
+    Swal.fire({
+      title: 'Hapus data Surat Kontrol '+no_surat,
+      showCancelButton: true,
+      confirmButtonText: 'Hapus',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // console.log(no_surat)
+        $.post(url, {
+          no_surat: no_surat
+        } ,function(data) {      
+          Swal.fire(
+            'Good job!',
+            data,
+            'success'
+          );
+          $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+        });
+      }
+    })
+  })
+</script>
+<script>
+  $(".displayKontrol").on('click','.cetak', function() {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    let no_surat = $(this).attr("data-no_surat");
+    window.open(baseURL + '/vclaim/cetakspri/' + no_surat + '?t=' + mlite.token);
+    // console.log(no_surat);
+  })
+</script>

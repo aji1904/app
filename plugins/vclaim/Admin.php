@@ -376,7 +376,7 @@ class Admin extends AdminModule
           $hapus_sep = $this->db('bridging_sep')->where('no_sep', $_POST['no_sep'])->delete();
           $hapus_sep_internal = $this->db('bridging_sep_internal')->where('no_sep', $_POST['no_sep'])->delete();
           $hapus_prb = $this->db('bpjs_prb')->where('no_sep', $_POST['no_sep'])->delete();
-          echo $data['metaData']['message'].'!! Menghapus data SEP dengan nomor '.$_POST['no_sep'].'....';
+          echo $data['metaData']['message'].'!! Menghapus data SEP dengan nomor '.$_POST['no_sep'];
         } else {
           echo $data['metaData']['message'];
         }
@@ -2561,7 +2561,7 @@ class Admin extends AdminModule
       exit();
     }
 
-    public function getKontrol($no_kartu)
+    public function getKontrol($no_kartu, $no_rawat)
     {
       $this->_addHeaderFiles();
       $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();
@@ -2574,6 +2574,7 @@ class Admin extends AdminModule
       $this->tpl->set('maping_dokter_dpjpvclaim', $this->tpl->noParse_array(htmlspecialchars_array($maping_dokter_dpjpvclaim)));
       $this->tpl->set('maping_poli_bpjs', $this->tpl->noParse_array(htmlspecialchars_array($maping_poli_bpjs)));
       $this->tpl->set('no_kartu', $no_kartu);
+      $this->tpl->set('no_rawat', revertNorawat($no_rawat));
       echo $this->draw('kontrol.html');
       exit();
     }

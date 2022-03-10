@@ -578,7 +578,9 @@
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     var no_peserta = $('input:text[name=sep_no_kartu]').val();
-    var loadURL =  baseURL + '/vclaim/kontrol/' + no_peserta + '?t=' + mlite.token;
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+    var loadURL =  baseURL + '/vclaim/kontrol/' + no_peserta + '/' + no_rawat + '?t=' + mlite.token;
 
     var modal = $('#kontrolModal');
     var modalContent = $('#kontrolModal .modal-content');
@@ -643,6 +645,7 @@
         data,
         'success'
       );
+      loadHistory()
     });
   });
 </script>
@@ -650,6 +653,8 @@
   $("#form_sep").on("click",".ubah_sep", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
+    // var url = baseURL + '/vclaim/updatesep?t=' + mlite.token;
+
     var no_sep = $(this).attr("data-no_sep");
     var no_rujukan = $(this).attr("data-no_rujukan");
     var poli = $(this).attr("data-poli");
@@ -1067,7 +1072,8 @@
   });
   // end pencarian
   // ketika inputbox pencarian diisi
-  $('#parameter_histori_pelayanan').on('click',function(e){
+
+  function loadHistory() {
     var baseURL = mlite.url + '/' + mlite.admin;
     var nomor_asuransi = $('input:text[name=nomor_asuransi]').val();
     var tanggal_awal = $('input:text[name=tanggal_awal]').val();
@@ -1110,6 +1116,10 @@
           }
         });
     }
+  }
+
+  $('#parameter_histori_pelayanan').on('click',function(e){
+    loadHistory()
   });
   // end pencarian
 </script>
