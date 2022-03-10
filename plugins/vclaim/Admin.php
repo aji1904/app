@@ -450,6 +450,20 @@ class Admin extends AdminModule
         exit();
     }
 
+    public function getCetakKontrol($no_surat)
+    {
+        $settings = $this->settings('settings');
+        $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
+        $data_spri= $this->db('bridging_surat_kontrol_bpjs')
+        ->join('bridging_sep', 'bridging_sep.no_sep=bridging_surat_kontrol_bpjs.no_sep')
+        ->join('reg_periksa','reg_periksa.no_rawat=bridging_sep.no_rawat')
+        ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+        ->where('no_surat', $no_surat)->oneArray();
+    
+        echo $this->draw('cetak.kontrol.html', ['data_spri' => $data_spri]);
+        exit();
+    }
+
     public function postSyncSEP()
     {
         $_POST['kdppkpelayanan'] = $this->settings->get('settings.ppk_bpjs');
@@ -2384,7 +2398,7 @@ class Admin extends AdminModule
 
         } else if($data['metaData']['code'] == 200){
           $hapus_sep = $this->db('bridging_surat_kontrol_bpjs')->where('no_surat', $_POST['no_surat'])->delete();
-          echo $data['metaData']['message'].'!! Menghapus data SPRI';
+          echo $data['metaData']['message'].'!! Menghapus data Surat Kontrol';
         } else {
           echo $data['metaData']['message'];
         }
@@ -2618,9 +2632,11 @@ class Admin extends AdminModule
     public function getKontrolDisplay($no_kartu, $no_rawat)
     {
       $bridging_surat_kontrol_bpjs = $this->db('bridging_surat_kontrol_bpjs')
-        ->join('bridging_sep', 'bridging_sep.no_sep=bridging_surat_kontrol_bpjs.no_sep')
-        ->where('bridging_sep.no_kartu', $no_kartu)
-        ->toArray();
+      ->join('bridging_sep', 'bridging_sep.no_sep=bridging_surat_kontrol_bpjs.no_sep')
+      ->join('reg_periksa','reg_periksa.no_rawat=bridging_sep.no_rawat')
+      ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+      ->where('bridging_sep.no_kartu', $no_kartu)
+      ->toArray();
       $this->tpl->set('kontrol', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_kontrol_bpjs)));
       $this->tpl->set('no_kartu', $no_kartu);
       $this->tpl->set('no_rawat', revertNorawat($no_rawat));

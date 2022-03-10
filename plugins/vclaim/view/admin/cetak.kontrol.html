@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>KONTROL</title>
+  <script>
+    function printContent(el){
+      var restorepage = document.body.innerHTML;
+      var printcontent = document.getElementById(el).innerHTML;
+      document.body.innerHTML = printcontent;
+      window.print();
+      document.body.innerHTML = restorepage;
+      window.close();
+    }
+    </script>
+
+    <script src="{?=url()?}/assets/jscripts/barcode.js"></script>
+</head>
+
+<body>
+  {if: isset($data_spri.no_surat)}
+  <div id="cetaksep">
+    <style  type="text/css">
+      html {
+        font-size:16px;
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      table td {
+        font-size:16px;
+        padding: 0;
+      }
+      .cetak {
+    		display:inline-block;
+    		padding:6px 12px;
+    		margin:10px;
+    		font-size:14px;
+    		font-weight:400;
+    		line-height:1.5;
+    		white-space:nowrap;
+        float: right;
+        bottom: 10px;
+        right: 10px;
+    	}
+      .tutup {
+    		display:inline-block;
+    		padding:6px 12px;
+        margin:10px;
+    		font-size:14px;
+    		font-weight:400;
+    		line-height:1.5;
+    		white-space:nowrap;
+        float: right;
+        bottom: 10px;
+        right: 10px;
+    	}
+      .btn {
+    		display:inline-block;
+    		padding:6px 12px;
+        margin:10px;
+    		font-size:14px;
+    		font-weight:400;
+    		line-height:1.5;
+    		white-space:nowrap;
+        bottom: 10px;
+        right: 10px;
+    	}
+    </style>
+    <table width="1000">
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <img src="{?=url()?}/plugins/vclaim/img/bpjslogo.png" alt="Image" width="250" height="auto">
+              </td>
+              <td width="400">
+                <div style="font-size:18px;text-align:center;font-weight:bold;">
+                  SURAT RENCANA KONTROL
+                </div>
+                <div style="font-size:18px;text-align:center;">
+                  {$settings.nama_instansi}
+                </div>
+              </td>
+              <td style="font-size:18px;">
+                No. {$data_spri.no_surat}<br>
+                Tgl. {$data_spri.tgl_surat}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><br></td>
+      </tr>
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td width="420">
+                <table>
+                  <tr>
+                    <td width="150" valign="top">Kepada Yth</td>
+                    <td></td>
+                    <td>{$data_spri.nm_dokter_bpjs}<br>{$data_spri.nm_poli_bpjs}</td>
+                  </tr>
+                </table>
+              </td>
+              <td width="580">
+                <center>
+                  <svg id="barcode" style="max-width:200px"></svg>
+                  <!-- <img src="{?=url()?}/systems/lib/Barcode.php?codetype=code39&size=60&text={$data_sep.no_sep}" alt="" width="200px"> -->
+                </center>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <table>
+          <tr>
+            <td>Mohon Pemeriksaan dan Penanganan Lebih Lanjut :</td>
+          </tr>
+        </table>
+      </tr>
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td width="170">
+                No. Kartu
+              </td>
+              <td>
+                :
+              </td>
+              <td width="350">
+                {$data_spri.no_kartu}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td width="170">
+                Nama Pasien
+              </td>
+              <td>
+                :
+              </td>
+              <td width="350">
+                {$data_spri.nm_pasien} ({if: $data_spri.jk=='L'} LAKI-LAKI {else} PEREMPUAN {/if})
+              </td>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td width="170">
+                Tgl. Lahir
+              </td>
+              <td>
+                :
+              </td>
+              <td width="450">
+                {$data_spri.tgl_lahir}
+              </td>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td width="170">
+                Diagnosa
+              </td>
+              <td>
+                :
+              </td>
+              <td width="450">
+                {$data_spri.diagawal} - {$data_spri.nmdiagnosaawal}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td width="170">
+                Rencana Kontrol
+              </td>
+              <td>
+                :
+              </td>
+              <td width="450">
+                {$data_spri.tgl_surat}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><br></td>
+      </tr>
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td width="600" valign="top">
+                Demikian atas bantuannya diucapkan banyak terimakasih
+              </td>
+              </td>
+              <td width="200" halign="center" valign="bottom" style="text-align: center;">
+                Mengetahui DPJP
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <br><br><br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td width="600" height="0">
+                <i style="font-size:13px;">
+                  Tgl. Cetak {$data_spri.tgl_surat} {?=date('H:i:s')?}
+                </i>
+              </td>
+              <td valign="bottom" width="200" halign="center" padding="0" margin="0" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: clip;">
+                <center>
+                  <div id="qrcode_pendaftaran" style="padding-bottom: 10px;"></div>
+                  {$data_spri.nm_dokter_bpjs}<br>
+                  -----------------------------------
+                </center>
+              </td>
+              
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <center style="margin-top:100px;">
+    <button class="tutup" type="button" onclick="javascript:window.close();opener.window.focus();">Tutup Window</button>
+    <button class="cetak" onclick="printContent('cetaksep')" type="button">Cetak Kontrol</button>
+  </center>
+  {else}
+    <center>
+      <div class="alert alert-danger" id="sync">
+        Data SPRI <span id="no_sep">{?=parseURL()[2]?}</span> di server SIMRS tidak ditemukan.<br>
+        <br>
+        <button class="btn" type="button" onclick="javascript:window.close();opener.window.focus();">TUTUP</button>
+      </div>
+    </center>
+  {/if}
+  <script>
+    JsBarcode("#barcode", "{$data_spri.no_surat}", {
+    width: 1.6,
+    height: 30,
+    displayValue: false
+  });
+  </script>
+  
+</body>
+</html>
+
