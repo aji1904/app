@@ -2241,7 +2241,13 @@ class Admin extends AdminModule
 
     public function getSPRIDisplay($no_kartu, $no_rawat)
     {
-      $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')->where('no_kartu', $no_kartu)->toArray();
+      $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')
+      ->join('reg_periksa', 'reg_periksa.no_rawat=bridging_surat_pri_bpjs.no_rawat')
+      ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+      ->where('no_kartu', $no_kartu)->toArray();
+
+      $this->tpl->set('no_kartu', $no_kartu);
+      $this->tpl->set('no_rawat', revertNorawat($no_rawat));
       $this->tpl->set('spri', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_pri_bpjs)));
       echo $this->draw('spri.display.html');
       exit();
@@ -2276,7 +2282,7 @@ class Admin extends AdminModule
           $decompress = '""';
           $decompress = decompress($stringDecrypt);
           $spri = json_decode($decompress, true);
-          echo $spri['noSPRI'];
+          // echo $spri['noSPRI'];
           $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter_bpjs', $_POST['dokter'])->oneArray();
           $maping_poli_bpjs = $this->db('maping_poli_bpjs')->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
 
@@ -2293,6 +2299,42 @@ class Admin extends AdminModule
             'diagnosa' => '-',
             'no_sep' => '-'
           ]);
+        } else{
+          echo $data['metaData']['message'];
+        }
+        exit();
+    }
+
+    public function postHapusSPRI()
+    {
+        $_POST['sep_user']	= $this->core->getUserInfo('fullname', null, true);
+
+        $data = [
+            'request' => [
+               't_suratkontrol' => [
+                  'noSuratKontrol' => $_POST['no_surat'],
+                  'user' => $_POST['sep_user']
+               ]
+            ]
+        ];
+
+        $data = json_encode($data);
+
+        date_default_timezone_set('UTC');
+        $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
+        $key = $this->consid.$this->secretkey.$tStamp;
+
+        $url = $this->api_url.'RencanaKontrol/Delete';
+        $output = BpjsService::delete($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+        $data = json_decode($output, true);
+
+        if($data == NULL) {
+
+          echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';
+
+        } else if($data['metaData']['code'] == 200){
+          $hapus_sep = $this->db('bridging_surat_pri_bpjs')->where('no_surat', $_POST['no_surat'])->delete();
+          echo $data['metaData']['message'].'!! Menghapus data SPRI';
         } else {
           echo $data['metaData']['message'];
         }

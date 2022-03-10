@@ -240,7 +240,7 @@
         }
         ],
         callback: function (result) {
-            console.log(result);
+            // console.log(result);
             // ketika ditekan tombol ok
             if (result){
               // mengirimkan perintah penghapusan
@@ -298,6 +298,7 @@
     },
     "lengthChange": false,
     "scrollX": true,
+    "retrieve": true,
     dom: "<<'data-table-title'><'datatable-search'f>><'row'<'col-sm-12'tr>><<'pmd-datatable-pagination' l i p>>"
   });
   var t = $(".dataTables").DataTable().rows().count();
