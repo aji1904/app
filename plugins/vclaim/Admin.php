@@ -2678,11 +2678,6 @@ class Admin extends AdminModule
           $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter_bpjs', $_POST['dokter'])->oneArray();
           $maping_poli_bpjs = $this->db('maping_poli_bpjs')->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
 
-          // data for skdp
-          $data_pasien = $this->db('bridging_surat_kontrol_bpjs')
-          ->join('bridging_sep','bridging_sep.no_sep=bridging_surat_kontrol_bpjs')
-          ->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
-
           $bridging_surat_pri_bpjs = $this->db('bridging_surat_kontrol_bpjs')->save([
             'no_sep' => $_POST['no_sep'],
             'tgl_surat' => $_POST['tanggal_surat'],
@@ -2694,38 +2689,45 @@ class Admin extends AdminModule
             'nm_poli_bpjs' => $maping_poli_bpjs['nm_poli_bpjs']
           ]);
 
-          $query = $this->db('skdp_bpjs')->save([
-            'tahun' => date('Y'),
-            'no_rkm_medis' => $_POST['no_rkm_medis'],
-            'diagnosa' => $_POST['diagnosa'],
-            'terapi' => $_POST['terapi'],
-            'alasan1' => $_POST['alasan1'],
-            'alasan2' => '',
-            'rtl1' => $_POST['rtl1'],
-            'rtl2' => '',
-            'tanggal_datang' => $_POST['tanggal_datang'],
-            'tanggal_rujukan' => $_POST['tanggal_rujukan'],
-            'no_antrian' => $this->core->setNoSKDP(),
-            'kd_dokter' => $this->core->getRegPeriksaInfo('kd_dokter', $_POST['no_rawat']),
-            'status' => 'Menunggu'
-          ]);
+          // data for skdp
+          // $data_pasien = $this->db('bridging_surat_kontrol_bpjs')
+          // ->join('bridging_sep','bridging_sep.no_sep=bridging_surat_kontrol_bpjs')
+          // ->join('reg_periksa','reg_periksa.no_rawat=bridging_sep.no_rawat')
+          // ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+          // ->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
 
-          if ($query) {
-            $this->db('booking_registrasi')
-              ->save([
-                'tanggal_booking' => date('Y-m-d'),
-                'jam_booking' => date('H:i:s'),
-                'no_rkm_medis' => $_POST['no_rkm_medis'],
-                'tanggal_periksa' => $_POST['tanggal_datang'],
-                'kd_dokter' => $this->core->getRegPeriksaInfo('kd_dokter', $_POST['no_rawat']),
-                'kd_poli' => $this->core->getRegPeriksaInfo('kd_poli', $_POST['no_rawat']),
-                'no_reg' => $this->core->setNoBooking($this->core->getUserInfo('username', null, true), $_POST['tanggal_datang']),
-                'kd_pj' => $this->core->getRegPeriksaInfo('kd_pj', $_POST['no_rawat']),
-                'limit_reg' => 0,
-                'waktu_kunjungan' => $_POST['tanggal_datang'].' '.date('H:i:s'),
-                'status' => 'Belum'
-              ]);
-          }
+          // $query = $this->db('skdp_bpjs')->save([
+          //   'tahun' => date('Y'),
+          //   'no_rkm_medis' => $data_pasien['no_rkm_medis'],
+          //   'diagnosa' => $_POST['diagnosa'],
+          //   'terapi' => $_POST['terapi'],
+          //   'alasan1' => $_POST['alasan1'],
+          //   'alasan2' => '',
+          //   'rtl1' => $_POST['rtl1'],
+          //   'rtl2' => '',
+          //   'tanggal_datang' => $_POST['tanggal_datang'],
+          //   'tanggal_rujukan' => $_POST['tanggal_rujukan'],
+          //   'no_antrian' => $this->core->setNoSKDP(),
+          //   'kd_dokter' => $this->core->getRegPeriksaInfo('kd_dokter', $_POST['no_rawat']),
+          //   'status' => 'Menunggu'
+          // ]);
+
+          // if ($query) {
+          //   $this->db('booking_registrasi')
+          //     ->save([
+          //       'tanggal_booking' => date('Y-m-d'),
+          //       'jam_booking' => date('H:i:s'),
+          //       'no_rkm_medis' => $_POST['no_rkm_medis'],
+          //       'tanggal_periksa' => $_POST['tanggal_datang'],
+          //       'kd_dokter' => $this->core->getRegPeriksaInfo('kd_dokter', $_POST['no_rawat']),
+          //       'kd_poli' => $this->core->getRegPeriksaInfo('kd_poli', $_POST['no_rawat']),
+          //       'no_reg' => $this->core->setNoBooking($this->core->getUserInfo('username', null, true), $_POST['tanggal_datang']),
+          //       'kd_pj' => $this->core->getRegPeriksaInfo('kd_pj', $_POST['no_rawat']),
+          //       'limit_reg' => 0,
+          //       'waktu_kunjungan' => $_POST['tanggal_datang'].' '.date('H:i:s'),
+          //       'status' => 'Belum'
+          //     ]);
+          // }
 
         } else {
           echo $data['metaData']['message'];

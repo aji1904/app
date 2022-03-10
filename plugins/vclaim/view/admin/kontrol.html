@@ -112,12 +112,21 @@
       dokter : dokter,
       poli : poli
     } ,function(data) {
-        alert(data);
+        // alert(data);
         $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
-        $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-        "Data Kontrol VClaim telah disimpan!"+
-        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        "</div>").show();
+        if (data == "") {
+        Swal.fire(
+          'Good job!',
+          'Surat Kontrol berhasil disimpan',
+          'success'
+        )
+      } else {
+        Swal.fire(
+          'Good job!',
+          data,
+          'success'
+        )
+      }
     });
 
   });
