@@ -2355,6 +2355,42 @@ class Admin extends AdminModule
         exit();
     }
 
+    public function postHapusKontrol()
+    {
+        $_POST['sep_user']	= $this->core->getUserInfo('fullname', null, true);
+
+        $data = [
+            'request' => [
+               't_suratkontrol' => [
+                  'noSuratKontrol' => $_POST['no_surat'],
+                  'user' => $_POST['sep_user']
+               ]
+            ]
+        ];
+
+        $data = json_encode($data);
+
+        date_default_timezone_set('UTC');
+        $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
+        $key = $this->consid.$this->secretkey.$tStamp;
+
+        $url = $this->api_url.'RencanaKontrol/Delete';
+        $output = BpjsService::delete($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+        $data = json_decode($output, true);
+
+        if($data == NULL) {
+
+          echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';
+
+        } else if($data['metaData']['code'] == 200){
+          $hapus_sep = $this->db('bridging_surat_kontrol_bpjs')->where('no_surat', $_POST['no_surat'])->delete();
+          echo $data['metaData']['message'].'!! Menghapus data SPRI';
+        } else {
+          echo $data['metaData']['message'];
+        }
+        exit();
+    }
+
     public function getSync_SEP($no_kartu, $no_rawat)
     {
       $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();
@@ -2579,7 +2615,7 @@ class Admin extends AdminModule
       exit();
     }
 
-    public function getKontrolDisplay($no_kartu)
+    public function getKontrolDisplay($no_kartu, $no_rawat)
     {
       $bridging_surat_kontrol_bpjs = $this->db('bridging_surat_kontrol_bpjs')
         ->join('bridging_sep', 'bridging_sep.no_sep=bridging_surat_kontrol_bpjs.no_sep')
@@ -2587,6 +2623,7 @@ class Admin extends AdminModule
         ->toArray();
       $this->tpl->set('kontrol', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_kontrol_bpjs)));
       $this->tpl->set('no_kartu', $no_kartu);
+      $this->tpl->set('no_rawat', revertNorawat($no_rawat));
       echo $this->draw('kontrol.display.html');
       exit();
     }
@@ -2624,6 +2661,11 @@ class Admin extends AdminModule
           //echo $spri['noSuratKontrol'];
           $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter_bpjs', $_POST['dokter'])->oneArray();
           $maping_poli_bpjs = $this->db('maping_poli_bpjs')->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
+
+          // data for skdp
+          $data_pasien = $this->db('bridging_surat_kontrol_bpjs')
+          ->join('bridging_sep','bridging_sep.no_sep=bridging_surat_kontrol_bpjs')
+          ->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
 
           $bridging_surat_pri_bpjs = $this->db('bridging_surat_kontrol_bpjs')->save([
             'no_sep' => $_POST['no_sep'],

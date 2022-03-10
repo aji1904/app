@@ -44,7 +44,7 @@
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Tanggal Kontrol</label>
-                      <input type="text" name="tanggal_datang" id="tanggal_datang" class="form-control tanggal" />
+                      <input type="text" name="tanggal_datang" id="tanggal_datang" class="form-control tanggal"  value="{?=date('Y-m-d')?}" />
                   </div>
               </div>
           </div>
@@ -85,13 +85,13 @@
   $("#form_skontrol").on("click","#load_kontrol", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}?t=' + mlite.token);
+    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
   });
 
   $(document).ready(function() {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}?t=' + mlite.token);
+    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
   });
 
   $("#form_skontrol").on("click","#simpan_kontrol", function(event){
@@ -113,7 +113,7 @@
       poli : poli
     } ,function(data) {
         alert(data);
-        $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}?t=' + mlite.token);
+        $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
         $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
         "Data Kontrol VClaim telah disimpan!"+
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
