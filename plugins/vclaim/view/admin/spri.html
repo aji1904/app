@@ -64,6 +64,7 @@
    $('select').selectator();
    $(function () {
        $('.tanggal').datetimepicker({
+         defaultDate: '{?=date('Y-m-d')?}',
          format: 'YYYY-MM-DD',
          locale: 'id'
        });
@@ -96,6 +97,7 @@
     var tanggal_periksa = $('#tanggal_datang').val();
     var poli            = $('#poli').val();
     var dokter          = $('#dokter').val();
+    // alert(tanggal_surat)
 
     var url = baseURL + '/vclaim/savespri/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
 

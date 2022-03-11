@@ -38,13 +38,13 @@
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Tanggal Surat</label>
-                      <input type="text" name="tanggal_rujukan" id="tanggal_rujukan" class="form-control tanggal"/>
+                      <input type="text" name="tanggal_rujukan" id="tanggal_rujukan" class="form-control tanggal_rujukan"/>
                   </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Tanggal Kontrol</label>
-                      <input type="text" name="tanggal_datang" id="tanggal_datang" class="form-control tanggal"/>
+                      <input type="text" name="tanggal_datang" id="tanggal_datang" class="form-control tanggal_datang"/>
                   </div>
               </div>
           </div>
@@ -69,9 +69,17 @@
 <script type="text/javascript">
    $('select').selectator();
    $(function () {
-       $('.tanggal').datetimepicker({
-         format: 'YYYY-MM-DD',
-         locale: 'id'
+       $('.tanggal_rujukan').datetimepicker({
+        defaultDate: '{?=date('Y-m-d')?}',
+        format: 'YYYY-MM-DD',
+        locale: 'id'
+       });
+   });
+   $(function () {
+       $('.tanggal_datang').datetimepicker({
+        defaultDate: '{?=date('Y-m-d')?}',
+        format: 'YYYY-MM-DD',
+        locale: 'id'
        });
    });
    $(function () {
@@ -97,12 +105,13 @@
   $("#form_skontrol").on("click","#simpan_kontrol", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
+
     var no_sep          = $('#no_sep').val();
     var tanggal_surat   = $('#tanggal_rujukan').val();
     var tanggal_periksa = $('#tanggal_datang').val();
     var poli            = $('#poli').val();
     var dokter          = $('#dokter').val();
-    // alert(tanggal_periksa)
+    // alert(tanggal_surat)
 
     var url = baseURL + '/vclaim/savekontrol?t=' + mlite.token;
 

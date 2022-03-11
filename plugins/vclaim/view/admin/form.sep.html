@@ -287,7 +287,7 @@
                 <div class="form-group clearfix">
                   <label for="" class="col-sm-3 control-label">Tanggal SEP</label>
                   <div class="col-sm-6">
-                    <input type="text" name="sep_tanggal_sep" id="sep_tanggal_sep" class="form-control tanggal" value="{?=date('Y-m-d')?}">
+                    <input type="text" name="sep_tanggal_sep" id="sep_tanggal_sep" class="form-control tanggal1">
                   </div>
                   <label for="" class="col-sm-1 control-label">SKDP</label>
                   <div class="col-sm-2">
@@ -297,7 +297,7 @@
                 <div class="form-group clearfix">
                   <label for="" class="col-sm-3 control-label control-label">Tanggal Pulang</label>
                   <div class="col-sm-6">
-                    <input type="text" name="sep_tanggal_pulang" id="sep_tanggal_pulang" class="form-control tanggal" value="{?=date('Y-m-d')?}">
+                    <input type="text" name="sep_tanggal_pulang" id="sep_tanggal_pulang" class="form-control tanggal1">
                   </div>
                   <label for="" class="col-sm-1 control-label">No. Tlp</label>
                   <div class="col-sm-2">
@@ -621,7 +621,8 @@
 </script>
 <script type="text/javascript">
    $(function () {
-       $('.tanggal').datetimepicker({
+       $('.tanggal1').datetimepicker({
+         defaultDate: '{?=date('Y-m-d')?}',
          format: 'YYYY-MM-DD',
          locale: 'id'
        });
