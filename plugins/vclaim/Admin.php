@@ -364,7 +364,7 @@ class Admin extends AdminModule
         $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
         $key = $this->consid.$this->secretkey.$tStamp;
 
-        $url = $this->api_url.'SEP/Delete';
+        $url = $this->api_url.'SEP/2.0/delete';
         $output = BpjsService::delete($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
         $data = json_decode($output, true);
 
@@ -377,6 +377,8 @@ class Admin extends AdminModule
           $hapus_sep_internal = $this->db('bridging_sep_internal')->where('no_sep', $_POST['no_sep'])->delete();
           $hapus_prb = $this->db('bpjs_prb')->where('no_sep', $_POST['no_sep'])->delete();
           echo $data['metaData']['message'].'!! Menghapus data SEP dengan nomor '.$_POST['no_sep'];
+        } else if($data['metaData']['code'] != 200){
+          echo $data['metaData']['code'];
         } else {
           echo $data['metaData']['message'];
         }
@@ -743,42 +745,7 @@ class Admin extends AdminModule
         }
         exit();
     }
-
-    public function getProgramPRB()
-    {
-        date_default_timezone_set('UTC');
-        $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
-        $key = $this->consid.$this->secretkey.$tStamp;
-        $url = $this->api_url.'referensi/diagnosaprb';
-        $output = BpjsService::get($url, NULL, $this->consid, $this->secretkey, $this->user_key, $tStamp);
-        $json = json_decode($output, true);
-        //echo json_encode($json);
-        $code = $json['metaData']['code'];
-        $message = $json['metaData']['message'];
-        $stringDecrypt = stringDecrypt($key, $json['response']);
-        $decompress = '""';
-        if(!empty($stringDecrypt)) {
-          $decompress = decompress($stringDecrypt);
-        }
-        if($json != null) {
-          echo '{
-            "metaData": {
-              "code": "'.$code.'",
-              "message": "'.$message.'"
-            },
-            "response": '.$decompress.'}';
-        } else {
-          echo '{
-            "metaData": {
-              "code": "5000",
-              "message": "ERROR SERVICE BPJS"
-            },
-            "response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
-        }
-        
-        exit();
-    }
-
+    
     public function getPropinsi()
     {
         date_default_timezone_set('UTC');

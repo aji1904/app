@@ -16,16 +16,12 @@
                 </div>
               </div>
               <div class="col-md-6">
-
-                <label for="" class="col-sm-3 control-label">Diagnosa</label>
-                <div class="col-sm-6">
-                  <input type="text" name="sep_diagnosa_nama" id="sep_diagnosa_nama" class="form-control" value="">
-                  <ul class="list-group" id="diagnosaList" style="z-index:1000;position:absolute;width:100%;"></ul>
-                </div>
-                <label for="" class="col-sm-1 control-label">Kode</label>
-                <div class="col-sm-2">
-                  <input type="text" name="sep_diagnosa_kode" id="sep_diagnosa_kode" class="form-control" value="">
-                </div>
+                <div class="form-group">
+                  <label>Program PRB</label>
+                  <input type="text" name="nama_prb" id="nama_prb" class="form-control" />
+                  <input type="hidden" name="kode_prb" id="kode_prb" class="form-control" />
+                  <ul class="list-group" id="list_prb" style="z-index:1000;position:absolute;width:100%;"></ul>
+              </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
@@ -39,6 +35,12 @@
                       <input type="text" name="saran" class="form-control" />
                   </div>
               </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label>Cari Obat PRB</label>
+                    <input type="text" name="saran" class="form-control" />
+                </div>
+            </div>
           </div>
           <div class="row clearfix">
               <div class="col-md-12">
@@ -60,38 +62,28 @@
 </div>
 
 <script type="text/javascript">
-  $('#sep_diagnosa_nama').on('click',function(){
-      console.log('click')
-
-      $.ajax({
-        url: '{?=url()?}/admin/vclaim/programprb?t={?=$_SESSION['token']?}',
-        method:"GET",
-        data:{},
-        success:function(data)
-        {
-            var data = JSON.parse(data);
-            var json_obj = [data];
-            var output='';
-            if(json_obj[0].metaData.code == 200) {
-              var diagnosa = json_obj[0].response.diagnosa;
-              for (var i in diagnosa) {
-                output+='<li class=\"list-group-item link-class\">' + diagnosa[i].kode + ': ' + diagnosa[i].nama + '</li>';
-              }
-            } else {
-              output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
-            }
-            output+='';
-            console.log(output);
-            $('#diagnosaList').fadeIn();
-            $('#diagnosaList').html(output).show();
-        }
-      });
+  $("#form_prb").on("click","#nama_prb", function(event){
+  //$('#sep_pelayanan_nama').focus(function(){
+       var output='';
+       output+='<li class=\"list-group-item link-class\">01: Diabetes Mellitus</li>';
+       output+='<li class=\"list-group-item link-class\">02: Hypertensi</li>';
+       output+='<li class=\"list-group-item link-class\">03: Asthma</li>';
+       output+='<li class=\"list-group-item link-class\">04: Penyakit Jantung</li>';
+       output+='<li class=\"list-group-item link-class\">05: PPOK (Penyakit Paru Obstruktif Kronik)</li>';
+       output+='<li class=\"list-group-item link-class\">06: Schizophrenia</li>';
+       output+='<li class=\"list-group-item link-class\">07: Stroke</li>';
+       output+='<li class=\"list-group-item link-class\">08: Epilepsi</li>';
+       output+='<li class=\"list-group-item link-class\">09: Systemic Lupus Erythematosus</li>';
+       output+='';
+       $('#list_prb').fadeIn();
+       $('#list_prb').html(output).show();
   });
-  $('#diagnosaList').on('click', 'li', function(){
-       $('#sep_diagnosa_nama').val($(this).text().split(': ')[1]);
-       $('#sep_diagnosa_kode').val($(this).text().split(': ')[0]);
-       var sep_diagnosa_kode = $('#sep_diagnosa_kode').val();
-       $('#diagnosaList').fadeOut();
+  $('#list_prb').on('click', 'li', function(){
+       $('#nama_prb').val($(this).text().split(': ')[1]);
+       $('#kode_prb').val($(this).text().split(': ')[0]);
+      //  var kode_prb = $('#kode_prb').val($(this).text().split(': ')[1]);
+       $('#list_prb').fadeOut();
+      //  console.log(kode_prb)
   });
 </script>
 <script type="text/javascript">

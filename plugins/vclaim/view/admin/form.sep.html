@@ -668,12 +668,20 @@
     var no_sep = $(this).attr("data-no_sep");
     $.post(url, {
       no_sep: no_sep
-    } ,function(data) {      
-      Swal.fire(
-        'Good job!',
-        data,
-        'success'
-      );
+    } ,function(data) {
+      if (data == 201) {
+        Swal.fire(
+          'Gagal!',
+          'Surat Kontrol sudah diterbitkan',
+          'error'
+        );
+      } else {
+        Swal.fire(
+          'Good job!',
+          data,
+          'success'
+        );
+      }      
       loadHistory()
     });
   });
