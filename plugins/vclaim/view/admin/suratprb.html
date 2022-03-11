@@ -16,14 +16,16 @@
                 </div>
               </div>
               <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Program PRB</label>
-                      <select class="form-control" name="poli" id="poli" data-use-search="true" required>
-                        {loop: $diagnosa_prb}
-                        <option value="{$value.kode}">{$value.nama}</option>
-                        {/loop}
-                      </select>
-                  </div>
+
+                <label for="" class="col-sm-3 control-label">Diagnosa</label>
+                <div class="col-sm-6">
+                  <input type="text" name="sep_diagnosa_nama" id="sep_diagnosa_nama" class="form-control" value="">
+                  <ul class="list-group" id="diagnosaList" style="z-index:1000;position:absolute;width:100%;"></ul>
+                </div>
+                <label for="" class="col-sm-1 control-label">Kode</label>
+                <div class="col-sm-2">
+                  <input type="text" name="sep_diagnosa_kode" id="sep_diagnosa_kode" class="form-control" value="">
+                </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
@@ -56,20 +58,41 @@
 <div class="modal-footer">
     <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
 </div>
+
 <script type="text/javascript">
-   $('select').selectator();
-   $(function () {
-       $('.tanggal').datetimepicker({
-         format: 'YYYY-MM-DD',
-         locale: 'id'
-       });
-   });
-   $(function () {
-       $('.jam').datetimepicker({
-         format: 'HH:mm:ss',
-         locale: 'id'
-       });
-   });
+  $('#sep_diagnosa_nama').on('click',function(){
+      console.log('click')
+
+      $.ajax({
+        url: '{?=url()?}/admin/vclaim/programprb?t={?=$_SESSION['token']?}',
+        method:"GET",
+        data:{},
+        success:function(data)
+        {
+            var data = JSON.parse(data);
+            var json_obj = [data];
+            var output='';
+            if(json_obj[0].metaData.code == 200) {
+              var diagnosa = json_obj[0].response.diagnosa;
+              for (var i in diagnosa) {
+                output+='<li class=\"list-group-item link-class\">' + diagnosa[i].kode + ': ' + diagnosa[i].nama + '</li>';
+              }
+            } else {
+              output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
+            }
+            output+='';
+            console.log(output);
+            $('#diagnosaList').fadeIn();
+            $('#diagnosaList').html(output).show();
+        }
+      });
+  });
+  $('#diagnosaList').on('click', 'li', function(){
+       $('#sep_diagnosa_nama').val($(this).text().split(': ')[1]);
+       $('#sep_diagnosa_kode').val($(this).text().split(': ')[0]);
+       var sep_diagnosa_kode = $('#sep_diagnosa_kode').val();
+       $('#diagnosaList').fadeOut();
+  });
 </script>
 <script type="text/javascript">
   $("#form_spri").on("click","#load_spri", function(event){
@@ -83,39 +106,6 @@
     event.preventDefault();
     $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
   });
-
-  $("#form_spri").on("click","#diagnosaprb", function(){
-    var query = $(this).val();
-    var sep_pelayanan_kode = $('input:text[name=sep_pelayanan_kode]').val();
-    var sep_tanggal_sep = $('input:text[name=sep_tanggal_sep]').val();
-
-    if(query != '')
-    {
-      $.ajax({
-        url: '{?=url()?}/admin/vclaim/diagnosaprb',
-        method:"GET",
-        data:{},
-        success:function(data)
-        {
-            var data = JSON.parse(data);
-            var json_obj = [data];
-            var output='';
-            if(json_obj[0].metaData.code == 200) {
-              var dokterdpjp = json_obj[0].response.list;
-              for (var i in dokterdpjp) {
-                output+='<li class=\"list-group-item link-class\">' + dokterdpjp[i].kode + ': ' + dokterdpjp[i].nama + '</li>';
-              }
-            } else {
-              output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
-            }
-            output+='';
-            //console.log(output);
-            $('#dokterdpjpList').fadeIn();
-            $('#dokterdpjpList').html(output).show();
-        }
-      });
-    }
-  })
 
   $("#form_spri").on("click","#simpan_spri", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
@@ -158,3 +148,4 @@
     $('#spriModal').modal('hide');
   });
 </script>
+

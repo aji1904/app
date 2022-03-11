@@ -744,7 +744,7 @@ class Admin extends AdminModule
         exit();
     }
 
-    public function getDiagnosaPRB()
+    public function getProgramPRB()
     {
         date_default_timezone_set('UTC');
         $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
@@ -2302,12 +2302,14 @@ class Admin extends AdminModule
     }
 
     public function getSuratPRB($no_kartu, $no_rawat)
-    {    
-      $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();
-
-      $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')->where('no_kartu', $no_kartu)->toArray();
-      $this->tpl->set('spri', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_pri_bpjs)));
-      $this->tpl->set('maping_dokter_dpjpvclaim', $this->tpl->noParse_array(htmlspecialchars_array($maping_dokter_dpjpvclaim)));
+    {   
+      $bridging_srb = $this->db('bridging_srb_bpjs')
+      ->join('bridging_sep','bridging_sep.no_sep=bridging_srb_bpjs.no_sep')
+      ->join('reg_periksa','reg_periksa.no_rawat=bridging_sep.no_rawat')
+      ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+      ->where('reg_periksa.no_rawat', $no_rawat)->toArray();
+      
+      $this->tpl->set('spri', $this->tpl->noParse_array(htmlspecialchars_array($bridging_srb)));
       $this->tpl->set('no_kartu', $no_kartu);
       $this->tpl->set('no_rawat', revertNorawat($no_rawat));
       echo $this->draw('suratprb.html');
