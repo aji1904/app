@@ -744,6 +744,41 @@ class Admin extends AdminModule
         exit();
     }
 
+    public function getDiagnosaPRB()
+    {
+        date_default_timezone_set('UTC');
+        $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
+        $key = $this->consid.$this->secretkey.$tStamp;
+        $url = $this->api_url.'referensi/diagnosaprb';
+        $output = BpjsService::get($url, NULL, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+        $json = json_decode($output, true);
+        //echo json_encode($json);
+        $code = $json['metaData']['code'];
+        $message = $json['metaData']['message'];
+        $stringDecrypt = stringDecrypt($key, $json['response']);
+        $decompress = '""';
+        if(!empty($stringDecrypt)) {
+          $decompress = decompress($stringDecrypt);
+        }
+        if($json != null) {
+          echo '{
+            "metaData": {
+              "code": "'.$code.'",
+              "message": "'.$message.'"
+            },
+            "response": '.$decompress.'}';
+        } else {
+          echo '{
+            "metaData": {
+              "code": "5000",
+              "message": "ERROR SERVICE BPJS"
+            },
+            "response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
+        }
+        
+        exit();
+    }
+
     public function getPropinsi()
     {
         date_default_timezone_set('UTC');
@@ -2267,14 +2302,12 @@ class Admin extends AdminModule
     }
 
     public function getSuratPRB($no_kartu, $no_rawat)
-    {
-      $this->_addHeaderFiles();
+    {    
       $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();
-      $maping_poli_bpjs = $this->db('maping_poli_bpjs')->toArray();
+
       $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')->where('no_kartu', $no_kartu)->toArray();
       $this->tpl->set('spri', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_pri_bpjs)));
       $this->tpl->set('maping_dokter_dpjpvclaim', $this->tpl->noParse_array(htmlspecialchars_array($maping_dokter_dpjpvclaim)));
-      $this->tpl->set('maping_poli_bpjs', $this->tpl->noParse_array(htmlspecialchars_array($maping_poli_bpjs)));
       $this->tpl->set('no_kartu', $no_kartu);
       $this->tpl->set('no_rawat', revertNorawat($no_rawat));
       echo $this->draw('suratprb.html');

@@ -10,21 +10,17 @@
         <div class="panel-body">
           <div class="row clearfix">
               <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Dokter</label>
-                      <select class="form-control" name="dokter" id="dokter" data-use-search="true" required>
-                        {loop: $maping_dokter_dpjpvclaim}
-                        <option value="{$value.kd_dokter_bpjs}">{$value.nm_dokter_bpjs}</option>
-                        {/loop}
-                      </select>
-                  </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" id="email" class="form-control"  required/>
+                </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Program PRB</label>
                       <select class="form-control" name="poli" id="poli" data-use-search="true" required>
-                        {loop: $maping_poli_bpjs}
-                        <option value="{$value.kd_poli_bpjs}">{$value.nm_poli_bpjs}</option>
+                        {loop: $diagnosa_prb}
+                        <option value="{$value.kode}">{$value.nama}</option>
                         {/loop}
                       </select>
                   </div>
@@ -87,6 +83,39 @@
     event.preventDefault();
     $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
   });
+
+  $("#form_spri").on("click","#diagnosaprb", function(){
+    var query = $(this).val();
+    var sep_pelayanan_kode = $('input:text[name=sep_pelayanan_kode]').val();
+    var sep_tanggal_sep = $('input:text[name=sep_tanggal_sep]').val();
+
+    if(query != '')
+    {
+      $.ajax({
+        url: '{?=url()?}/admin/vclaim/diagnosaprb',
+        method:"GET",
+        data:{},
+        success:function(data)
+        {
+            var data = JSON.parse(data);
+            var json_obj = [data];
+            var output='';
+            if(json_obj[0].metaData.code == 200) {
+              var dokterdpjp = json_obj[0].response.list;
+              for (var i in dokterdpjp) {
+                output+='<li class=\"list-group-item link-class\">' + dokterdpjp[i].kode + ': ' + dokterdpjp[i].nama + '</li>';
+              }
+            } else {
+              output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
+            }
+            output+='';
+            //console.log(output);
+            $('#dokterdpjpList').fadeIn();
+            $('#dokterdpjpList').html(output).show();
+        }
+      });
+    }
+  })
 
   $("#form_spri").on("click","#simpan_spri", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
