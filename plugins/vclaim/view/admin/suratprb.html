@@ -44,7 +44,8 @@
               <div class="col-md-6">
                 <div class="form-group">
                     <label>Cari Obat PRB</label>
-                    <input type="text" name="saran" class="form-control" />
+                    <input type="text" name="cari_obat" id="cari_obat" class="form-control" value="">
+                    <ul class="list-group" id="cari_obat_list" style="z-index:1000;position:absolute;width:100%;"></ul>
                 </div>
               </div>
 
@@ -68,18 +69,13 @@
                   <div class="form-group">
                     <label>Signa 2</label>
                   </div>
-                </div>
-                
-                <input type="hidden" name="nm_obat" class="form-control" />
-                <input type="hidden" name="jml_obat" class="form-control" />
-                <input type="hidden" name="signa1" class="form-control" />
-                <input type="hidden" name="signa2" class="form-control" />
+                </div>    
 
             </div>
           <div class="row clearfix">
               <div class="col-md-12">
-                  <button type="button" class="btn btn-primary" id="simpan_spri">Simpan</button>
-                  <button type="button" class="btn btn-primary" id="load_spri">Load</button>
+                  <button type="button" class="btn btn-primary" id="simpan_prb">Simpan</button>
+                  <button type="button" class="btn btn-primary" id="load_prb">Load</button>
               </div>
           </div>
         </div>
@@ -95,6 +91,60 @@
     <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
 </div>
 
+<script type="text/javascript">
+  $('#cari_obat').keyup(function(){
+       var caari_obat = $(this).val();
+       if(caari_obat != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/admin/vclaim/obatprb/' + encodeURIComponent(caari_obat) + '?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     if(json_obj[0].metaData.code == 200) {
+                       var obat = json_obj[0].response.list;
+                       for (var i in obat) {
+                         output+='<li class=\"list-group-item link-class\">' + obat[i].kode + ': ' + obat[i].nama + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
+                     }
+                     output+='';
+                    //  console.log(json_obj[0]);
+                     $('#cari_obat_list').fadeIn();
+                     $('#cari_obat_list').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#cari_obat_list').on('click', 'li', function(){
+       $('#cari_obat').val($(this).text().split(': ')[1]);
+        var addObat='';
+        addObat+='<div class=\"col-md-6\">';
+        addObat+='<div class=\"form-group\">';
+        addObat+='<input type=\"readonly\" name=\"nm_obat\" class=\"form-control\">';
+        addObat+='</div></div>';
+        addObat+='<div class=\"col-md-2\">';
+        addObat+='<div class=\"form-group\">';
+        addObat+='<input type="number" name=\"jml_obat\" class=\"form-control\" >';
+        addObat+='</div></div>';
+        addObat+='<div class=\"col-md-2\">';
+        addObat+='<div class=\"form-group\">';
+        addObat+='<input type=\"number\" name=\"signa1\" class=\"form-control\" >';
+        addObat+='</div></div>';
+        addObat+='<div class=\"col-md-2\">';
+        addObat+='<div class=\"form-group\">';
+        addObat+='<input type=\"number\" name=\"signa2\" class=\"form-control\" >';
+        addObat+='</div></div>';
+        addObat='';
+       
+        $('#cari_obat_list').fadeOut();
+  });
+</script>
 <script type="text/javascript">
   $("#form_prb").on("click","#nama_prb", function(event){
   //$('#sep_pelayanan_nama').focus(function(){
@@ -121,19 +171,19 @@
   });
 </script>
 <script type="text/javascript">
-  $("#form_spri").on("click","#load_spri", function(event){
+  $("#form_prb").on("click","#load_prb", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+    $("#prbdisplay").show().load(baseURL + '/vclaim/prbdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
   });
 
   $(document).ready(function() {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+    $("#prbdisplay").show().load(baseURL + '/vclaim/prbdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
   });
 
-  $("#form_spri").on("click","#simpan_spri", function(event){
+  $("#form_prb").on("click","#simpan_prb", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
 
@@ -142,7 +192,7 @@
     var poli            = $('#poli').val();
     var dokter          = $('#dokter').val();
 
-    var url = baseURL + '/vclaim/savespri/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
+    var url = baseURL + '/vclaim/saveprb/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
 
     $.post(url,{
       tanggal_surat : tanggal_surat,
@@ -150,11 +200,11 @@
       dokter : dokter,
       poli : poli
     } ,function(data) {
-      $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+      $("#prbdisplay").show().load(baseURL + '/vclaim/prbdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
       if (data == "") {
         Swal.fire(
           'Good job!',
-          'SPRI berhasil disimpan',
+          'Data PRB berhasil disimpan',
           'success'
         )
       } else {
@@ -168,10 +218,10 @@
 
   });
 
-  $("#spridisplay").on("click", ".pilih_nosurat", function(event){
+  $("#prbdisplay").on("click", ".pilih_nosurat", function(event){
     var no_surat = $(this).attr("data-no_surat");
     $('input:text[name=sep_nomor_skdp]').val(no_surat);
-    $('#spriModal').modal('hide');
+    $('#prbModal').modal('hide');
   });
 </script>
 

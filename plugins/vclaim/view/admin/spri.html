@@ -12,7 +12,7 @@
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Dokter</label>
-                      <select class="form-control" name="dokter" id="dokter" data-use-search="true" required>
+                      <select class="form-control" name="dokter_spri" id="dokter_spri" data-use-search="true" required>
                         {loop: $maping_dokter_dpjpvclaim}
                         <option value="{$value.kd_dokter_bpjs}">{$value.nm_dokter_bpjs}</option>
                         {/loop}
@@ -22,7 +22,7 @@
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Poli/Unit</label>
-                      <select class="form-control" name="poli" id="poli" data-use-search="true" required>
+                      <select class="form-control" name="poli_spri" id="poli_spri" data-use-search="true" required>
                         {loop: $maping_poli_bpjs}
                         <option value="{$value.kd_poli_bpjs}">{$value.nm_poli_bpjs}</option>
                         {/loop}
@@ -32,13 +32,13 @@
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Tanggal Surat</label>
-                      <input type="text" name="tanggal_rujukan" id="tanggal_rujukan" class="form-control tanggal_spri_1"/>
+                      <input type="text" name="tanggal_rujukan_spri" id="tanggal_rujukan_spri" class="form-control tanggal_spri_1"/>
                   </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Tanggal Mulai Inap</label>
-                      <input type="text" name="tanggal_datang" id="tanggal_datang" class="form-control tanggal_spri_1"/>
+                      <input type="text" name="tanggal_datang_spri" id="tanggal_datang_spri" class="form-control tanggal_spri_1"/>
                   </div>
               </div>
           </div>
@@ -93,10 +93,10 @@
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
 
-    var tanggal_surat   = $('#tanggal_rujukan').val();
-    var tanggal_periksa = $('#tanggal_datang').val();
-    var poli            = $('#poli').val();
-    var dokter          = $('#dokter').val();
+    var tanggal_surat   = $('#tanggal_rujukan_spri').val();
+    var tanggal_periksa = $('#tanggal_datang_spri').val();
+    var poli            = $('#poli_spri').val();
+    var dokter          = $('#dokter_spri').val();
     // alert(tanggal_surat)
 
     var url = baseURL + '/vclaim/savespri/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
@@ -108,7 +108,7 @@
       poli : poli
     } ,function(data) {
       $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
-      if (data == "") {
+      if (data == 200) {
         Swal.fire(
           'Good job!',
           'SPRI berhasil disimpan',
@@ -116,9 +116,9 @@
         )
       } else {
         Swal.fire(
-          'Good job!',
+          'Gagal!',
           data,
-          'success'
+          'error'
         )
       }
     });

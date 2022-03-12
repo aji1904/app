@@ -12,13 +12,13 @@
               <div class="col-md-12">
                   <div class="form-group">
                       <label>Nomor SEP</label>
-                      <input type="text" name="no_sep" id="no_sep" class="form-control" value="{$no_sep}" readonly />
+                      <input type="text" name="no_sep" id="no_sep_kontrol" class="form-control" value="{$no_sep}" readonly />
                   </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Dokter</label>
-                      <select class="form-control" name="dokter" id="dokter" data-use-search="true">
+                      <select class="form-control" name="dokter" id="dokter_kontrol" data-use-search="true">
                         {loop: $maping_dokter_dpjpvclaim}
                         <option value="{$value.kd_dokter_bpjs}">{$value.nm_dokter_bpjs}</option>
                         {/loop}
@@ -28,7 +28,7 @@
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Poli/Unit</label>
-                      <select class="form-control" name="poli" id="poli" data-use-search="true">
+                      <select class="form-control" name="poli" id="poli_kontrol" data-use-search="true">
                         {loop: $maping_poli_bpjs}
                         <option value="{$value.kd_poli_bpjs}">{$value.nm_poli_bpjs}</option>
                         {/loop}
@@ -38,13 +38,13 @@
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Tanggal Surat</label>
-                      <input type="text" name="tanggal_rujukan" id="tanggal_rujukan" class="form-control tanggal_rujukan_kontrol"/>
+                      <input type="text" name="tanggal_rujukan" id="tanggal_rujukan_kontrol" class="form-control tanggal_rujukan_kontrol"/>
                   </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Tanggal Kontrol</label>
-                      <input type="text" name="tanggal_datang" id="tanggal_datang" class="form-control tanggal_datang_kontrol"/>
+                      <input type="text" name="tanggal_datang" id="tanggal_datang_kontrol" class="form-control tanggal_datang_kontrol"/>
                   </div>
               </div>
           </div>
@@ -106,11 +106,11 @@
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
 
-    var no_sep          = $('#no_sep').val();
-    var tanggal_surat   = $('#tanggal_rujukan').val();
-    var tanggal_periksa = $('#tanggal_datang').val();
-    var poli            = $('#poli').val();
-    var dokter          = $('#dokter').val();
+    var no_sep          = $('#no_sep_kontrol').val();
+    var tanggal_surat   = $('#tanggal_rujukan_kontrol').val();
+    var tanggal_periksa = $('#tanggal_datang_kontrol').val();
+    var poli            = $('#poli_kontrol').val();
+    var dokter          = $('#dokter_kontrol').val();
     // alert(tanggal_surat)
 
     var url = baseURL + '/vclaim/savekontrol?t=' + mlite.token;
@@ -124,7 +124,7 @@
     } ,function(data) {
         // alert(data);
         $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
-        if (data == "") {
+        if (data == 200) {
         Swal.fire(
           'Good job!',
           'Surat Kontrol berhasil disimpan',
@@ -132,9 +132,9 @@
         )
       } else {
         Swal.fire(
-          'Good job!',
+          'Gagal!',
           data,
-          'success'
+          'error'
         )
       }
     });

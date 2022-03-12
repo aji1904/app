@@ -631,6 +631,46 @@ class Admin extends AdminModule
         }
         exit();
     }
+
+    public function getObatPRB($keyword)
+    {
+        date_default_timezone_set('UTC');
+        $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
+        $key = $this->consid.$this->secretkey.$tStamp;
+
+        $url = $this->api_url.'referensi/obatprb/'.$keyword;
+        $output = BpjsService::get($url, NULL, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+        $json = json_decode($output, true);
+        //echo json_encode($json);
+        $code = $json['metaData']['code'];
+        $message = $json['metaData']['message'];
+        if($this->vclaim_version == 1) {
+          echo json_encode($json);
+        } else {
+          $stringDecrypt = stringDecrypt($key, $json['response']);
+          $decompress = '""';
+          if(!empty($stringDecrypt)) {
+            $decompress = decompress($stringDecrypt);
+          }
+         if($json != null) {
+            echo '{
+            	"metaData": {
+            		"code": "'.$code.'",
+            		"message": "'.$message.'"
+            	},
+            	"response": '.$decompress.'}';
+          } else {
+            echo '{
+            	"metaData": {
+            		"code": "5000",
+            		"message": "ERROR SERVICE BPJS"
+            	},
+            	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
+          }
+        }
+        exit();
+    }
+
     public function getPoli($keyword)
     {
         date_default_timezone_set('UTC');
@@ -2359,6 +2399,8 @@ class Admin extends AdminModule
             'diagnosa' => $diagnosa_pasien['diagawal'].' - '.$diagnosa_pasien['nmdiagnosaawal'],
             'no_sep' => $diagnosa_pasien['no_sep']
           ]);
+
+          echo $data['metaData']['code'];
         } else{
           echo $data['metaData']['message'];
         }
@@ -2762,6 +2804,7 @@ class Admin extends AdminModule
           //     ]);
           // }
 
+          echo $data['metaData']['code'];
         } else {
           echo $data['metaData']['message'];
         }
