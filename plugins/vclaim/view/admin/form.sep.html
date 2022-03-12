@@ -590,7 +590,12 @@
     var no_peserta = $('input:text[name=sep_no_kartu]').val();
     var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
     var no_rawat = find_no_rawat.replace(/\//g,'');
-    var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '?t=' + mlite.token;
+
+    if ($('#id_sep').val() == '') {
+      var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + "Kosong" + '?t=' + mlite.token;
+    } else {
+      var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + $('#id_sep').val() + '?t=' + mlite.token;
+    }
 
     var modal = $('#prbModal');
     var modalContent = $('#prbModal .modal-content');
@@ -603,9 +608,9 @@
   });
 </script>
 <script>
-  function mydata(no_sep){
+  function mydata(no_sep, jnsPelayanan){
     $('#id_sep').val(no_sep);
-    alert(no_sep)
+    alert(no_sep + " ("+ jnsPelayanan +")");
   }
 </script>
 <script type="text/javascript">
@@ -677,26 +682,35 @@
   $("#form_sep").on("click",".hapus_sep", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    var url = baseURL + '/vclaim/hapussep?t=' + mlite.token;
     var no_sep = $(this).attr("data-no_sep");
-    $.post(url, {
-      no_sep: no_sep
-    } ,function(data) {
-      if (data == 201) {
-        Swal.fire(
-          'Gagal!',
-          'Surat Kontrol sudah diterbitkan',
-          'error'
-        );
-      } else {
-        Swal.fire(
-          'Good job!',
-          data,
-          'success'
-        );
-      }      
-      loadHistory()
-    });
+    var url = baseURL + '/vclaim/hapussep?t=' + mlite.token;
+
+    Swal.fire({
+      title: 'Anda Akan menghapus data '+ no_sep ,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.post(url, {
+        no_sep: no_sep
+        } ,function(data) {
+          if (data == 201) {
+            Swal.fire(
+                'Gagal!',
+                'Surat Kontrol sudah diterbitkan',
+                'error'
+              );
+            } else {
+              Swal.fire(
+                'Good job!',
+                data,
+                'success'
+              );
+          }      
+          loadHistory()
+        }); 
+      }
+    })
   });
 </script>
 <script type="text/javascript">
@@ -1147,9 +1161,9 @@
                 if(histori[i].jnsPelayanan == 2) {
                   var jnsPelayanan = "Rawat Jalan";
                 }
-                output+="<div class=\"panel-body\" onclick=\"mydata('" + histori[i].noSep + "')\">";
+                output+="<div class=\"panel-body\">";
                 output+="Diagnosa : " + histori[i].diagnosa + "<br/>";
-                output+="Jenis : <button class=\"btn btn-success btn-xs\">" + jnsPelayanan + "</button><br/>";
+                output+="Jenis : <button class=\"btn btn-success btn-xs\" onclick=\"mydata('" + histori[i].noSep + "','"+ jnsPelayanan +"')\">" + jnsPelayanan + "</button><br/>";
                 output+="Kelas : " + histori[i].kelasRawat + "<br/>";
                 output+="Poli : " + histori[i].poli + "<br/>";
                 output+="Tgl. SEP : " + histori[i].tglSep + "<br/>";

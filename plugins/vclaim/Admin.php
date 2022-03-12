@@ -2268,7 +2268,7 @@ class Admin extends AdminModule
       exit();
     }
 
-    public function getSuratPRB($no_kartu, $no_rawat)
+    public function getSuratPRB($no_kartu, $no_rawat, $no_sep)
     {   
       $bridging_srb = $this->db('bridging_srb_bpjs')
       ->join('bridging_sep','bridging_sep.no_sep=bridging_srb_bpjs.no_sep')
@@ -2279,6 +2279,7 @@ class Admin extends AdminModule
       $this->tpl->set('spri', $this->tpl->noParse_array(htmlspecialchars_array($bridging_srb)));
       $this->tpl->set('no_kartu', $no_kartu);
       $this->tpl->set('no_rawat', revertNorawat($no_rawat));
+      $this->tpl->set('no_sep', $no_sep);
       echo $this->draw('suratprb.html');
       exit();
     }

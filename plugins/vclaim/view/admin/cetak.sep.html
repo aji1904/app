@@ -241,6 +241,7 @@
           </table>
         </td>
       </tr>
+      {if: $data_sep.jnspelayanan == 2}
       <tr>
         <td>
           <table>
@@ -254,21 +255,11 @@
               <td width="450">
                 {$data_sep.nmpolitujuan}
               </td>
-              <!--
-              <td width="90">
-                Penjamin
-              </td>
-              <td>
-                :
-              </td>
-              <td>
-                {*$data_sep.penjamin*}
-              </td>
-              -->
             </tr>
           </table>
         </td>
       </tr>
+      {/if}
       <tr>
         <td>
           <table>
