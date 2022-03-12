@@ -1,4 +1,4 @@
-<table class="table table-striped no-padding dataTables displaySPRI">
+<table class="table table-striped no-padding dataTables prbdisplay">
   <thead>
     <tr>
       <th>Hapus</th>
@@ -15,7 +15,7 @@
     </tr>
   </thead>
   <tbody>
-    {loop: $spri}
+    {loop: $prb}
     <tr>
       <td>
         <button type="button" name="button" class="btn btn-xs btn-danger hapus" data-no_surat="{$value.no_surat}"><span class="fa fa-trash"></span> Hapus</button> 
@@ -48,15 +48,15 @@
   });
 </script>
 <script>
-  $(".displaySPRI").on('click','.hapus', function() {
+  $(".prbdisplay").on('click','.hapus', function() {
     
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    var url = baseURL + '/vclaim/hapusspri?t=' + mlite.token;
+    var url = baseURL + '/vclaim/hapusprb?t=' + mlite.token;
     let no_surat = $(this).attr("data-no_surat");
     
     Swal.fire({
-      title: 'Hapus data SPRI '+no_surat,
+      title: 'Hapus data PRB '+no_surat,
       showCancelButton: true,
       confirmButtonText: 'Hapus',
     }).then((result) => {
@@ -70,18 +70,18 @@
             data,
             'success'
           );
-          $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+          $("#prbdisplay").show().load(baseURL + '/vclaim/prbdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
         });
       }
     })
   })
 </script>
 <script>
-  $(".displaySPRI").on('click','.cetak', function() {
+  $(".prbdisplay").on('click','.cetak', function() {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     let no_surat = $(this).attr("data-no_surat");
-    window.open(baseURL + '/vclaim/cetakspri/' + no_surat + '?t=' + mlite.token);
+    window.open(baseURL + '/vclaim/cetakprb/' + no_surat + '?t=' + mlite.token);
     // console.log(no_surat);
   })
 </script>

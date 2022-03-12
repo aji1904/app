@@ -295,7 +295,9 @@ class Admin extends AdminModule
         $this->db('kelurahan')->save(['kd_kel' => $_POST['kd_kel'], 'nm_kel' => $_POST['nm_kel']]);
       }
 
+
       if (!$pasien) {
+        
         $_POST['no_rkm_medis'] = $this->core->setNoRM();
         $_POST['tmp_lahir'] = '-';
         $_POST['umur'] = $this->hitungUmur($_POST['tgl_lahir']);

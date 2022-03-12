@@ -2285,14 +2285,14 @@ class Admin extends AdminModule
 
     public function getPRBDisplay($no_kartu, $no_rawat)
     {
-      $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')
+      $bridging_surat_prb = $this->db('bridging_surat_pri_bpjs')
       ->join('reg_periksa', 'reg_periksa.no_rawat=bridging_surat_pri_bpjs.no_rawat')
       ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
       ->where('no_kartu', $no_kartu)->toArray();
 
       $this->tpl->set('no_kartu', $no_kartu);
       $this->tpl->set('no_rawat', revertNorawat($no_rawat));
-      $this->tpl->set('spri', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_pri_bpjs)));
+      $this->tpl->set('prb', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_prb)));
       echo $this->draw('prb.display.html');
       exit();
     }
@@ -2642,7 +2642,7 @@ class Admin extends AdminModule
       exit();
     }
 
-    public function getKontrol($no_kartu, $no_rawat)
+    public function getKontrol($no_kartu, $no_rawat, $no_sep)
     {
       $this->_addHeaderFiles();
       $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();
@@ -2655,6 +2655,7 @@ class Admin extends AdminModule
       $this->tpl->set('maping_dokter_dpjpvclaim', $this->tpl->noParse_array(htmlspecialchars_array($maping_dokter_dpjpvclaim)));
       $this->tpl->set('maping_poli_bpjs', $this->tpl->noParse_array(htmlspecialchars_array($maping_poli_bpjs)));
       $this->tpl->set('no_kartu', $no_kartu);
+      $this->tpl->set('no_sep', $no_sep);
       $this->tpl->set('no_rawat', revertNorawat($no_rawat));
       echo $this->draw('kontrol.html');
       exit();

@@ -150,6 +150,7 @@
                   <label for="" class="col-sm-3 control-label">Nomor SEP</label>
                   <div class="col-sm-9">
                     <input type="text" name="get_no_sep" id="get_no_sep" class="form-control" value="" readonly>
+                    <input type="hidden" id="id_sep" value="">
                   </div>
                 </div>
                 <div class="form-group clearfix">
@@ -505,7 +506,7 @@
           <div class="panel-footer">
             <input type="submit" id="simpan" class="btn btn-primary" name="" value="Simpan">
             <!--<button type="button" name="button" class="btn btn-warning" id="sync_sep">Sync SEP</button>-->
-            <button type="button" name="button" class="btn btn-warning" id="kontrol">Kontrol</button>
+            <button type="button" name="button" class="btn btn-warning" id="kontrol" title="silahkan pilih SEP dulu">Kontrol</button>
             <button type="button" name="button" class="btn btn-warning" id="spri">SPRI</button>
             <button type="button" name="button" class="btn btn-warning" id="prb">PRB</button>
             <button type="button" name="button" class="btn btn-warning" id="pulang">Pulang</button>
@@ -601,14 +602,26 @@
     return false;
   });
 </script>
+<script>
+  function mydata(no_sep){
+    $('#id_sep').val(no_sep);
+    alert(no_sep)
+  }
+</script>
 <script type="text/javascript">
   $("#form_sep").on("click","#kontrol", function(event){
+    // alert($('#id_sep').val())
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     var no_peserta = $('input:text[name=sep_no_kartu]').val();
     var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
     var no_rawat = find_no_rawat.replace(/\//g,'');
-    var loadURL =  baseURL + '/vclaim/kontrol/' + no_peserta + '/' + no_rawat + '?t=' + mlite.token;
+
+    if ($('#id_sep').val() != "") {
+      var loadURL =  baseURL + '/vclaim/kontrol/' + no_peserta + '/' + no_rawat + '/' + $('#id_sep').val() + '?t=' + mlite.token;
+    } else {
+      var loadURL =  baseURL + '/vclaim/kontrol/' + no_peserta + '/' + no_rawat + '/' + "Kosong" + '?t=' + mlite.token;
+    }
 
     var modal = $('#kontrolModal');
     var modalContent = $('#kontrolModal .modal-content');
@@ -1134,9 +1147,9 @@
                 if(histori[i].jnsPelayanan == 2) {
                   var jnsPelayanan = "Rawat Jalan";
                 }
-                output+="<div class=\"panel-body\">";
+                output+="<div class=\"panel-body\" onclick=\"mydata('" + histori[i].noSep + "')\">";
                 output+="Diagnosa : " + histori[i].diagnosa + "<br/>";
-                output+="Jenis : " + jnsPelayanan + "<br/>";
+                output+="Jenis : <button class=\"btn btn-success btn-xs\">" + jnsPelayanan + "</button><br/>";
                 output+="Kelas : " + histori[i].kelasRawat + "<br/>";
                 output+="Poli : " + histori[i].poli + "<br/>";
                 output+="Tgl. SEP : " + histori[i].tglSep + "<br/>";
