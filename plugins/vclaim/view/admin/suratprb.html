@@ -12,7 +12,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" name="email" id="email" class="form-control"  required/>
+                    <input type="email" name="email_prb" id="email_prb" class="form-control"  required/>
                 </div>
               </div>
               <div class="col-md-6">
@@ -32,13 +32,13 @@
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Keterangan</label>
-                      <input type="text" name="keterangan" class="form-control" />
+                      <input type="text" name="keterangan_prb" id="keterangan_prb" class="form-control" />
                   </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Saran</label>
-                      <input type="text" name="saran" class="form-control"/>
+                      <input type="text" name="saran_prb" id="saran_prb" class="form-control"/>
                   </div>
               </div>
               <div class="col-md-6">
@@ -130,7 +130,7 @@
       $('#cari_obat').val("")
       var dataObat = $(this).text().split(': ')[1];
       var dataObatKode = $(this).text().split(': ')[0];  
-      $('#tempatObat').append('<div id="'+ dataObatKode +'"><div class="col-md-5"><div class="form-group"><input type="readonly" name="nm_obat" value="'+ dataObat +'" class="form-control" readonly><input type="hidden" name="kd_obat" value="'+ dataObatKode +'" readonly></div></div><div class="col-md-2"><div class="form-group"><input type="number" name="jml_obat" class="form-control"></div></div><div class="col-md-2"><div class="form-group"><input type="number" name="signa1" class="form-control"></div></div><div class="col-md-2"><div class="form-group"><input type="number" name="signa2" class="form-control" ></div></div> <div class="col-md-1"><button class="form-control" onclick="myhapusObat(\''+ dataObatKode +'\')"><span>X</span></button></div></div>');
+      $('#tempatObat').append('<div id="'+ dataObatKode +'"><div class="col-md-5"><div class="form-group"><input type="readonly" value="'+ dataObat +'" class="form-control" readonly><input type="hidden" id="kd_obat[][kd_obat]" value="'+ dataObatKode +'" readonly></div></div><div class="col-md-2"><div class="form-group"><input type="number" id="jml_obat[][jml_obat]" class="form-control"></div></div><div class="col-md-2"><div class="form-group"><input type="number" id="signa1[][signa1]" class="form-control"></div></div><div class="col-md-2"><div class="form-group"><input type="number" id="signa2[][signa2]" class="form-control" ></div></div> <div class="col-md-1"><button class="form-control" onclick="myhapusObat(\''+ dataObatKode +'\')"><span>X</span></button></div></div>');
        
       $('#cari_obat_list').fadeOut();
   });
@@ -177,18 +177,41 @@
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
 
-    var tanggal_surat   = $('#tanggal_rujukan').val();
-    var tanggal_periksa = $('#tanggal_datang').val();
-    var poli            = $('#poli').val();
-    var dokter          = $('#dokter').val();
+    var email = $('#email_prb').val();
+    var no_sep = $('#prb_sep').val();
+    var program_prb = $('#kode_prb').val();
+    var keterangan = $('#keterangan_prb').val();
+    var saran = $('#saran_prb').val(); 
+    var kd_obat = $('#kd_obat[][kd_obat]').val(); 
+    var jml_obat = $('#jml_obat').val(); 
+    var signa1 = $('#signa1').val(); 
+    var signa2 = $('#signa2').val(); 
 
-    var url = baseURL + '/vclaim/saveprb/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
+    // var kode_obat = [
+
+    var inputs = kd_obat, names  = [].map.call(inputs, function( input ) {
+        return input.value;
+    }).join( '|' );
+
+    console.log(inputs)
+      
+      // {
+      //   "kdObat": kd_obat,
+      //   "signa1":jml_obat,
+      //   "signa2":signa1,
+      //   "jmlObat":signa2
+      // }
+    // ];
+
+    // var url = baseURL + '/vclaim/saveprb/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
 
     $.post(url,{
-      tanggal_surat : tanggal_surat,
-      tanggal_periksa : tanggal_periksa,
-      dokter : dokter,
-      poli : poli
+      no_sep : no_sep,
+      email : email,
+      program_prb : program_prb,
+      keterangan : keterangan,
+      saran : saran,
+      obat : kode_obat
     } ,function(data) {
       $("#prbdisplay").show().load(baseURL + '/vclaim/prbdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
       if (data == "") {
