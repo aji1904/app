@@ -38,7 +38,7 @@
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Saran</label>
-                      <input type="text" name="saran" class="form-control" />
+                      <input type="text" name="saran" class="form-control"/>
                   </div>
               </div>
               <div class="col-md-6">
@@ -50,27 +50,32 @@
               </div>
 
               <!-- obat -->
-              <div class="col-md-6">
+              <div class="col-md-5">
                 <div class="form-group">
-                    <label>Nama Obat</label>
-                  </div>
+                  <label>Nama Obat</label>
                 </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <label>Jml Obat</label>
-                  </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Jml Obat</label>
                 </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <label>Signa 1</label>
-                  </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Signa 1</label>
                 </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <label>Signa 2</label>
-                  </div>
-                </div>    
-
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Signa 2</label>
+                </div>
+              </div>  
+              <div class="col-md-1">
+                <div class="form-group">
+                  <label></label>
+                </div>
+              </div>   
+              <div id="tempatObat"></div>
             </div>
           <div class="row clearfix">
               <div class="col-md-12">
@@ -122,27 +127,12 @@
        }
   });
   $('#cari_obat_list').on('click', 'li', function(){
-       $('#cari_obat').val($(this).text().split(': ')[1]);
-        var addObat='';
-        addObat+='<div class=\"col-md-6\">';
-        addObat+='<div class=\"form-group\">';
-        addObat+='<input type=\"readonly\" name=\"nm_obat\" class=\"form-control\">';
-        addObat+='</div></div>';
-        addObat+='<div class=\"col-md-2\">';
-        addObat+='<div class=\"form-group\">';
-        addObat+='<input type="number" name=\"jml_obat\" class=\"form-control\" >';
-        addObat+='</div></div>';
-        addObat+='<div class=\"col-md-2\">';
-        addObat+='<div class=\"form-group\">';
-        addObat+='<input type=\"number\" name=\"signa1\" class=\"form-control\" >';
-        addObat+='</div></div>';
-        addObat+='<div class=\"col-md-2\">';
-        addObat+='<div class=\"form-group\">';
-        addObat+='<input type=\"number\" name=\"signa2\" class=\"form-control\" >';
-        addObat+='</div></div>';
-        addObat='';
+      $('#cari_obat').val("")
+      var dataObat = $(this).text().split(': ')[1];
+      var dataObatKode = $(this).text().split(': ')[0];  
+      $('#tempatObat').append('<div id="'+ dataObatKode +'"><div class="col-md-5"><div class="form-group"><input type="readonly" name="nm_obat" value="'+ dataObat +'" class="form-control" readonly><input type="hidden" name="kd_obat" value="'+ dataObatKode +'" readonly></div></div><div class="col-md-2"><div class="form-group"><input type="number" name="jml_obat" class="form-control"></div></div><div class="col-md-2"><div class="form-group"><input type="number" name="signa1" class="form-control"></div></div><div class="col-md-2"><div class="form-group"><input type="number" name="signa2" class="form-control" ></div></div> <div class="col-md-1"><button class="form-control" onclick="myhapusObat(\''+ dataObatKode +'\')"><span>X</span></button></div></div>');
        
-        $('#cari_obat_list').fadeOut();
+      $('#cari_obat_list').fadeOut();
   });
 </script>
 <script type="text/javascript">
@@ -223,5 +213,10 @@
     $('input:text[name=sep_nomor_skdp]').val(no_surat);
     $('#prbModal').modal('hide');
   });
+</script>
+<script>
+  function myhapusObat(data_kode_obat) {
+    $("#"+ data_kode_obat+ "").remove();
+  }
 </script>
 
