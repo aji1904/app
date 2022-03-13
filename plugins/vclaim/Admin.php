@@ -2407,6 +2407,68 @@ class Admin extends AdminModule
         exit();
     }
 
+    public function postSavePRB($no_kartu, $no_rawat)
+    {
+        // date_default_timezone_set('UTC');
+        // $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
+        // $key = $this->consid.$this->secretkey.$tStamp;
+        // $_POST['sep_user']	= $this->core->getUserInfo('fullname', null, true);
+
+        // $data = [
+        //   'request' => [
+        //       'noKartu' => $no_kartu,
+        //       'kodeDokter' => $_POST['dokter'],
+        //       'poliKontrol' => $_POST['poli'],
+        //       'tglRencanaKontrol' => $_POST['tanggal_periksa'],
+        //       'user' => $_POST['sep_user']
+        //   ]
+        // ];
+
+        // $data = json_encode($data);
+
+        // $url = $this->api_url.'RencanaKontrol/InsertSPRI';
+        // $output = BpjsService::post($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+        // $data = json_decode($output, true);
+        // if ($data == NULL) {
+        //   echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';
+        // } else if ($data['metaData']['code'] == 200) {
+        //   $stringDecrypt = stringDecrypt($key, $data['response']);
+        //   $decompress = '""';
+        //   $decompress = decompress($stringDecrypt);
+        //   $spri = json_decode($decompress, true);
+          // echo $spri['noSPRI'];
+          $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter_bpjs', $_POST['dokter'])->oneArray();
+          $maping_poli_bpjs = $this->db('maping_poli_bpjs')->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
+          $diagnosa_pasien =  $this->db('bridging_sep')->where('no_rawat', revertNorawat($no_rawat))->oneArray();
+
+          $data_pasien =  $this->db('bridging_srb_bpjs')
+          ->join('bridging_sep','bridging_sep.no_sep=bridging_srb_bpjs.no_sep')
+          ->join('reg_periksa','reg_periksa.no_rawat=bridging_sep.no_rawat')
+          ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+          ->where('reg_periksa.no_rawat', $no_rawat)->toArray();
+
+          $bridging_srb_bpjs = $this->db('bridging_srb_bpjs')->save([
+            'no_sep' => $data_pasien['no_sep'],
+            'no_srb' => '-',
+            'tgl_srb' => date("Y-m-d"),
+            'alamat' => $data_pasien['alamat'],
+            'email' => $_POST['email'],
+            'kodeprogram' => $_POST['program_prb'],
+            'namaprogram' => $_POST['nm_program'],
+            'kodedpjp' => $data_pasien['kddpjp'],
+            'namadpjp' => $data_pasien['nmdpdjp'],
+            'user' => $_POST['sep_user'],
+            'keterangan' => $_POST['keterangan'],
+            'saran' => $_POST['saran']
+          ]);
+
+        //   echo $data['metaData']['code'];
+        // } else{
+        //   echo $data['metaData']['message'];
+        // }
+        exit();
+    }
+
     public function postHapusSPRI()
     {
         $_POST['sep_user']	= $this->core->getUserInfo('fullname', null, true);

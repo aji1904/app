@@ -130,7 +130,7 @@
       $('#cari_obat').val("")
       var dataObat = $(this).text().split(': ')[1];
       var dataObatKode = $(this).text().split(': ')[0];  
-      $('#tempatObat').append('<div id="'+ dataObatKode +'"><div class="col-md-5"><div class="form-group"><input type="readonly" value="'+ dataObat +'" class="form-control" readonly><input type="hidden" id="kd_obat[][kd_obat]" value="'+ dataObatKode +'" readonly></div></div><div class="col-md-2"><div class="form-group"><input type="number" id="jml_obat[][jml_obat]" class="form-control"></div></div><div class="col-md-2"><div class="form-group"><input type="number" id="signa1[][signa1]" class="form-control"></div></div><div class="col-md-2"><div class="form-group"><input type="number" id="signa2[][signa2]" class="form-control" ></div></div> <div class="col-md-1"><button class="form-control" onclick="myhapusObat(\''+ dataObatKode +'\')"><span>X</span></button></div></div>');
+      $('#tempatObat').append('<div id="'+ dataObatKode +'"><div class="col-md-5"><div class="form-group"><input type="readonly" value="'+ dataObat +'" name="nama_obat[]" class="form-control" readonly><input type="hidden" name="kd_obat[]" value="'+ dataObatKode +'" readonly></div></div><div class="col-md-2"><div class="form-group"><input type="number" min="0" name="jml_obat[]" class="form-control"></div></div><div class="col-md-2"><div class="form-group"><input type="number" min="0" name="signa1[]" class="form-control"></div></div><div class="col-md-2"><div class="form-group"><input type="number" name="signa2[]" min="0" class="form-control" ></div></div> <div class="col-md-1"><button class="form-control" onclick="myhapusObat(\''+ dataObatKode +'\')"><span>X</span></button></div></div>');
        
       $('#cari_obat_list').fadeOut();
   });
@@ -182,18 +182,63 @@
     var program_prb = $('#kode_prb').val();
     var keterangan = $('#keterangan_prb').val();
     var saran = $('#saran_prb').val(); 
-    var kd_obat = $('#kd_obat[][kd_obat]').val(); 
-    var jml_obat = $('#jml_obat').val(); 
-    var signa1 = $('#signa1').val(); 
-    var signa2 = $('#signa2').val(); 
+    var nm_program = $('#nama_prb').val(); 
+    var kd_obat = document.getElementsByName('kd_obat[]'); 
+    var jml_obat = document.getElementsByName('jml_obat[]'); 
+    var signa1 = document.getElementsByName('signa1[]'); 
+    var signa2 = document.getElementsByName('signa2[]'); 
+    var nama_obat = document.getElementsByName('nama_obat[]'); 
 
-    // var kode_obat = [
+    var newArray_obat_nm = [];
+    for (let index = 0; index < nama_obat.length; index++) {
+      var nm_obat_1 = nama_obat[index].value;
+      var nm_obat_2 = nm_obat_1;
+      newArray_obat_nm.push(nm_obat_2++);
+    }
+      
+    var newArray_obat = [];
+    for (let index = 0; index < kd_obat.length; index++) {
+      var kode_obat = kd_obat[index].value;
+      var kode_obat2 = kode_obat;
+      newArray_obat.push(kode_obat2++);
+    }
 
-    var inputs = kd_obat, names  = [].map.call(inputs, function( input ) {
-        return input.value;
-    }).join( '|' );
+    // console.log(newArray_obat);
 
-    console.log(inputs)
+    var newArray_jml_obat = [];
+    for (let index = 0; index < jml_obat.length; index++) {
+      var jumlah_obat = jml_obat[index];
+      var jumlah_obat2 = jumlah_obat.value;
+      newArray_jml_obat.push(jumlah_obat2++);
+    }
+
+    // console.log(newArray_jml_obat)
+
+    var newArray_signa1 = [];
+    for (let index = 0; index < signa1.length; index++) {
+      var signa1_obat = signa1[index];
+      var signa1_obat2 = signa1_obat.value;
+      newArray_signa1.push(signa1_obat2++);
+    }
+
+    // console.log(newArray_signa1)
+
+    var newArray_signa2 = [];
+    for (let index = 0; index < signa2.length; index++) {
+      var signa2_obat= signa2[index];
+      var signa2_obat2 = signa2_obat.value;
+      newArray_signa2.push(signa2_obat2++);
+    }
+
+    // console.log(newArray_signa2)
+
+
+    var newArray = newArray_obat.map(function(value, index) {
+      return value +' '+ newArray_obat_nm[index] +' '+ newArray_jml_obat[index] +' '+ newArray_signa1[index] +' '+ newArray_signa2[index];
+    });
+    // console.log(newArray);
+
+    console.log(newArray)
       
       // {
       //   "kdObat": kd_obat,
@@ -203,15 +248,16 @@
       // }
     // ];
 
-    // var url = baseURL + '/vclaim/saveprb/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
+    var url = baseURL + '/vclaim/saveprb/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
 
     $.post(url,{
       no_sep : no_sep,
       email : email,
+      nm_program : nm_program,
       program_prb : program_prb,
       keterangan : keterangan,
       saran : saran,
-      obat : kode_obat
+      obat : data_obat_array
     } ,function(data) {
       $("#prbdisplay").show().load(baseURL + '/vclaim/prbdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
       if (data == "") {
