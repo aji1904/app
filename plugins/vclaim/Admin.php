@@ -2308,6 +2308,22 @@ class Admin extends AdminModule
       exit();
     }
 
+    public function getUbahSEP($no_sep)
+    {
+      $this->_addHeaderFiles();
+      $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();
+      $maping_poli_bpjs = $this->db('maping_poli_bpjs')->toArray();
+      $bridging_sep = $this->db('bridging_sep')
+      ->join('reg_periksa','reg_periksa.no_rawat=bridging_sep.no_rawat')
+      ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+      ->where('bridging_sep.no_sep', $no_sep)->toArray();
+      $this->tpl->set('ubahsep', $this->tpl->noParse_array(htmlspecialchars_array($bridging_sep)));
+      $this->tpl->set('maping_dokter_dpjpvclaim', $this->tpl->noParse_array(htmlspecialchars_array($maping_dokter_dpjpvclaim)));
+      $this->tpl->set('maping_poli_bpjs', $this->tpl->noParse_array(htmlspecialchars_array($maping_poli_bpjs)));
+      echo $this->draw('ubahsep.html');
+      exit();
+    }
+
     public function getSuratPRB($no_kartu, $no_rawat, $no_sep)
     {   
       $bridging_srb = $this->db('bridging_srb_bpjs')

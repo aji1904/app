@@ -1,0 +1,150 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span> Tutup</button>
+    <h4 class="modal-title">Ubah SEP</h4>
+</div>
+<div class="modal-body">
+  {loop: $ubahsep}
+  <div id="form_sep">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row clearfix">
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label>Nama</label>
+                    <input type="text" id="nama_ubah" value="{$value.nm_pasien}" class="form-control" readonly/>
+                </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label>No SEP</label>
+                      <input type="text" id="sep_ubah" value="{$value.no_sep}" class="form-control" readonly/>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label>Nomor MR</label>
+                    <input type="text" id="mr_ubah" class="form-control " readonly value="{$value.no_rkm_medis}"/>
+                </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label>Dokter</label>
+                      <select class="form-control" name="dokter_ubah" id="dokter_ubah" data-use-search="true" required>
+                        {loop: $maping_dokter_dpjpvclaim}
+                        <option value="{$value.kd_dokter_bpjs}">{$value.nm_dokter_bpjs}</option>
+                        {/loop}
+                      </select>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label>Poli/Unit</label>
+                      <select class="form-control" name="poli_ubah" id="poli_ubah" data-use-search="true" required>
+                        {loop: $maping_poli_bpjs}
+                        <option value="{$value.kd_poli_bpjs}">{$value.nm_poli_bpjs}</option>
+                        {/loop}
+                      </select>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label>Catatan</label>
+                    <input type="text" name="catatan_ubah" id="catatan_ubah" class="form-control "/>
+                </div>
+            </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label>Diagnosa</label>
+                      <input type="text" name="diagnosa_ubah" id="diagnosa_ubah" class="form-control "/>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label>Poli Eksekutif</label>
+                      <input type="text" name="eksekutif_ubah" id="eksekutif_ubah" class="form-control "/>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label>Hak Kelas Rawat</label>
+                    <input type="text" name="rawat_ubah" id="rawat_ubah" class="form-control "/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Hak Naik Kelas</label>
+                    <input type="text" name="naik_ubah" id="naik_ubah" class="form-control "/>
+                </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                  <label>Penanggung Jawab Naik Kelas</label>
+                  <input type="text" name="penjab_ubah" id="penjab_ubah" class="form-control"/>
+              </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>COB</label>
+                    <input type="text" name="cob_ubah" id="cob_ubah" class="form-control"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                  <label>Katarak</label>
+                  <input type="text" name="katarak_ubah" id="katarak_ubah" class="form-control"/>
+              </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Lakalantas</label>
+                    <input type="text" name="lakalantas_ubah" id="lakalantas_ubah" class="form-control"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                  <label>Tanggal Kejadian</label>
+                  <input type="text" name="kejadian_ubah" id="kejadian_ubah" class="form-control tanggal_spri_1"/>
+              </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Keterangan</label>
+                    <input type="text" name="ket_ubah" id="ket_ubah" class="form-control tanggal_spri_1"/>
+                </div>
+            </div>
+          </div>
+          <div class="row clearfix">
+              <div class="col-md-12">
+                  <button type="button" class="btn btn-success" id="simpan_spri">Update</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {/loop}
+  <br><br>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+</div>
+<script type="text/javascript">
+   $('select').selectator();
+   $(function () {
+       $('.tanggal_spri_1').datetimepicker({
+         defaultDate: '{?=date('Y-m-d')?}',
+         format: 'YYYY-MM-DD',
+         locale: 'id'
+       });
+   });
+   $(function () {
+       $('.jam').datetimepicker({
+         format: 'HH:mm:ss',
+         locale: 'id'
+       });
+   });
+</script>
+<script type="text/javascript">
+  
+</script>
