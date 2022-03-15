@@ -195,6 +195,8 @@
       var nm_obat_2 = nm_obat_1;
       newArray_obat_nm.push(nm_obat_2++);
     }
+
+    console.log(nm_obat_1)
       
     var newArray_obat = [];
     for (let index = 0; index < kd_obat.length; index++) {
@@ -248,7 +250,7 @@
       // }
     // ];
 
-    var url = baseURL + '/vclaim/saveprb/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
+    // var url = baseURL + '/vclaim/saveprb/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
 
     $.post(url,{
       no_sep : no_sep,

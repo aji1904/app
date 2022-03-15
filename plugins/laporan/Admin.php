@@ -18,6 +18,7 @@
         {
           $sub_modules = [
             ['name' => 'Bridging SEP', 'url' => url([ADMIN, 'laporan', 'bridgingsep']), 'icon' => 'cubes', 'desc' => 'Laporan bridging SEP'],
+            ['name' => 'Bridging KONTROL', 'url' => url([ADMIN, 'laporan', 'bridgingkontrol']), 'icon' => 'cubes', 'desc' => 'Laporan bridging KONTROL'],
           ];
           return $this->draw('manage.html', ['sub_modules' => $sub_modules]);
         }
@@ -61,6 +62,49 @@
             return $this->draw('bridgingsep.html', [
               'bridgingsep' => $return,
               'action' => url([ADMIN,'laporan','bridgingsep'])
+            ]);
+          }
+        }
+
+        public function getBridgingKontrol()
+        {
+          $this->_addHeaderFiles();
+          $settings = $this->settings('settings');
+          $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
+
+          $tgl_awal = date('Y-m-d');
+          $tgl_akhir = date('Y-m-d');
+
+          if(isset($_GET['tgl_awal'])) {
+            $tgl_awal = $_GET['tgl_awal'];
+          }
+          if(isset($_GET['tgl_akhir'])) {
+            $tgl_akhir = $_GET['tgl_akhir'];
+          }
+
+          $sql = "SELECT * FROM bridging_sep WHERE (tglsep BETWEEN '$tgl_awal' AND '$tgl_akhir')";
+
+          $stmt = $this->db()->pdo()->prepare($sql);
+          $stmt->execute();
+          $rows = $stmt->fetchAll();
+
+          $return['list'] = [];
+          $i = 1;
+          foreach ($rows as $row) {
+            $row['nomor'] = $i++;
+            $return['list'][] = $row;
+          }
+
+          if(isset($_GET['action']) && $_GET['action'] == 'print') {
+            echo $this->draw('bridgingkontrol.print.html', [
+              'bridgingsep' => $return,
+              'action' => url([ADMIN,'laporan','bridgingkontrol'])
+            ]);
+            exit();
+          } else {
+            return $this->draw('bridgingkontrol.html', [
+              'bridgingkontrol' => $return,
+              'action' => url([ADMIN,'laporan','bridgingkontrol'])
             ]);
           }
         }

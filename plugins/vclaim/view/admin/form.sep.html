@@ -504,13 +504,15 @@
               </div>
             </div>
           </div>
-          <div class="panel-footer">
-            <input type="submit" id="simpan" class="btn btn-primary" name="" value="Simpan">
+          <div class="panel-footer" id="id_update">
             <!--<button type="button" name="button" class="btn btn-warning" id="sync_sep">Sync SEP</button>-->
             <button type="button" name="button" class="btn btn-warning" id="kontrol" title="silahkan pilih SEP dulu">Kontrol</button>
             <button type="button" name="button" class="btn btn-warning" id="spri">SPRI</button>
             <button type="button" name="button" class="btn btn-warning" id="prb">PRB</button>
             <button type="button" name="button" class="btn btn-warning" id="pulang">Pulang</button>
+            <button type="button" name="button" class="btn btn-warning" id="pulang">IGD</button>
+            <button type="button" name="button" class="btn btn-warning" id="pulang">RANAP</button>
+            <input type="submit" id="simpan" class="btn btn-primary id_simpan" value="Simpan">
             <input type="submit" id="selesai" class="btn btn-danger pull-right" name="" value="Selesai">
           </div>
         </div>
@@ -546,6 +548,7 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
   $("#form_sep").on("click","#sync_sep", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
@@ -651,7 +654,9 @@
        });
    });
 </script>
+
 <script type="text/javascript">
+
   $("#form_sep").on("click","#selesai", function(event){
     bersih();
     $("#form_rincian").hide();
@@ -721,23 +726,27 @@
   $("#form_sep").on("click",".ubah_sep", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    // var url = baseURL + '/vclaim/updatesep?t=' + mlite.token;
 
-    var no_sep = $(this).attr("data-no_sep");
-    var no_rujukan = $(this).attr("data-no_rujukan");
-    var poli = $(this).attr("data-poli");
-    var diagnosa = $(this).attr("data-diagnosa");
-    var tgl_sep = $(this).attr("data-tgl_sep");
+    $('.id_simpan').remove();
+    $('#batal_update').remove();
+    $('#update').remove();
 
-    $('input:text[name=get_no_sep]').val(no_sep);
-    $('input:text[name=sep_nomor_rujukan]').val(no_rujukan);
-    $('input:text[name=sep_spesialis_nama]').val(poli);
-    $('input:text[name=sep_diagnosa_nama]').val(diagnosa);
-    $('input:text[name=sep_tanggal_sep]').val(tgl_sep);
+    $('#id_update').append('<input type=\"submit\" id=\"update\" class=\"btn btn-primary\" value=\"Update\"> <input type=\"submit\" id=\"batal_update\" class=\"btn btn-primary\" value=\"Batal\">');
 
-    $("#no_sep_input").removeAttr('hidden');
+
+
+  });
+
+  $("#form_sep").on("click","#batal_update", function(event){
+    event.preventDefault();
+
+    $('#update').remove();
+    $('#batal_update').remove();
+    $('#id_update').append('<input type=\"submit\" id=\"simpan\" class=\"btn btn-primary id_simpan\" value=\"Simpan\">');
+
   });
 </script>
+
 <script type="text/javascript">
   // ketika tombol antrian ditekan
   $("#form_sep").on("click","#simpan", function(event){
@@ -900,7 +909,7 @@
             $('input:text[name=sep_tanggal_lahir]').val(json_obj[0].response.rujukan.peserta.tglLahir);
             $('input:text[name=sep_jenis_peserta]').val(json_obj[0].response.rujukan.peserta.jenisPeserta.keterangan);
             $('input:text[name=sep_no_kartu]').val(json_obj[0].response.rujukan.peserta.noKartu);
-            $('input:text[name=sep_norm]').val(json_obj[0].response.rujukan.peserta.mr.noMR);
+            $('input:text[name=sep_norm]').val($('#no_mr_peserta').text());
             $('input:text[name=sep_eksekutif_kode]').val("0");
             $('input:text[name=sep_eksekutif_nama]').val("Tidak");
             $('input:text[name=sep_kunjungan_kode]').val("0");
@@ -966,7 +975,7 @@
             $('input:text[name=sep_tanggal_lahir]').val(json_obj[0].response.rujukan.peserta.tglLahir);
             $('input:text[name=sep_jenis_peserta]').val(json_obj[0].response.rujukan.peserta.jenisPeserta.keterangan);
             $('input:text[name=sep_no_kartu]').val(json_obj[0].response.rujukan.peserta.noKartu);
-            $('input:text[name=sep_norm]').val(json_obj[0].response.rujukan.peserta.mr.noMR);
+            $('input:text[name=sep_norm]').val($('#no_mr_peserta').text());
             $('input:text[name=sep_eksekutif_kode]').val("0");
             $('input:text[name=sep_eksekutif_nama]').val("Tidak");
             $('input:text[name=sep_kunjungan_kode]').val("0");
@@ -1028,12 +1037,13 @@
             if(json_obj[0].response.rujukan.peserta.sex == 'P') {
               var jenis_kelamin = 'Perempuan';
             }
+
             $('input:text[name=sep_jenis_kelamin_nama]').val(jenis_kelamin);
             $('input:text[name=sep_jenis_kelamin_kode]').val(json_obj[0].response.rujukan.peserta.sex);
             $('input:text[name=sep_tanggal_lahir]').val(json_obj[0].response.rujukan.peserta.tglLahir);
             $('input:text[name=sep_jenis_peserta]').val(json_obj[0].response.rujukan.peserta.jenisPeserta.keterangan);
             $('input:text[name=sep_no_kartu]').val(json_obj[0].response.rujukan.peserta.noKartu);
-            $('input:text[name=sep_norm]').val(json_obj[0].response.rujukan.peserta.mr.noMR);
+            $('input:text[name=sep_norm]').val($('#no_mr_peserta').text());
             $('input:text[name=sep_eksekutif_kode]').val("0");
             $('input:text[name=sep_eksekutif_nama]').val("Tidak");
             $('input:text[name=sep_kunjungan_kode]').val("0");
@@ -1100,7 +1110,7 @@
             $('input:text[name=sep_tanggal_lahir]').val(json_obj[0].response.rujukan.peserta.tglLahir);
             $('input:text[name=sep_jenis_peserta]').val(json_obj[0].response.rujukan.peserta.jenisPeserta.keterangan);
             $('input:text[name=sep_no_kartu]').val(json_obj[0].response.rujukan.peserta.noKartu);
-            $('input:text[name=sep_norm]').val(json_obj[0].response.rujukan.peserta.mr.noMR);
+            $('input:text[name=sep_norm]').val($('#no_mr_peserta').text());
             $('input:text[name=sep_eksekutif_kode]').val("0");
             $('input:text[name=sep_eksekutif_nama]').val("Tidak");
             $('input:text[name=sep_kunjungan_kode]').val("0");
@@ -1167,7 +1177,11 @@
                 }
                 output+="<div class=\"panel-body\">";
                 output+="Diagnosa : " + histori[i].diagnosa + "<br/>";
-                output+="Jenis : <button class=\"btn btn-success btn-xs\" onclick=\"mydata('" + histori[i].noSep + "','"+ jnsPelayanan +"')\">" + jnsPelayanan + "</button><br/>";
+                if (histori[i].ppkPelayanan.toLowerCase() == 'rs bunda medika jakabaring') {                  
+                  output+="Jenis : <button class=\"btn btn-success btn-xs\" onclick=\"mydata('" + histori[i].noSep + "','"+ jnsPelayanan +"')\">" + jnsPelayanan + "</button><br/>";
+                } else {
+                  output+="Jenis : " + jnsPelayanan + "<br/>";
+                }
                 output+="Kelas : " + histori[i].kelasRawat + "<br/>";
                 output+="Poli : " + histori[i].poli + "<br/>";
                 output+="Tgl. SEP : " + histori[i].tglSep + "<br/>";
@@ -1175,7 +1189,15 @@
                 output+="No. Rjk : " + histori[i].noRujukan + "<br/>";
                 output+="PPK Pelayanan : " + histori[i].ppkPelayanan;
                 output+="</div>";
-                output+="<div class=\"panel-footer\"><button class=\"btn btn-success btn-xs ubah_sep\" data-diagnosa=" + histori[i].diagnosa + " data-poli=" + histori[i].poli + " data-tgl_sep=" + histori[i].tglSep + " data-no_sep=" + histori[i].noSep + " data-no_rujukan=" + histori[i].noRujukan + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button></div>";
+                output+="<div class=\"panel-footer\">";
+                  if (histori[i].ppkPelayanan.toLowerCase() == 'rs bunda medika jakabaring') {
+                    output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep  + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button>";
+                  }else {
+                    output+="<button class=\"btn btn-success btn-xs btn-block\">########</button>";
+                  }
+                output+="</div>";
+                
+                
             }
             output+="</div>";
             $("#histori_pelayanan").html(output).show();

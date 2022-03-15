@@ -235,7 +235,7 @@ $("#display").on("click", ".sep", function(event){
       $('input:text[name=sep_tanggal_lahir]').val(json_obj[0].response.peserta.tglLahir);
       $('input:text[name=sep_jenis_peserta]').val(json_obj[0].response.peserta.jenisPeserta.keterangan);
       $('input:text[name=sep_no_kartu]').val(json_obj[0].response.peserta.noKartu);
-      $('input:text[name=sep_norm]').val(json_obj[0].response.peserta.mr.noMR);
+      $('input:text[name=sep_norm]').val(no_rkm_medis);
       $('input:text[name=sep_eksekutif_kode]').val("0");
       $('input:text[name=sep_eksekutif_nama]').val("Tidak");
       $('input:text[name=sep_kunjungan_kode]').val("0");

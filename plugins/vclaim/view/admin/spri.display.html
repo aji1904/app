@@ -4,9 +4,10 @@
       <th>Hapus</th>
       <th>Edit</th>
       <th>Cetak</th>
-      <th>No_Rawat</th>
       <th>Nama</th>
       <th>No_Surat</th>
+      <th>No_Rawat</th>
+      <th>No_SEP</th>
       <th>No_Kartu</th>
       <th>Tgl.Surat</th>
       <th>Tgl.Periksa</th>
@@ -14,7 +15,7 @@
       <th>Poli</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody style="cursor: pointer;">
     {loop: $spri}
     <tr>
       <td>
@@ -26,9 +27,10 @@
       <td>
         <button type="button" name="button" class="btn btn-xs btn-success cetak" data-no_surat="{$value.no_surat}"><span class="fa fa-print"></span> Cetak</button>
       </td>
-      <td>{$value.no_rawat}</td>
-      <td>{$value.nm_pasien}</td>
+      <td onclick="alert('Klik Pasien')">{$value.nm_pasien}</td>
       <td>{$value.no_surat}</td>
+      <td>{$value.no_rawat}</td>
+      <td>{$value.no_sep}</td>
       <td>{$value.no_kartu}</td>
       <td>{$value.tgl_surat}</td>
       <td>{$value.tgl_rencana}</td>
@@ -82,7 +84,6 @@
     event.preventDefault();
     let no_surat = $(this).attr("data-no_surat");
     window.open(baseURL + '/vclaim/cetakspri/' + no_surat + '?t=' + mlite.token);
-    // console.log(no_surat);
   })
 </script>
 
