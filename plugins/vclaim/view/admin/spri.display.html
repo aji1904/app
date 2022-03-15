@@ -27,8 +27,8 @@
       <td>
         <button type="button" name="button" class="btn btn-xs btn-success cetak" data-no_surat="{$value.no_surat}"><span class="fa fa-print"></span> Cetak</button>
       </td>
-      <td onclick="alert('Klik Pasien')">{$value.nm_pasien}</td>
-      <td>{$value.no_surat}</td>
+      <td>{$value.nm_pasien}</td>
+      <td onclick="alert('{$value.no_surat}')" class="pilih_nosurat" data-no_surat="{$value.no_surat}">{$value.no_surat}</td>
       <td>{$value.no_rawat}</td>
       <td>{$value.no_sep}</td>
       <td>{$value.no_kartu}</td>

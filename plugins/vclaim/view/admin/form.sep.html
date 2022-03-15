@@ -167,11 +167,11 @@
                 <div class="form-group clearfix">
                   <label for="" class="col-sm-3 control-label">Tangga Lahir</label>
                   <div class="col-sm-6">
-                    <input type="text" id="sep_tanggal_lahir" name="sep_tanggal_lahir" class="form-control tanggal" value="">
+                    <input type="text" id="sep_tanggal_lahir" name="sep_tanggal_lahir" class="form-control tanggal" value="" readonly>
                   </div>
                   <label for="" class="col-sm-1 control-label">Sex</label>
                   <div class="col-sm-2">
-                    <input type="text" name="sep_jenis_kelamin_nama" id="sep_jenis_kelamin_nama" class="form-control" value="">
+                    <input type="text" name="sep_jenis_kelamin_nama" id="sep_jenis_kelamin_nama" class="form-control" value="" readonly>
                     <div hidden="true">
                       <input type="text" name="sep_jenis_kelamin_kode" id="sep_jenis_kelamin_kode" class="form-control" value="">
                     </div>
@@ -185,7 +185,7 @@
                   </div>
                   <label for="" class="col-sm-1 control-label">RM</label>
                   <div class="col-sm-2">
-                    <input type="text" name="sep_norm" id="sep_norm" class="form-control" value="">
+                    <input type="text" name="sep_norm" id="sep_norm" class="form-control" value="" readonly>
                   </div>
                 </div>
                 <div class="form-group clearfix">
@@ -727,13 +727,28 @@
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
 
+    var no_sep = $(this).attr("data-no_sep");
+    var loadData =  baseURL + '/vclaim/updatedisplay/' + no_sep + '?t=' + mlite.token;
+    
     $('.id_simpan').remove();
     $('#batal_update').remove();
     $('#update').remove();
 
     $('#id_update').append('<input type=\"submit\" id=\"update\" class=\"btn btn-primary\" value=\"Update\"> <input type=\"submit\" id=\"batal_update\" class=\"btn btn-primary\" value=\"Batal\">');
 
+    var no_sep = $(this).attr("data-no_sep");
+    var no_rujukan = $(this).attr("data-no_rujukan");
+    var poli = $(this).attr("data-poli");
+    var diagnosa = $(this).attr("data-diagnosa");
+    var tgl_sep = $(this).attr("data-tgl_sep");
 
+    $('input:text[name=get_no_sep]').val(no_sep);
+    $('input:text[name=sep_nomor_rujukan]').val(no_rujukan);
+    $('input:text[name=sep_spesialis_nama]').val(poli);
+    $('input:text[name=sep_diagnosa_nama]').val(diagnosa);
+    $('input:text[name=sep_tanggal_sep]').val(tgl_sep);
+
+    $("#no_sep_input").removeAttr('hidden');
 
   });
 
@@ -1191,7 +1206,7 @@
                 output+="</div>";
                 output+="<div class=\"panel-footer\">";
                   if (histori[i].ppkPelayanan.toLowerCase() == 'rs bunda medika jakabaring') {
-                    output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep  + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button>";
+                    output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-diagnosa=" + histori[i].diagnosa + " data-poli=" + histori[i].poli + " data-tgl_sep=" + histori[i].tglSep + " data-no_sep=" + histori[i].noSep + " data-no_rujukan=" + histori[i].noRujukan + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button>";
                   }else {
                     output+="<button class=\"btn btn-success btn-xs btn-block\">########</button>";
                   }
