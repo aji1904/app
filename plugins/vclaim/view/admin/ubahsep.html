@@ -1,150 +1,513 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span> Tutup</button>
-    <h4 class="modal-title">Ubah SEP</h4>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span> Tutup
+  </button>
+  <h4 class="modal-title">Ubah SEP</h4>
 </div>
 <div class="modal-body">
   {loop: $ubahsep}
-  <div id="form_sep">
+  <div id="form_sep_ubah">
     <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="row clearfix">
-              <div class="col-md-6">
-                <div class="form-group">
-                    <label>Nama</label>
-                    <input type="text" id="nama_ubah" value="{$value.nm_pasien}" class="form-control" readonly/>
-                </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <label>No SEP</label>
-                      <input type="text" id="sep_ubah" value="{$value.no_sep}" class="form-control" readonly/>
-                  </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                    <label>Nomor MR</label>
-                    <input type="text" id="mr_ubah" class="form-control " readonly value="{$value.no_rkm_medis}"/>
-                </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Dokter</label>
-                      <select class="form-control" name="dokter_ubah" id="dokter_ubah" data-use-search="true" required>
-                        {loop: $maping_dokter_dpjpvclaim}
-                        <option value="{$value.kd_dokter_bpjs}">{$value.nm_dokter_bpjs}</option>
-                        {/loop}
-                      </select>
-                  </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Poli/Unit</label>
-                      <select class="form-control" name="poli_ubah" id="poli_ubah" data-use-search="true" required>
-                        {loop: $maping_poli_bpjs}
-                        <option value="{$value.kd_poli_bpjs}">{$value.nm_poli_bpjs}</option>
-                        {/loop}
-                      </select>
-                  </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                    <label>Catatan</label>
-                    <input type="text" name="catatan_ubah" id="catatan_ubah" class="form-control "/>
-                </div>
-            </div>
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Diagnosa</label>
-                      <input type="text" name="diagnosa_ubah" id="diagnosa_ubah" class="form-control "/>
-                  </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Poli Eksekutif</label>
-                      <input type="text" name="eksekutif_ubah" id="eksekutif_ubah" class="form-control "/>
-                  </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                    <label>Hak Kelas Rawat</label>
-                    <input type="text" name="rawat_ubah" id="rawat_ubah" class="form-control "/>
-                </div>
-            </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <label>Hak Naik Kelas</label>
-                    <input type="text" name="naik_ubah" id="naik_ubah" class="form-control "/>
-                </div>
+              <div class="form-group">
+                <label>Nama</label>
+                <input
+                  type="text"
+                  id="nama_ubah"
+                  value="{$value.nm_pasien}"
+                  class="form-control"
+                  readonly
+                />
+              </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                  <label>Penanggung Jawab Naik Kelas</label>
-                  <input type="text" name="penjab_ubah" id="penjab_ubah" class="form-control"/>
+                <label>No SEP</label>
+                <input
+                  type="text"
+                  id="sep_ubah"
+                  value="{$value.no_sep}"
+                  class="form-control"
+                  readonly
+                />
               </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>COB</label>
-                    <input type="text" name="cob_ubah" id="cob_ubah" class="form-control"/>
-                </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                  <label>Katarak</label>
-                  <input type="text" name="katarak_ubah" id="katarak_ubah" class="form-control"/>
+                <label>Nomor MR</label>
+                <input
+                  type="text"
+                  id="mr_ubah"
+                  class="form-control"
+                  readonly
+                  value="{$value.no_rkm_medis}"
+                />
               </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Lakalantas</label>
-                    <input type="text" name="lakalantas_ubah" id="lakalantas_ubah" class="form-control"/>
-                </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                  <label>Tanggal Kejadian</label>
-                  <input type="text" name="kejadian_ubah" id="kejadian_ubah" class="form-control tanggal_spri_1"/>
+                <label>Nomor Telepon</label>
+                <input
+                  type="text"
+                  id="telepon_ubah"
+                  class="form-control"
+                  value="{$value.notelep}"
+                />
               </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <label>Keterangan</label>
-                    <input type="text" name="ket_ubah" id="ket_ubah" class="form-control tanggal_spri_1"/>
-                </div>
+              <div class="form-group">
+                <label>DPJP Layanan ({$value.nmdpjplayanan})</label>
+                <select
+                  class="form-control"
+                  name="dokter_ubah"
+                  id="dokter_ubah"
+                  data-use-search="true"
+                  required
+                >
+                  {loop: $maping_dokter_dpjpvclaim}
+                  <option value="{$value.kd_dokter_bpjs}">
+                    {$value.nm_dokter_bpjs}
+                  </option>
+                  {/loop}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                {loop: $ubahsep}
+                <label>Poli/Unit ({$value.nmpolitujuan})</label>
+                {/loop}
+                <select
+                  class="form-control"
+                  name="poli_ubah"
+                  id="poli_ubah"
+                  data-use-search="true"
+                  required
+                >
+                  {loop: $maping_poli_bpjs}
+                  <option value="{$value.kd_poli_bpjs}">
+                    {$value.nm_poli_bpjs}
+                  </option>
+                  {/loop}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Catatan</label>
+                <input
+                  type="text"
+                  name="catatan_ubah"
+                  id="catatan_ubah"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Diagnosa</label>
+                <input
+                  type="text"
+                  name="diagnosa_ubah"
+                  id="diagnosa_ubah"
+                  class="form-control"
+                />
+                <input
+                  type="hidden"
+                  name="diagnosa_kode_ubah"
+                  id="diagnosa_kode_ubah"
+                />
+                <ul
+                  class="list-group"
+                  id="diagnosaList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Poli Eksekutif</label>
+                <input
+                  type="text"
+                  name="eksekutif_ubah"
+                  id="eksekutif_ubah"
+                  class="form-control"
+                />
+                <input
+                  type="hidden"
+                  name="eksekutif_ubah"
+                  id="eksekutif_kode_ubah"
+                />
+                <ul
+                  class="list-group"
+                  id="eksekutifList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Hak Kelas Rawat</label>
+                <input
+                  type="text"
+                  name="rawat_ubah"
+                  id="rawat_ubah"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Hak Naik Kelas</label>
+                <input
+                  type="text"
+                  name="naik_ubah"
+                  id="naik_ubah"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Penanggung Jawab Naik Kelas</label>
+                <input
+                  type="text"
+                  name="penjab_ubah"
+                  id="penjab_ubah"
+                  class="form-control"
+                />
+                <input
+                  type="hidden"
+                  name="penjab_kode_ubah"
+                  id="penjab_kode_ubah"
+                />
+                <ul
+                  class="list-group"
+                  id="pembiayaanList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>COB</label>
+                <input
+                  type="text"
+                  name="cob_ubah"
+                  id="cob_ubah"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Katarak</label>
+                <input
+                  type="text"
+                  name="katarak_ubah"
+                  id="katarak_ubah"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Lakalantas</label>
+                <input
+                  type="text"
+                  name="lakalantas_ubah"
+                  id="lakalantas_ubah"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Tanggal Kejadian</label>
+                <input
+                  type="text"
+                  name="kejadian_ubah"
+                  id="kejadian_ubah"
+                  class="form-control tanggal_spri_1"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Keterangan</label>
+                <input
+                  type="text"
+                  name="ket_ubah"
+                  id="ket_ubah"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Suplesi</label>
+                <input
+                  type="text"
+                  name="suplesi_ubah"
+                  id="suplesi_ubah"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Nomor SEP Suplesi</label>
+                <input
+                  type="text"
+                  name="no_suplesi_ubah"
+                  id="no_suplesi_ubah"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Provinsi</label>
+                <input
+                  type="text"
+                  name="provinsi_ubah"
+                  id="provinsi_ubah"
+                  class="form-control"
+                />
+                <input
+                  type="hidden"
+                  name="id_provinsi_ubah"
+                  id="id_provinsi_ubah"
+                />
+                <ul
+                  class="list-group"
+                  id="provinsiList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Kabupaten/kota</label>
+                <input
+                  type="text"
+                  name="kabupaten_ubah"
+                  id="kabupaten_ubah"
+                  class="form-control"
+                />
+                <input
+                  type="hidden"
+                  name="id_kabupaten_ubah"
+                  id="id_kabupaten_ubah"
+                />
+                <ul
+                  class="list-group"
+                  id="kabupatenList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Kecamatan</label>
+                <input
+                  type="text"
+                  name="kecamatan_ubah"
+                  id="kecamatan_ubah"
+                  class="form-control"
+                />
+                <input
+                  type="hidden"
+                  name="id_kecamatan_ubah"
+                  id="id_kecamatan_ubah"
+                />
+                <ul
+                  class="list-group"
+                  id="kecamatanList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+              </div>
             </div>
           </div>
           <div class="row clearfix">
-              <div class="col-md-12">
-                  <button type="button" class="btn btn-success" id="simpan_spri">Update</button>
-              </div>
+            <div class="col-md-12">
+              <button type="button" class="btn btn-success" id="simpan_update">
+                Update
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
   {/loop}
-  <br><br>
+  <br /><br />
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+  <button type="button" class="btn btn-primary" data-dismiss="modal">
+    Tutup
+  </button>
 </div>
 <script type="text/javascript">
-   $('select').selectator();
-   $(function () {
-       $('.tanggal_spri_1').datetimepicker({
-         defaultDate: '{?=date('Y-m-d')?}',
-         format: 'YYYY-MM-DD',
-         locale: 'id'
-       });
-   });
-   $(function () {
-       $('.jam').datetimepicker({
-         format: 'HH:mm:ss',
-         locale: 'id'
-       });
-   });
+  $('select').selectator();
+  $(function () {
+      $('.tanggal_spri_1').datetimepicker({
+        defaultDate: '{?=date('Y-m-d')?}',
+        format: 'YYYY-MM-DD',
+        locale: 'id'
+      });
+  });
+  $(function () {
+      $('.jam').datetimepicker({
+        format: 'HH:mm:ss',
+        locale: 'id'
+      });
+  });
 </script>
 <script type="text/javascript">
-  
+  $("#form_sep_ubah").on("click", "#penjab_ubah", function (event) {
+    var output = "";
+    output += '<li class="list-group-item link-class">1: Pribadi</li>';
+    output += '<li class="list-group-item link-class">2: Pemberi Kerja</li>';
+    output +=
+      '<li class="list-group-item link-class">3: Asuransi Tambahan</li>';
+    output += "";
+    $("#pembiayaanList_ubah").fadeIn();
+    $("#pembiayaanList_ubah").html(output).show();
+  });
+  $("#pembiayaanList_ubah").on("click", "li", function () {
+    $("#penjab_ubah").val($(this).text().split(": ")[1]);
+    $("#penjab_kode_ubah").val($(this).text().split(": ")[0]);
+    var sep_pembiayaan_kode = $("#penjab_kode_ubah").val();
+    $("#pembiayaanList_ubah").fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $('#diagnosa_ubah').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/admin/vclaim/diagnosa/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     if(json_obj[0].metaData.code == 200) {
+                       var diagnosa = json_obj[0].response.diagnosa;
+                       for (var i in diagnosa) {
+                         output+='<li class=\"list-group-item link-class\">' + diagnosa[i].kode + ': ' + diagnosa[i].nama + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
+                     }
+                     output+='';
+                     //console.log(output);
+                     $('#diagnosaList_ubah').fadeIn();
+                     $('#diagnosaList_ubah').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#diagnosaList_ubah').on('click', 'li', function(){
+       $('#diagnosa_ubah').val($(this).text().split(': ')[1]);
+       $('#diagnosa_kode_ubah').val($(this).text().split(': ')[0]);
+       var sep_diagnosa_kode = $('#diagnosa_kode_ubah').val();
+       $('#diagnosaList_ubah').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep_ubah").on("click", "#eksekutif_ubah", function (event) {
+    //$('#sep_pelayanan_nama').focus(function(){
+    var output = "";
+    output += '<li class="list-group-item link-class">0: Tidak</li>';
+    output += '<li class="list-group-item link-class">1: Ya</li>';
+    output += "";
+    $("#eksekutifList_ubah").fadeIn();
+    $("#eksekutifList_ubah").html(output).show();
+  });
+  $("#eksekutifList_ubah").on("click", "li", function () {
+    $("#eksekutif_ubah").val($(this).text().split(": ")[1]);
+    $("#eksekutif_kode_ubah").val($(this).text().split(": ")[0]);
+    var sep_eksekutif_kode = $("#eksekutif_kode_ubah").val();
+    $("#eksekutifList_ubah").fadeOut();
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $("#provinsi_ubah").keyup(function () {
+      var query = $(this).val();
+      if (query != "") {
+        $.ajax({
+          url: "{?=url([ADMIN, 'pasien', 'wilayah?show=caripropinsi'])?}",
+          method: "POST",
+          data: { query: query },
+          success: function (data) {
+            // console.log(data);
+            $("#provinsiList_ubah").fadeIn();
+            $("#provinsiList_ubah").html(data);
+          },
+        });
+      }
+    });
+    $("#provinsiList_ubah").on("click", "li", function () {
+      $("#provinsi_ubah").val($(this).text().split(": ")[1]);
+      $("#id_provinsi_ubah").val($(this).text().split(": ")[0]);
+      var id_provinsi = $("#id_provinsi_ubah").val();
+      $("#provinsiList_ubah").fadeOut();
+      //  console.log(id_provinsi);
+
+      $("#kabupaten_ubah").keyup(function () {
+        var query = $(this).val();
+        if (query != "") {
+          $.ajax({
+            url: "{?=url([ADMIN, 'pasien', 'wilayah?show=carikabupaten'])?}",
+            method: "POST",
+            data: { query: query, id_prov: id_provinsi },
+            success: function (data) {
+              $("#kabupatenList_ubah").fadeIn();
+              $("#kabupatenList_ubah").html(data);
+            },
+          });
+        }
+      });
+    });
+    $("#kabupatenList_ubah").on("click", "li", function () {
+      $("#kabupaten_ubah").val($(this).text().split(": ")[1]);
+      $("#id_kabupaten_ubah").val($(this).text().split(": ")[0]);
+      var id_kabupaten = $("#id_kabupaten_ubah").val();
+      $("#kabupatenList_ubah").fadeOut();
+      //  console.log(id_kabupaten);
+
+      $("#kecamatan_ubah").keyup(function () {
+        var query = $(this).val();
+        if (query != "") {
+          $.ajax({
+            url: "{?=url([ADMIN, 'pasien', 'wilayah?show=carikecamatan'])?}",
+            method: "POST",
+            data: { query: query, id_kab: id_kabupaten },
+            success: function (data) {
+              $("#kecamatan_ubah").fadeIn();
+              $("#kecamatanList_ubah").html(data);
+            },
+          });
+        }
+      });
+      $('#kecamatanList_ubah').on('click', 'li', function(){
+           $('#kecamatan_ubah').val($(this).text().split(': ')[1]);
+           $('#id_kecamatan_ubah').val($(this).text().split(': ')[0]);
+           var id_kecamatan = $('#id_kecamatan_ubah').val();
+           $('#kecamatanList_ubah').fadeOut();
+      //  console.log(id_kecamatan);
+        
+    });
+    });
+  });
 </script>
