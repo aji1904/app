@@ -513,13 +513,13 @@
               </div>
             </div>
           </div>
-          <div class="panel-footer">
-            <input type="submit" id="simpan" class="btn btn-primary id_simpan" value="Simpan">
+          <div class="panel-footer" id="add_simpan">
             <!--<button type="button" name="button" class="btn btn-warning" id="sync_sep">Sync SEP</button>-->
             <button type="button" name="button" class="btn btn-warning" id="kontrol" title="silahkan pilih SEP dulu">Kontrol</button>
             <button type="button" name="button" class="btn btn-warning" id="spri">SPRI</button>
             <button type="button" name="button" class="btn btn-warning" id="igd">IGD</button>
             <button type="button" name="button" class="btn btn-warning" id="ranap">RANAP</button>
+            <input type="submit" id="simpan" class="btn btn-primary id_simpan" value="Simpan">
             <input type="submit" id="selesai" class="btn btn-danger pull-right" name="" value="Selesai">
           </div>
         </div>
@@ -542,6 +542,20 @@
     </div>
 </div>
 <div class="modal fade" id="prbModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          ...
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="pulangModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          ...
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="internalModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
           ...
@@ -628,6 +642,58 @@
     return false;
   });
 </script>
+<script type="text/javascript">
+  $("#form_sep").on("click",".pulang", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+
+    if ($('#id_sep').val() == '') {
+      var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + "Kosong" + '?t=' + mlite.token;
+    } else if($('#id_pel').val() == 'Rawat Inap') {
+      var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + "Kosong" + '?t=' + mlite.token;
+    } else {
+      var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + $('#id_sep').val() + '?t=' + mlite.token;
+    }
+
+    var modal = $('#pulangModal');
+    var modalContent = $('#pulangModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click",".internal", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+
+    if ($('#id_sep').val() == '') {
+      var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + "Kosong" + '?t=' + mlite.token;
+    } else if($('#id_pel').val() == 'Rawat Inap') {
+      var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + "Kosong" + '?t=' + mlite.token;
+    } else {
+      var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + $('#id_sep').val() + '?t=' + mlite.token;
+    }
+
+    var modal = $('#internalModal');
+    var modalContent = $('#internalModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
 <script>
   function mydata(no_sep, jnsPelayanan){
     $('#id_sep').val(no_sep);
@@ -662,32 +728,76 @@
 </script>
 <script type="text/javascript">
   $("#form_sep").on("click","#ranap", function(event){
-    $('#sep_spesialis_kode').val("");
-    $('#sep_spesialis_nama').val("");
     $('#sep_asal_faskes_kode').val("2");
     $('#sep_asal_faskes_nama').val("Faskes 2 (RS)");
     $('#sep_pelayanan_kode').val("1");
     $('#sep_pelayanan_nama').val("Rawat Inap");
     $('#sep_asal_rujukan_nama').val($('#nama_rs').val());
     $('#sep_asal_rujukan_kode').val($('#kode_rs').val());
+    $('#sep_spesialis_kode').val("");
+    $('#sep_spesialis_nama').val("");
     $('#sep_dpjp_pelayanan_kode').val("");
     $('#sep_dpjp_pelayanan_nama').val("");
     $('#sep_tanggal_rujukan').val($(".tanggal1").val());
+
+    $('#batal').remove()
+    $('#simpan_igd').remove()
+    $('#simpan_ranap').remove()
+    $('.id_simpan').remove();
+    $('#add_simpan').append('<input type="submit" id="simpan_ranap" class="btn btn-primary id_simpan_ranap" value="Simpan RANAP"> <input type="submit" id="batal" class="btn btn-primary" value="Batal">')
   });
 
   $("#form_sep").on("click","#igd", function(event){
     $('#sep_spesialis_kode').val("");
     $('#sep_spesialis_nama').val("");
+    $('#sep_nomor_skdp').val("");
+    $('#sep_nomor_rujukan').val("");
     $('#sep_asal_faskes_kode').val("2");
     $('#sep_asal_faskes_nama').val("Faskes 2 (RS)");
-    $('#sep_pelayanan_kode').val("2");
-    $('#sep_pelayanan_nama').val("Rawat Jalan");
+    $('#sep_pelayanan_kode').val("1");
+    $('#sep_pelayanan_nama').val("Rawat Inap");
     $('#sep_asal_rujukan_nama').val($('#nama_rs').val());
     $('#sep_asal_rujukan_kode').val($('#kode_rs').val());
     $('#sep_spesialis_kode').val("IGD");
     $('#sep_spesialis_nama').val("INSTALASI GAWAT DARURAT");
     $('#sep_tanggal_rujukan').val($(".tanggal1").val());
+
+    $('#batal').remove()
+    $('#simpan_igd').remove()
+    $('#simpan_ranap').remove()
+    $('.id_simpan').remove();
+    $('#add_simpan').append('<input type="submit" id="simpan_igd" class="btn btn-primary id_simpan_igd" value="Simpan IGD"> <input type="submit" id="batal" class="btn btn-primary" value="Batal">')
   });
+
+  $("#form_sep").on("click","#batal", function(event){
+    $('#sep_spesialis_kode').val("");
+    $('#sep_spesialis_nama').val("");
+    $('#sep_nomor_skdp').val("");
+    $('#sep_nomor_rujukan').val("");
+    $('#sep_asal_faskes_kode').val("");
+    $('#sep_asal_faskes_nama').val("");
+    $('#sep_pelayanan_kode').val("");
+    $('#sep_pelayanan_nama').val("");
+    $('#sep_asal_rujukan_nama').val("");
+    $('#sep_asal_rujukan_kode').val("");
+    $('#sep_spesialis_kode').val("");
+    $('#sep_spesialis_nama').val("");
+    $('#sep_tanggal_rujukan').val("");
+    $('#sep_catatan').val(""); 
+    $('#sep_diagnosa_kode').val("");
+    $('#sep_diagnosa_nama').val("");
+    $('#sep_dpjp_yang_melayani_kode').val("");
+    $('#sep_dpjp_yang_melayani_nama').val("");
+    $('#sep_dpjp_pelayanan_kode').val("");
+    $('#sep_dpjp_pelayanan_nama').val("");
+    $('#batal').remove()
+    $('#simpan_igd').remove()
+    $('#simpan_ranap').remove()
+    $('#add_simpan').append('<input type="submit" id="simpan" class="btn btn-primary id_simpan" value="Simpan">')
+  })
+
+
+
 </script>
 <script type="text/javascript">
    $(function () {
@@ -784,10 +894,8 @@
     return false;
   });
 </script>
-
-<script type="text/javascript">
-  // ketika tombol antrian ditekan
-  $("#form_sep").on("click","#simpan", function(event){
+<script>
+  function saveSEP() {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
 
@@ -917,6 +1025,30 @@
         }
       }
     });
+  }
+</script>
+
+<script type="text/javascript">
+  // ketika tombol antrian ditekan
+  $("#form_sep").on("click","#simpan", function(event){
+    saveSEP()
+  });
+  $("#form_sep").on("click","#simpan_igd", function(event){
+    $('#sep_nomor_skdp').val("");
+    $('#sep_nomor_rujukan').val("");
+    $('#sep_pelayanan_kode').val("2");
+    $('#sep_pelayanan_nama').val("Rawat Jalan");
+
+    setTimeout(saveSEP(), 1000)
+    
+  });
+  $("#form_sep").on("click","#simpan_ranap", function(event){
+    $('#sep_spesialis_kode').val("");
+    $('#sep_spesialis_nama').val("");
+    $('#sep_dpjp_pelayanan_kode').val("");
+    $('#sep_dpjp_pelayanan_nama').val("");
+
+    setTimeout(saveSEP(), 1000)
   });
 </script>
 <script type="text/javascript">
@@ -1231,11 +1363,11 @@
                 output+="<div class=\"panel-footer\">";
                   if (histori[i].ppkPelayanan.toLowerCase() == nama_rs) {
                     if (histori[i].jnsPelayanan == 2 && histori[i].poli.toLowerCase() != 'instalasi gawat darurat') {
-                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button><button class=\"btn btn-warning btn-xs\" data-no_sep=" + histori[i].noSep + ">Internal</button> <button class=\"btn btn-warning btn-xs\" data-no_sep=" + histori[i].noSep + " id=\"prb\">PRB</button>";
+                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button><button class=\"btn btn-warning btn-xs sep_internal\" data-no_sep=" + histori[i].noSep + ">Internal</button> <button class=\"btn btn-warning btn-xs\" data-no_sep=" + histori[i].noSep + " id=\"prb\">PRB</button>";
                     } else if(histori[i].poli.toLowerCase() == 'instalasi gawat darurat') {
                       output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button>";
                     } else {
-                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button><button class=\"btn btn-warning btn-xs\" data-no_sep=" + histori[i].noSep + ">Pulang</button>";
+                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button><button class=\"btn btn-warning btn-xs sep_pulang\" data-no_sep=" + histori[i].noSep + ">Pulang</button>";
                     }
                   }else {
                     output+="<button class=\"btn btn-success btn-xs btn-block\">########</button>";

@@ -275,14 +275,15 @@
         url: '{?=url()?}/anjungan/panggilantrian',
         dataType: 'json',
         success: function(data) {
-            if(data.status == false) {
-                setTimeout(function(){
-                    getAntrian();
-                }, 3000);
-            } else {
+          if(data.status == true && data.type !== null) {
+                //console.log(data.type);
                 updateLayar(data.type, data.noantrian, data.loket);
                 panggil(data.panggil);
                 setSelesai(data.id);
+            } else {
+                setTimeout(function(){
+                    getAntrian();
+                }, 3000);
             }
         },
         error: function(xhr) {

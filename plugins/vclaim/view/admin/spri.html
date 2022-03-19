@@ -127,8 +127,9 @@
 
   $("#spridisplay").on("click", ".pilih_nosurat", function(event){
     var no_surat = $(this).attr("data-no_surat");
+    var no_sep = $(this).attr("data-no_sep");
     $('input:text[name=sep_nomor_skdp]').val(no_surat);
-    $('input:text[name=sep_nomor_rujukan]').val(no_surat);
+    $('input:text[name=sep_nomor_rujukan]').val(no_sep);
     $('#spriModal').modal('hide');
   });
 </script>
