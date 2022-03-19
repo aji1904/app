@@ -11,10 +11,25 @@ class Admin extends AdminModule
     {
         return [
             'Kelola'   => 'manage',
+            'Permintaan PK' => 'permintaanPK',
+            'Periksa PK' => 'periksaPK',
+            'Permintaan PA' => 'permintaanPA',
+            'Periksa PA' => 'periksaPA'
         ];
     }
 
-    public function anyManage()
+    public function getManage()
+    {
+      $sub_modules = [
+        ['name' => 'Permintaan PK', 'url' => url([ADMIN, 'laboratorium', 'permintaanPK']), 'icon' => 'flask', 'desc' => 'Permintaan Patologi Klinik'],
+        ['name' => 'Periksa PK', 'url' => url([ADMIN, 'laboratorium', 'periksaPK']), 'icon' => 'flask', 'desc' => 'Pemeriksaan Patologi Klinik'],
+        ['name' => 'Permintaan PA', 'url' => url([ADMIN, 'laboratorium', 'permintaanPA']), 'icon' => 'flask', 'desc' => 'Permintaan Patologi Anatomi'],
+        ['name' => 'Periksa PA', 'url' => url([ADMIN, 'laboratorium', 'periksaPA']), 'icon' => 'flask', 'desc' => 'Pemeriksaan Patologi Anatomi'],
+      ];
+      return $this->draw('manage.menu.html', ['sub_modules' => $sub_modules]);
+    }
+
+    public function getpermintaanPK()
     {
         $tgl_kunjungan = date('Y-m-d');
         $tgl_kunjungan_akhir = date('Y-m-d');

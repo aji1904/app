@@ -1796,7 +1796,8 @@ class Site extends SiteModule
                       $this->db('mlite_antrian_referensi')->save([
                           'tanggal_periksa' => $q['tgl_registrasi'],
                           'nomor_kartu' => $q['no_peserta'],
-                          'nomor_referensi' => $nomorreferensi,
+                          'nomor_referensi' => convertNorawat($q['no_rawat']).''.$maping_poli_bpjs['kd_poli_bpjs'].''.$reg_periksa['no_reg'],
+                        //   'nomor_referensi' => $nomorreferensi,
                           'jenis_kunjungan' => $jeniskunjungan,
                           'status_kirim' => 'Sudah'
                       ]);

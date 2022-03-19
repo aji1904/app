@@ -1,5 +1,4 @@
 <script src="{?=url()?}/assets/jscripts/sweetalert.js"></script>
-
 <div id="form_sep">
   <div class="col-md-3">
     <div class="panel panel-default">
@@ -236,6 +235,8 @@
                   <label for="" class="col-sm-3 control-label">PPK Rujukan</label>
                   <div class="col-sm-6">
                     <input type="text" name="sep_asal_rujukan_nama" id="sep_asal_rujukan_nama" class="form-control" value="">
+                    <input type="hidden" name="nama_rs" id="nama_rs" class="form-control" value="">
+                    <input type="hidden" name="kode_rs" id="kode_rs" class="form-control" value="">
                     <ul class="list-group" id="faskesList" style="z-index:1000;position:absolute;width:100%;"></ul>
                   </div>
                   <label for="" class="col-sm-1 control-label">Kode</label>
@@ -243,6 +244,7 @@
                     <input type="text" name="sep_asal_rujukan_kode" id="sep_asal_rujukan_kode" class="form-control" value="">
                   </div>
                 </div>
+                
                 <div class="form-group clearfix">
                   <label for="" class="col-sm-3 control-label">Nomor Rujukan</label>
                   <div class="col-sm-6">
@@ -337,7 +339,7 @@
                   </div>
                 </div>
                 <div class="form-group clearfix">
-                  <label for="" class="col-sm-3 control-label">PJ Pembiayaan</label>
+                  <label for="" class="col-sm-3 control-label">Pembiayaan</label>
                   <div class="col-sm-6">
                     <input type="text" name="sep_pembiayaan_nama" id="sep_pembiayaan_nama" class="form-control" value="">
                     <ul class="list-group" id="pembiayaanList" style="z-index:1000;position:absolute;width:100%;"></ul>
@@ -347,6 +349,13 @@
                     <input type="text" name="sep_pembiayaan_kode" id="sep_pembiayaan_kode" class="form-control" value="">
                   </div>
                 </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Penanggung Jawab</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="sep_pjnaik_kelas" id="sep_pjnaik_kelas" class="form-control" value="" placeholder="Contoh: Pribadi">
+                  </div>
+                </div>
+                
                 <div class="form-group clearfix">
                   <label for="" class="col-sm-3 control-label">Tujuan Kunjungan</label>
                   <div class="col-sm-6">
@@ -430,7 +439,7 @@
                     <input type="text" name="sep_nomor_laporan_polisi" id="sep_nomor_laporan_polisi" class="form-control" value="">
                   </div>
                 </div>
-                <div class="form-group clearfix">
+                <!-- <div class="form-group clearfix">
                   <label for="" class="col-sm-3 control-label">Penjamin Kecelakaan</label>
                   <div class="col-sm-6">
                     <input type="text" name="sep_penjamin_kecelakaan_nama" id="sep_penjamin_kecelakaan_nama" class="form-control" value="" />
@@ -440,7 +449,7 @@
                   <div class="col-sm-2">
                     <input type="text" name="sep_penjamin_kecelakaan_kode" id="sep_penjamin_kecelakaan_kode" class="form-control" value="" />
                   </div>
-                </div>
+                </div> -->
                 <div class="form-group clearfix">
                   <label for="" class="col-sm-3 control-label">Keterangan Kecelakaan</label>
                   <div class="col-sm-6">
@@ -455,7 +464,7 @@
                   <label for="" class="col-sm-3 control-label">Suplesi</label>
                   <div class="col-sm-6">
                     <input type="text" name="sep_suplesi_nama" id="sep_suplesi_nama" class="form-control" value="">
-                    <ul class="list-group" id="listList" style="z-index:1000;position:absolute;width:100%;"></ul>
+                    <ul class="list-group" id="listSuplesi" style="z-index:1000;position:absolute;width:100%;"></ul>
                   </div>
                   <label for="" class="col-sm-1 control-label">Kode</label>
                   <div class="col-sm-2">
@@ -509,10 +518,8 @@
             <!--<button type="button" name="button" class="btn btn-warning" id="sync_sep">Sync SEP</button>-->
             <button type="button" name="button" class="btn btn-warning" id="kontrol" title="silahkan pilih SEP dulu">Kontrol</button>
             <button type="button" name="button" class="btn btn-warning" id="spri">SPRI</button>
-            <button type="button" name="button" class="btn btn-warning" id="prb">PRB</button>
-            <button type="button" name="button" class="btn btn-warning" id="pulang">Pulang</button>
-            <button type="button" name="button" class="btn btn-warning" id="pulang">IGD</button>
-            <button type="button" name="button" class="btn btn-warning" id="pulang">RANAP</button>
+            <button type="button" name="button" class="btn btn-warning" id="igd">IGD</button>
+            <button type="button" name="button" class="btn btn-warning" id="ranap">RANAP</button>
             <input type="submit" id="selesai" class="btn btn-danger pull-right" name="" value="Selesai">
           </div>
         </div>
@@ -654,6 +661,35 @@
   });
 </script>
 <script type="text/javascript">
+  $("#form_sep").on("click","#ranap", function(event){
+    $('#sep_spesialis_kode').val("");
+    $('#sep_spesialis_nama').val("");
+    $('#sep_asal_faskes_kode').val("2");
+    $('#sep_asal_faskes_nama').val("Faskes 2 (RS)");
+    $('#sep_pelayanan_kode').val("1");
+    $('#sep_pelayanan_nama').val("Rawat Inap");
+    $('#sep_asal_rujukan_nama').val($('#nama_rs').val());
+    $('#sep_asal_rujukan_kode').val($('#kode_rs').val());
+    $('#sep_dpjp_pelayanan_kode').val("");
+    $('#sep_dpjp_pelayanan_nama').val("");
+    $('#sep_tanggal_rujukan').val($(".tanggal1").val());
+  });
+
+  $("#form_sep").on("click","#igd", function(event){
+    $('#sep_spesialis_kode').val("");
+    $('#sep_spesialis_nama').val("");
+    $('#sep_asal_faskes_kode').val("2");
+    $('#sep_asal_faskes_nama').val("Faskes 2 (RS)");
+    $('#sep_pelayanan_kode').val("2");
+    $('#sep_pelayanan_nama').val("Rawat Jalan");
+    $('#sep_asal_rujukan_nama').val($('#nama_rs').val());
+    $('#sep_asal_rujukan_kode').val($('#kode_rs').val());
+    $('#sep_spesialis_kode').val("IGD");
+    $('#sep_spesialis_nama').val("INSTALASI GAWAT DARURAT");
+    $('#sep_tanggal_rujukan').val($(".tanggal1").val());
+  });
+</script>
+<script type="text/javascript">
    $(function () {
        $('.tanggal1').datetimepicker({
          defaultDate: '{?=date('Y-m-d')?}',
@@ -690,7 +726,7 @@
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     var no_sep = $(this).attr("data-no_sep");
-    window.open(baseURL + '/vclaim/cetaksjp/' + no_sep + '?t=' + mlite.token);
+    window.open(baseURL + '/vclaim/cetaksjp/' + no_sep + '/?t=' + mlite.token);
   });
 </script>
 
@@ -774,7 +810,7 @@
     var noLp = $('#sep_nomor_laporan_polisi').val();
     var pembiayaan = $('#sep_pembiayaan_kode').val();
     var klsnaik = $('#sep_naik_kelas_kode').val();
-    var pjnaikkelas = $('#sep_penjamin_kecelakaan_kode').val();
+    var pjnaikkelas = $('#sep_pjnaik_kelas').val();
     var tujuanKunj = $('#sep_kunjungan_kode').val();
     var prosedur = $('#sep_prosedur_kode').val();
     var penunjang = $('#sep_penunjang_kode').val();
@@ -921,7 +957,7 @@
             $('input:text[name=sep_katarak_kode]').val("0");
             $('input:text[name=sep_katarak_nama]').val("Tidak");
             $('input:text[name=sep_status_kecelakaan_kode]').val("0");
-            $('input:text[name=sep_status_kecelakaan_nama]').val("Tidak");
+            $('input:text[name=sep_status_kecelakaan_nama]').val("Bukan Kecelakaan lalu lintas [BKLL]");
             $('input:text[name=sep_penjamin_kecelakaan_kode]').val("0");
             $('input:text[name=sep_penjamin_kecelakaan_nama]').val("Tidak");
             $('input:text[name=sep_suplesi_kode]').val("0");
@@ -987,7 +1023,7 @@
             $('input:text[name=sep_katarak_kode]').val("0");
             $('input:text[name=sep_katarak_nama]').val("Tidak");
             $('input:text[name=sep_status_kecelakaan_kode]').val("0");
-            $('input:text[name=sep_status_kecelakaan_nama]').val("Tidak");
+            $('input:text[name=sep_status_kecelakaan_nama]').val("Bukan Kecelakaan lalu lintas [BKLL]");
             $('input:text[name=sep_penjamin_kecelakaan_kode]').val("0");
             $('input:text[name=sep_penjamin_kecelakaan_nama]').val("Tidak");
             $('input:text[name=sep_suplesi_kode]').val("0");
@@ -1055,7 +1091,7 @@
             $('input:text[name=sep_katarak_kode]').val("0");
             $('input:text[name=sep_katarak_nama]').val("Tidak");
             $('input:text[name=sep_status_kecelakaan_kode]').val("0");
-            $('input:text[name=sep_status_kecelakaan_nama]').val("Tidak");
+            $('input:text[name=sep_status_kecelakaan_nama]').val("Bukan Kecelakaan lalu lintas [BKLL]");
             $('input:text[name=sep_penjamin_kecelakaan_kode]').val("0");
             $('input:text[name=sep_penjamin_kecelakaan_nama]').val("Tidak");
             $('input:text[name=sep_suplesi_kode]').val("0");
@@ -1122,7 +1158,7 @@
             $('input:text[name=sep_katarak_kode]').val("0");
             $('input:text[name=sep_katarak_nama]').val("Tidak");
             $('input:text[name=sep_status_kecelakaan_kode]').val("0");
-            $('input:text[name=sep_status_kecelakaan_nama]').val("Tidak");
+            $('input:text[name=sep_status_kecelakaan_nama]').val("Bukan Kecelakaan lalu lintas [BKLL]");
             $('input:text[name=sep_penjamin_kecelakaan_kode]').val("0");
             $('input:text[name=sep_penjamin_kecelakaan_nama]').val("Tidak");
             $('input:text[name=sep_suplesi_kode]').val("0");
@@ -1170,6 +1206,7 @@
             alert('Koneksi ke server BPJS terputus. Silahkan ulangi lagi!');
           } else if(json_obj[0].metaData.code == 200) {
             var histori = json_obj[0].response.histori;
+            var nama_rs = $('#nama_rs').val().toLowerCase();
             // console.log(histori);
             var output="<div class=\"panel panel-default m-t-xl\">";
             for (var i in histori) {
@@ -1179,7 +1216,7 @@
                 }
                 output+="<div class=\"panel-body\">";
                 output+="Diagnosa : " + histori[i].diagnosa + "<br/>";
-                if (histori[i].ppkPelayanan.toLowerCase() == 'rs bunda medika jakabaring') {                  
+                if (histori[i].ppkPelayanan.toLowerCase() == nama_rs ) {                  
                   output+="Jenis : <button class=\"btn btn-success btn-xs\" onclick=\"mydata('" + histori[i].noSep + "','"+ jnsPelayanan +"')\">" + jnsPelayanan + "</button><br/>";
                 } else {
                   output+="Jenis : " + jnsPelayanan + "<br/>";
@@ -1192,8 +1229,14 @@
                 output+="PPK Pelayanan : " + histori[i].ppkPelayanan;
                 output+="</div>";
                 output+="<div class=\"panel-footer\">";
-                  if (histori[i].ppkPelayanan.toLowerCase() == 'rs bunda medika jakabaring') {
-                    output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button>";
+                  if (histori[i].ppkPelayanan.toLowerCase() == nama_rs) {
+                    if (histori[i].jnsPelayanan == 2 && histori[i].poli.toLowerCase() != 'instalasi gawat darurat') {
+                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button><button class=\"btn btn-warning btn-xs\" data-no_sep=" + histori[i].noSep + ">Internal</button> <button class=\"btn btn-warning btn-xs\" data-no_sep=" + histori[i].noSep + " id=\"prb\">PRB</button>";
+                    } else if(histori[i].poli.toLowerCase() == 'instalasi gawat darurat') {
+                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button>";
+                    } else {
+                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button><button class=\"btn btn-warning btn-xs\" data-no_sep=" + histori[i].noSep + ">Pulang</button>";
+                    }
                   }else {
                     output+="<button class=\"btn btn-success btn-xs btn-block\">########</button>";
                   }
@@ -1253,8 +1296,10 @@
   $("#form_sep").on("click","#sep_status_kecelakaan_nama", function(event){
   //$('#sep_pelayanan_nama').focus(function(){
        var output='';
-       output+='<li class=\"list-group-item link-class\">0: Tidak</li>';
-       output+='<li class=\"list-group-item link-class\">1: Ya</li>';
+       output+='<li class=\"list-group-item link-class\">0 : Bukan Kecelakaan lalu lintas [BKLL]</li>';
+       output+='<li class=\"list-group-item link-class\">1 : KLL dan bukan kecelakaan Kerja [BKK]</li>';
+       output+='<li class=\"list-group-item link-class\">2 : KLL</li>';
+       output+='<li class=\"list-group-item link-class\">3 : KK</li>';
        output+='';
        $('#status_kecelakaanList').fadeIn();
        $('#status_kecelakaanList').html(output).show();
@@ -1281,6 +1326,23 @@
        $('#sep_penjamin_kecelakaan_kode').val($(this).text().split(': ')[0]);
        var sep_status_kecelakaan_kode = $('#sep_penjamin_kecelakaan_kode').val();
        $('#penjamin_kecelakaanList').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click","#sep_suplesi_nama", function(event){
+  //$('#sep_pelayanan_nama').focus(function(){
+       var output='';
+       output+='<li class=\"list-group-item link-class\">0: Tidak</li>';
+       output+='<li class=\"list-group-item link-class\">1: Ya</li>';
+       output+='';
+       $('#listSuplesi').fadeIn();
+       $('#listSuplesi').html(output).show();
+  });
+  $('#listSuplesi').on('click', 'li', function(){
+       $('#sep_suplesi_nama').val($(this).text().split(': ')[1]);
+       $('#sep_suplesi_kode').val($(this).text().split(': ')[0]);
+       var sep_status_kecelakaan_kode = $('#sep_suplesi_kode').val();
+       $('#listSuplesi').fadeOut();
   });
 </script>
 <script type="text/javascript">
@@ -1354,9 +1416,9 @@
 <script type="text/javascript">
   $("#form_sep").on("click","#sep_kelas_nama", function(event){
        var output='';
-       output+='<li class=\"list-group-item link-class\">1: KELAS 1</li>';
-       output+='<li class=\"list-group-item link-class\">2: KELAS 2</li>';
-       output+='<li class=\"list-group-item link-class\">3: KELAS 3</li>';
+       output+='<li class=\"list-group-item link-class\">1: KELAS I</li>';
+       output+='<li class=\"list-group-item link-class\">2: KELAS II</li>';
+       output+='<li class=\"list-group-item link-class\">3: KELAS III</li>';
        output+='';
        $('#kelasList').fadeIn();
        $('#kelasList').html(output).show();
@@ -1609,15 +1671,16 @@
        var query = $(this).val();
        var sep_pelayanan_kode = $('input:text[name=sep_pelayanan_kode]').val();
        var sep_tanggal_sep = $('input:text[name=sep_tanggal_sep]').val();
-
+       
        if(query != '')
        {
-            $.ajax({
-                 url: '{?=url()?}/admin/vclaim/dokterdpjp/' + encodeURIComponent(sep_pelayanan_kode) + '/' + encodeURIComponent(sep_tanggal_sep) + '/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
-                 method:"GET",
-                 data:{},
-                 success:function(data)
-                 {
+         $.ajax({
+           url: '{?=url()?}/admin/vclaim/dokterdpjp/' + encodeURIComponent(sep_pelayanan_kode) + '/' + encodeURIComponent(sep_tanggal_sep) + '/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
+           method:"GET",
+           data:{},
+           success:function(data)
+           {
+                   console.log(data)
                      var data = JSON.parse(data);
                      var json_obj = [data];
                      var output='';

@@ -166,6 +166,29 @@ class Admin extends AdminModule
         $output = BpjsService::post($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
         $data = json_decode($output, true);
 
+        if ($_POST['eksekutif'] == 0) {
+          $eksekutif = '0. Tidak';
+        } else {
+          $eksekutif = '1.Ya';
+        }
+
+        if ($_POST['cob'] == 0) {
+          $cob = '0. Tidak';
+        } else {
+          $cob = '1.Ya';
+        }
+
+        if ($_POST['katarak'] == 0) {
+          $katarak = '0. Tidak';
+        } else {
+          $katarak = '1.Ya';
+        }
+        
+        if ($_POST['suplesi'] == 0) {
+          $suplesi = '0. Tidak';
+        } else {
+          $suplesi = '1.Ya';
+        } 
 
         if($data == NULL) {
 
@@ -231,13 +254,13 @@ class Admin extends AdminModule
                 'no_kartu' => $_POST['no_kartu'],
                 'tglpulang' => $_POST['tglpulang'],
                 'asal_rujukan' => $_POST['asal_rujukan'],
-                'eksekutif' => $_POST['eksekutif'],
-                'cob' => $_POST['cob'],
+                'eksekutif' => $eksekutif,
+                'cob' => $cob,
                 'notelep' => $_POST['notelep'],
-                'katarak' => $_POST['katarak'],
+                'katarak' => $katarak,
                 'tglkkl' => $_POST['tglkkl'],
                 'keterangankkl' => $_POST['keterangankkl'],
-                'suplesi' => $_POST['suplesi'],
+                'suplesi' => $suplesi,
                 'no_sep_suplesi' => $_POST['no_sep_suplesi'],
                 'kdprop' => $_POST['kdprop'],
                 'nmprop' => $_POST['nmprop'],
@@ -1181,6 +1204,9 @@ class Admin extends AdminModule
       date_default_timezone_set('UTC');
       $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
       $key = $this->consid.$this->secretkey.$tStamp;
+      
+      $ppk = $this->settings->get('settings.ppk_bpjs');
+      $nama = $this->settings->get('settings.nama_instansi');
 
       $url = $this->api_url.'Peserta/nokartu/'.$noKartu.'/tglSEP/'.$tglPelayananSEP;
       $output = BpjsService::get($url, NULL, $this->consid, $this->secretkey, $this->user_key, $tStamp);
@@ -1200,9 +1226,12 @@ class Admin extends AdminModule
           echo '{
             "metaData": {
               "code": "'.$code.'",
-              "message": "'.$message.'"
+              "message": "'.$message.'",
+              "nama_rs": "'.$nama.'",
+              "kode_rs": "'.$ppk.'"
             },
             "response": '.$decompress.'}';
+
         } else {
           echo '{
             "metaData": {
@@ -2934,5 +2963,6 @@ class Admin extends AdminModule
         $this->core->addJS(url('assets/jscripts/moment-with-locales.js'));
         $this->core->addJS(url('assets/jscripts/bootstrap-datetimepicker.js'));
     }
+    
 
 }

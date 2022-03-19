@@ -98,92 +98,130 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
+                {loop: $ubahsep}
                 <label>Catatan</label>
                 <input
                   type="text"
                   name="catatan_ubah"
                   id="catatan_ubah"
                   class="form-control"
+                  value="{$value.catatan}"
                 />
+                {/loop}
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
+                {loop: $ubahsep}
                 <label>Diagnosa</label>
                 <input
                   type="text"
                   name="diagnosa_ubah"
                   id="diagnosa_ubah"
                   class="form-control"
+                  value="{$value.diagawal}: {$value.nmdiagnosaawal}"
                 />
                 <input
                   type="hidden"
                   name="diagnosa_kode_ubah"
                   id="diagnosa_kode_ubah"
+                  value="{$value.diagawal}"
                 />
                 <ul
                   class="list-group"
                   id="diagnosaList_ubah"
                   style="z-index: 1000; position: absolute; width: 100%"
                 ></ul>
+                {/loop}
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Poli Eksekutif</label>
+                {loop: $ubahsep}
+                <label>Poli Eksekutif ({$value.eksekutif})</label>
                 <input
-                  type="text"
-                  name="eksekutif_ubah"
-                  id="eksekutif_ubah"
-                  class="form-control"
+                type="text"
+                name="eksekutif_ubah"
+                id="eksekutif_ubah"
+                class="form-control"
+                value="{$value.eksekutif}"
+                />
+                <input
+                type="hidden"
+                name="eksekutif_ubah"
+                id="eksekutif_kode_ubah"
+                />
+                <ul
+                class="list-group"
+                id="eksekutifList_ubah"
+                style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+                {/loop}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                {loop: $ubahsep}
+                <label>Hak Kelas Rawat (KELAS {$value.klsrawat})</label>
+                <input
+                type="text"
+                name="sep_kelas_nama_ubah"
+                id="sep_kelas_nama_ubah"
+                class="form-control"
+                value="KELAS {$value.klsrawat}"
                 />
                 <input
                   type="hidden"
-                  name="eksekutif_ubah"
-                  id="eksekutif_kode_ubah"
+                  name="sep_kelas_kode_ubah"
+                  id="sep_kelas_kode_ubah"
                 />
                 <ul
                   class="list-group"
-                  id="eksekutifList_ubah"
+                  id="kelasList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+                {/loop}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                
+                <label>Hak Naik Kelas</label>
+                <input
+                  type="text"
+                  name="sep_naik_kelas_nama_ubah"
+                  id="sep_naik_kelas_nama_ubah"
+                  class="form-control"
+                  value="{if: $value.klsnaik == '1'}VVIP{elseif: $value.klsnaik == '2'}VIP{elseif: $value.klsnaik == '3'}KELAS 1{elseif: $value.klsnaik == '4'}KELAS 2{elseif: $value.klsnaik == '5'}KELAS 3{elseif: $value.klsnaik == '6'}ICCU{elseif: $value.klsnaik == '7'}ICU{/if}"
+                />
+                <input
+                  type="hidden"
+                  name="sep_naik_kelas_kode_ubah"
+                  id="sep_naik_kelas_kode_ubah"
+                  value="{$value.klsnaik}"
+                />
+                <ul
+                  class="list-group"
+                  id="naikkelasList_ubah"
                   style="z-index: 1000; position: absolute; width: 100%"
                 ></ul>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Hak Kelas Rawat</label>
+                <label>Pembiayaan</label>
                 <input
                   type="text"
-                  name="rawat_ubah"
-                  id="rawat_ubah"
+                  name="sep_pembiayaan_nama_ubah"
+                  id="sep_pembiayaan_nama_ubah"
                   class="form-control"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Hak Naik Kelas</label>
-                <input
-                  type="text"
-                  name="naik_ubah"
-                  id="naik_ubah"
-                  class="form-control"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Penanggung Jawab Naik Kelas</label>
-                <input
-                  type="text"
-                  name="penjab_ubah"
-                  id="penjab_ubah"
-                  class="form-control"
+                  value="{if: $value.pembiayaan == '1'}Pribadi{elseif: $value.pembiayaan == '2'}Pemberi Kerja{elseif: $value.pembiayaan == '3'}Asuransi Tambahan{/if}"
                 />
                 <input
                   type="hidden"
-                  name="penjab_kode_ubah"
-                  id="penjab_kode_ubah"
+                  name="sep_pembiayaan_kode_ubah"
+                  id="sep_pembiayaan_kode_ubah"
+                  value="{$value.pembiayaan}"
                 />
                 <ul
                   class="list-group"
@@ -194,13 +232,37 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
+                <label>Penanggung Jawab Naik Kelas</label>
+                <input
+                  type="text"
+                  name="sep_penjab_ubah"
+                  id="sep_penjab_ubah"
+                  class="form-control"
+                  value="{$value.pjnaikkelas}"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
                 <label>COB</label>
                 <input
                   type="text"
-                  name="cob_ubah"
-                  id="cob_ubah"
+                  name="sep_cob_nama_ubah"
+                  id="sep_cob_nama_ubah"
                   class="form-control"
+                  value="{$value.cob}"
                 />
+                <input
+                  type="hidden"
+                  name="sep_cob_kode_ubah"
+                  id="sep_cob_kode_ubah"
+                  value="{if: $value.cob == '0. Tidak'}0{elseif: $value.cob == '1.Ya'}1{/if}"
+                />
+                <ul
+                  class="list-group"
+                  id="cobList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
               </div>
             </div>
             <div class="col-md-6">
@@ -208,10 +270,22 @@
                 <label>Katarak</label>
                 <input
                   type="text"
-                  name="katarak_ubah"
-                  id="katarak_ubah"
+                  name="sep_katarak_nama_ubah"
+                  id="sep_katarak_nama_ubah"
                   class="form-control"
+                  value="{$value.katarak}"
                 />
+                <input
+                  type="hidden"
+                  name="sep_katarak_kode_ubah"
+                  id="sep_katarak_kode_ubah"
+                  value="{if: $value.katarak == '0. Tidak'}0{elseif: $value.katarak == '1.Ya'}1{/if}"
+                />
+                <ul
+                  class="list-group"
+                  id="katarakList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
               </div>
             </div>
             <div class="col-md-6">
@@ -219,10 +293,22 @@
                 <label>Lakalantas</label>
                 <input
                   type="text"
-                  name="lakalantas_ubah"
-                  id="lakalantas_ubah"
+                  name="sep_status_kecelakaan_nama_ubah"
+                  id="sep_status_kecelakaan_nama_ubah"
                   class="form-control"
+                  value="{if: $value.lakalantas == '0'}Bukan Kecelakaan lalu lintas [BKLL]{elseif: $value.lakalantas == '1'}KLL dan bukan kecelakaan Kerja [BKK]{elseif: $value.lakalantas == '2'}KLL dan KK{elseif: $value.lakalantas == '3'}KK{/if}"
                 />
+                <input
+                  type="hidden"
+                  name="sep_status_kecelakaan_kode_ubah"
+                  id="sep_status_kecelakaan_kode_ubah"
+                  value="{$value.lakalantas}"
+                />
+                <ul
+                  class="list-group"
+                  id="status_kecelakaanList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
               </div>
             </div>
             <div class="col-md-6">
@@ -232,18 +318,8 @@
                   type="text"
                   name="kejadian_ubah"
                   id="kejadian_ubah"
-                  class="form-control tanggal_spri_1"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Keterangan</label>
-                <input
-                  type="text"
-                  name="ket_ubah"
-                  id="ket_ubah"
-                  class="form-control"
+                  class="form-control tanggal_sep_ubah"
+                  value="{$value.tglkkl}"
                 />
               </div>
             </div>
@@ -252,9 +328,33 @@
                 <label>Suplesi</label>
                 <input
                   type="text"
-                  name="suplesi_ubah"
-                  id="suplesi_ubah"
+                  name="sep_suplesi_nama_ubah"
+                  id="sep_suplesi_nama_ubah"
                   class="form-control"
+                  value="{$value.suplesi}"
+                />
+                <input
+                  type="hidden"
+                  name="sep_suplesi_kode_ubah"
+                  id="sep_suplesi_kode_ubah"
+                  value="{if: $value.suplesi == '0. Tidak'}0{elseif: $value.suplesi == '1.Ya'}1{/if}"
+                />
+                <ul
+                  class="list-group"
+                  id="listSuplesi_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Keterangan</label>
+                <input
+                  type="text"
+                  name="ket_ubah"
+                  id="ket_ubah"
+                  class="form-control"
+                  value="{$value.keterangankkl}"
                 />
               </div>
             </div>
@@ -266,6 +366,7 @@
                   name="no_suplesi_ubah"
                   id="no_suplesi_ubah"
                   class="form-control"
+                  value="{$value.no_sep_suplesi}"
                 />
               </div>
             </div>
@@ -355,7 +456,7 @@
 <script type="text/javascript">
   $('select').selectator();
   $(function () {
-      $('.tanggal_spri_1').datetimepicker({
+      $('.tanggal_sep_ubah').datetimepicker({
         defaultDate: '{?=date('Y-m-d')?}',
         format: 'YYYY-MM-DD',
         locale: 'id'
@@ -367,6 +468,12 @@
         locale: 'id'
       });
   });
+</script>
+<script>
+  $("#form_sep_ubah").on("click", "#simpan_update", function (event) {
+    var sep_ubah = $('#sep_ubah').val()
+    var sep_ubah = $('#sep_ubah').val()
+  })
 </script>
 <script type="text/javascript">
   $("#form_sep_ubah").on("click", "#penjab_ubah", function (event) {
@@ -509,5 +616,130 @@
         
     });
     });
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep_ubah").on("click","#sep_kelas_nama_ubah", function(event){
+       var output='';
+       output+='<li class=\"list-group-item link-class\">1: KELAS 1</li>';
+       output+='<li class=\"list-group-item link-class\">2: KELAS 2</li>';
+       output+='<li class=\"list-group-item link-class\">3: KELAS 3</li>';
+       output+='';
+       $('#kelasList_ubah').fadeIn();
+       $('#kelasList_ubah').html(output).show();
+  });
+  $('#kelasList_ubah').on('click', 'li', function(){
+       $('#sep_kelas_nama_ubah').val($(this).text().split(': ')[1]);
+       $('#sep_kelas_kode_ubah').val($(this).text().split(': ')[0]);
+       var sep_kelas_kode = $('#sep_kelas_kode_ubah').val();
+       $('#kelasList_ubah').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep_ubah").on("click","#sep_naik_kelas_nama_ubah", function(event){
+       var output='';
+       output+='<li class=\"list-group-item link-class\">1: VVIP</li>';
+       output+='<li class=\"list-group-item link-class\">2: VIP</li>';
+       output+='<li class=\"list-group-item link-class\">3: KELAS 1</li>';
+       output+='<li class=\"list-group-item link-class\">4: KELAS 2</li>';
+       output+='<li class=\"list-group-item link-class\">5: KELAS 3</li>';
+       output+='<li class=\"list-group-item link-class\">6: ICCU</li>';
+       output+='<li class=\"list-group-item link-class\">7: ICU</li>';
+       output+='';
+       $('#naikkelasList_ubah').fadeIn();
+       $('#naikkelasList_ubah').html(output).show();
+  });
+  $('#naikkelasList_ubah').on('click', 'li', function(){
+       $('#sep_naik_kelas_nama_ubah').val($(this).text().split(': ')[1]);
+       $('#sep_naik_kelas_kode_ubah').val($(this).text().split(': ')[0]);
+       var sep_naik_kelas_kode = $('#sep_naik_kelas_kode_ubah').val();
+       $('#naikkelasList_ubah').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep_ubah").on("click","#sep_pembiayaan_nama_ubah", function(event){
+       var output='';
+       output+='<li class=\"list-group-item link-class\">1: Pribadi</li>';
+       output+='<li class=\"list-group-item link-class\">2: Pemberi Kerja</li>';
+       output+='<li class=\"list-group-item link-class\">3: Asuransi Tambahan</li>';
+       output+='';
+       $('#pembiayaanList_ubah').fadeIn();
+       $('#pembiayaanList_ubah').html(output).show();
+  });
+  $('#pembiayaanList_ubah').on('click', 'li', function(){
+       $('#sep_pembiayaan_nama_ubah').val($(this).text().split(': ')[1]);
+       $('#sep_pembiayaan_kode_ubah').val($(this).text().split(': ')[0]);
+       var sep_pembiayaan_kode = $('#sep_pembiayaan_kode_ubah').val();
+       $('#pembiayaanList_ubah').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep_ubah").on("click","#sep_cob_nama_ubah", function(event){
+  //$('#sep_pelayanan_nama').focus(function(){
+       var output='';
+       output+='<li class=\"list-group-item link-class\">0: Tidak</li>';
+       output+='<li class=\"list-group-item link-class\">1: Ya</li>';
+       output+='';
+       $('#cobList_ubah').fadeIn();
+       $('#cobList_ubah').html(output).show();
+  });
+  $('#cobList_ubah').on('click', 'li', function(){
+       $('#sep_cob_nama_ubah').val($(this).text().split(': ')[1]);
+       $('#sep_cob_kode_ubah').val($(this).text().split(': ')[0]);
+       var sep_cob_kode = $('#sep_cob_kode_ubah').val();
+       $('#cobList_ubah').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep_ubah").on("click","#sep_katarak_nama_ubah", function(event){
+  //$('#sep_pelayanan_nama').focus(function(){
+       var output='';
+       output+='<li class=\"list-group-item link-class\">0: Tidak</li>';
+       output+='<li class=\"list-group-item link-class\">1: Ya</li>';
+       output+='';
+       $('#katarakList_ubah').fadeIn();
+       $('#katarakList_ubah').html(output).show();
+  });
+  $('#katarakList_ubah').on('click', 'li', function(){
+       $('#sep_katarak_nama_ubah').val($(this).text().split(': ')[1]);
+       $('#sep_katarak_kode_ubah').val($(this).text().split(': ')[0]);
+       var sep_status_kecelakaan_kode = $('#sep_katarak_kode').val();
+       $('#katarakList_ubah').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep_ubah").on("click","#sep_status_kecelakaan_nama_ubah", function(event){
+  //$('#sep_pelayanan_nama').focus(function(){
+       var output='';
+       output+='<li class=\"list-group-item link-class\">0 : Bukan Kecelakaan lalu lintas [BKLL]</li>';
+       output+='<li class=\"list-group-item link-class\">1 : KLL dan bukan kecelakaan Kerja [BKK]</li>';
+       output+='<li class=\"list-group-item link-class\">2 : KLL</li>';
+       output+='<li class=\"list-group-item link-class\">3 : KK</li>';
+       output+='';
+       $('#status_kecelakaanList_ubah').fadeIn();
+       $('#status_kecelakaanList_ubah').html(output).show();
+  });
+  $('#status_kecelakaanList').on('click', 'li', function(){
+       $('#sep_status_kecelakaan_nama_ubah').val($(this).text().split(': ')[1]);
+       $('#sep_status_kecelakaan_kode_ubah').val($(this).text().split(': ')[0]);
+       var sep_status_kecelakaan_kode = $('#sep_status_kecelakaan_kode_ubah').val();
+       $('#status_kecelakaanList_ubah').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep_ubah").on("click","#sep_suplesi_nama_ubah", function(event){
+  //$('#sep_pelayanan_nama').focus(function(){
+       var output='';
+       output+='<li class=\"list-group-item link-class\">0: Tidak</li>';
+       output+='<li class=\"list-group-item link-class\">1: Ya</li>';
+       output+='';
+       $('#listSuplesi_ubah').fadeIn();
+       $('#listSuplesi_ubah').html(output).show();
+  });
+  $('#listSuplesi_ubah').on('click', 'li', function(){
+       $('#sep_suplesi_nama_ubah').val($(this).text().split(': ')[1]);
+       $('#sep_suplesi_kode_ubah').val($(this).text().split(': ')[0]);
+       var sep_status_kecelakaan_kode = $('#sep_suplesi_kode_ubah').val();
+       $('#listSuplesi_ubah').fadeOut();
   });
 </script>

@@ -444,6 +444,7 @@ $("#form_rincian").on("click", "#simpan_rincian", function(event){
   var jml             = $('input:text[name=jml]').val();
 
   var url = baseURL + '/laboratorium/savedetail?t=' + mlite.token;
+  
   $.post(url, {no_rawat : no_rawat,
   kd_jenis_prw   : kd_jenis_prw,
   provider       : provider,

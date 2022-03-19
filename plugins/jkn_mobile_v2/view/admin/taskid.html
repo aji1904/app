@@ -26,6 +26,8 @@
                   <h3 class="panel-title">Task ID JKN Mobile V2</h3>
               </div>
               <div class="panel-body">
+                <button type="button" name="button" class="btn btn-success" id="add_bpjs">Add Antrian BPJS</button>
+                <button type="button" name="button" class="btn btn-success" id="update_bpjs">Update Waktu BPJS</button>
                 <div class="table-responsive no-margin">
                   <table class="table table-condensed">
                     <thead>
@@ -81,4 +83,16 @@
             locale: 'id'
         });
     });
+</script>
+<script>
+  $('.panel-body').on('click','#add_bpjs', function (event) {
+    var baseURL = mlite.url;
+    event.preventDefault();
+    window.open(baseURL + '/jknmobile_v2/antrian/add');
+  })
+  $('.panel-body').on('click','#update_bpjs', function (event) {
+    var baseURL = mlite.url;
+    event.preventDefault();
+    window.open(baseURL + '/jknmobile_v2/antrian/updatewaktu');
+  })
 </script>

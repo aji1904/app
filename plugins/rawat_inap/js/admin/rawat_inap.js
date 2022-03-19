@@ -229,7 +229,7 @@ $("#display").on("click", ".sep", function(event){
       $('input:text[name=sep_tanggal_lahir]').val(json_obj[0].response.peserta.tglLahir);
       $('input:text[name=sep_jenis_peserta]').val(json_obj[0].response.peserta.jenisPeserta.keterangan);
       $('input:text[name=sep_no_kartu]').val(json_obj[0].response.peserta.noKartu);
-      $('input:text[name=sep_norm]').val(json_obj[0].response.peserta.mr.noMR);
+      $('input:text[name=sep_norm]').val(no_rkm_medis);
       $('input:text[name=sep_eksekutif_kode]').val("0");
       $('input:text[name=sep_eksekutif_nama]').val("Tidak");
       $('input:text[name=sep_kunjungan_kode]').val("0");
@@ -247,7 +247,8 @@ $("#display").on("click", ".sep", function(event){
       $('input:text[name=sep_kelas_kode]').val(json_obj[0].response.peserta.hakKelas.kode);
       $('input:text[name=sep_kelas_nama]').val(json_obj[0].response.peserta.hakKelas.keterangan);
       $('input:text[name=sep_nomor_telepon]').val(json_obj[0].response.peserta.mr.noTelepon);
-
+      $('input:hidden[name=nama_rs]').val(json_obj[0].metaData.nama_rs);
+      $('input:hidden[name=kode_rs]').val(json_obj[0].metaData.kode_rs);
     } else {
       alert(json_obj[0].metaData.message);
     }
