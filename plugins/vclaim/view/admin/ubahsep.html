@@ -60,40 +60,48 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>DPJP Layanan ({$value.nmdpjplayanan})</label>
-                <select
+                <label>DPJP Layanan</label>
+                <input
+                  type="text"
+                  name="nm_dokter_bpjs"
+                  id="nm_dokter_bpjs"
                   class="form-control"
-                  name="dokter_ubah"
-                  id="dokter_ubah"
-                  data-use-search="true"
-                  required
-                >
-                  {loop: $maping_dokter_dpjpvclaim}
-                  <option value="{$value.kd_dokter_bpjs}">
-                    {$value.nm_dokter_bpjs}
-                  </option>
-                  {/loop}
-                </select>
+                  value="{$value.nmdpjplayanan}"
+                />
+                <input
+                  type="hidden"
+                  name="kd_dokter_bpjs"
+                  id="kd_dokter_bpjs"
+                  value="{$value.kddpjplayanan}"
+                />
+                <ul
+                  class="list-group"
+                  id="dpjplayananList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                {loop: $ubahsep}
-                <label>Poli/Unit ({$value.nmpolitujuan})</label>
-                {/loop}
-                <select
+                <label>Poli/Unit Tujuan</label>
+                <input
+                  type="text"
+                  name="nm_poli_bpjs"
+                  id="nm_poli_bpjs"
                   class="form-control"
-                  name="poli_ubah"
-                  id="poli_ubah"
-                  data-use-search="true"
-                  required
-                >
-                  {loop: $maping_poli_bpjs}
-                  <option value="{$value.kd_poli_bpjs}">
-                    {$value.nm_poli_bpjs}
-                  </option>
-                  {/loop}
-                </select>
+                  value="{$value.nmpolitujuan}"
+                />
+                <input
+                  type="hidden"
+                  name="kd_poli_bpjs"
+                  id="kd_poli_bpjs"
+                  value="{$value.kdpolitujuan}"
+                />
+                <ul
+                  class="list-group"
+                  id="poliList_ubah"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
               </div>
             </div>
             <div class="col-md-6">
@@ -480,8 +488,8 @@
     var sep_penjab_ubah = $('#sep_penjab_ubah').val()
     var mr_ubah = $('#mr_ubah').val()
     var catatan_ubah = $('#catatan_ubah').val()
-    var poli_ubah = $('#poli_ubah').find('option:selected').val();
-    var poli_ubah_nm = $('#poli_ubah').find('option:selected').text();
+    var poli_ubah = $('#kd_poli_bpjs').val();
+    var poli_ubah_nm = $('#nm_poli_bpjs').val();
     var eksekutif_kode_ubah = $('#eksekutif_kode_ubah').val()
     var sep_cob_kode_ubah = $('#sep_cob_kode_ubah').val()
     var sep_katarak_kode_ubah = $('#sep_katarak_kode_ubah').val()
@@ -498,8 +506,8 @@
     var kabupaten_ubah = $('#kabupaten_ubah').val()
     var id_kecamatan_ubah = $('#id_kecamatan_ubah').val()
     var kecamatan_ubah = $('#kecamatan_ubah').val()
-    var dokter_ubah = $('#dokter_ubah').find('option:selected').val();
-    var dokter_ubah_nm = $('#dokter_ubah').find('option:selected').text();
+    var dokter_ubah = $('#kd_dokter_bpjs').val();
+    var dokter_ubah_nm = $('#nm_dokter_bpjs').val();
     var telepon_ubah = $('#telepon_ubah').val()
 
     var baseURL = mlite.url + '/' + mlite.admin;
@@ -544,16 +552,16 @@
           kddpjppelayanan: dokter_ubah,
           notelep: telepon_ubah
         } ,function(data) {
-          if (data == 201) {
+          if (data != 200) {
             Swal.fire(
-                'Gagal!',
-                'Surat Kontrol sudah diterbitkan',
-                'error'
-              );
+              'Gagal!',
+              data,
+              'error'
+            );
           } else {
             Swal.fire(
               'Good job!',
-              data,
+              'Berhasil update data SEP',
               'success'
             );
           }
@@ -578,6 +586,78 @@
     $("#penjab_kode_ubah").val($(this).text().split(": ")[0]);
     var sep_pembiayaan_kode = $("#penjab_kode_ubah").val();
     $("#pembiayaanList_ubah").fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $('#nm_dokter_bpjs').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/admin/vclaim/mappingdokter/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     var dokter = json_obj[0];
+                     if(dokter != '') {
+                       for (var i in dokter) {
+                         output+='<li class=\"list-group-item link-class\">' + dokter[i].kd_dokter_bpjs + ': ' + dokter[i].nm_dokter_bpjs + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">Dokter tidak ditemukan</li>';
+                     }
+                     output+='';
+                     $('#dpjplayananList_ubah').fadeIn();
+                     $('#dpjplayananList_ubah').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#dpjplayananList_ubah').on('click', 'li', function(){
+       $('#nm_dokter_bpjs').val($(this).text().split(': ')[1]);
+       $('#kd_dokter_bpjs').val($(this).text().split(': ')[0]);
+       var dokter_ubah = $('#kd_dokter_bpjs').val();
+       $('#dpjplayananList_ubah').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $('#nm_poli_bpjs').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/admin/vclaim/mappingpoli/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     var poli = json_obj[0];
+                     if(poli != '') {
+                       for (var i in poli) {
+                         output+='<li class=\"list-group-item link-class\">' + poli[i].kd_poli_bpjs + ': ' + poli[i].nm_poli_bpjs + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">Poliklinik tidak ditemukan</li>';
+                     }
+                     output+='';
+                     $('#poliList_ubah').fadeIn();
+                     $('#poliList_ubah').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#poliList_ubah').on('click', 'li', function(){
+       $('#nm_poli_bpjs').val($(this).text().split(': ')[1]);
+       $('#kd_poli_bpjs').val($(this).text().split(': ')[0]);
+       var poli_ubah = $('#kd_poli_bpjs').val();
+       $('#poliList_ubah').fadeOut();
   });
 </script>
 <script type="text/javascript">

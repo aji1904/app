@@ -18,40 +18,62 @@
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Dokter</label>
-                      <select class="form-control" name="dokter" id="dokter_kontrol" data-use-search="true">
-                        {loop: $maping_dokter_dpjpvclaim}
-                        <option value="{$value.kd_dokter_bpjs}">{$value.nm_dokter_bpjs}</option>
-                        {/loop}
-                      </select>
+                      <input
+                        type="text"
+                        name="nm_dokter_bpjs_kontrol"
+                        id="nm_dokter_bpjs_kontrol"
+                        class="form-control"
+                      />
+                      <input
+                        type="hidden"
+                        name="kd_dokter_bpjs_kontrol"
+                        id="kd_dokter_bpjs_kontrol"
+                      />
+                      <ul
+                        class="list-group"
+                        id="dpjplayananList_kontrol"
+                        style="z-index: 1000; position: absolute; width: 100%"
+                      ></ul>
                   </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Poli/Unit</label>
-                      <select class="form-control" name="poli" id="poli_kontrol" data-use-search="true">
-                        {loop: $maping_poli_bpjs}
-                        <option value="{$value.kd_poli_bpjs}">{$value.nm_poli_bpjs}</option>
-                        {/loop}
-                      </select>
+                      <input
+                        type="text"
+                        name="nm_poli_bpjs_kontrol"
+                        id="nm_poli_bpjs_kontrol"
+                        class="form-control"
+                      />
+                      <input
+                        type="hidden"
+                        name="kd_poli_bpjs_kontrol"
+                        id="kd_poli_bpjs_kontrol"
+                      />
+                      <ul
+                        class="list-group"
+                        id="poliList_ubah_kontrol"
+                        style="z-index: 1000; position: absolute; width: 100%"
+                      ></ul>
                   </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Tanggal Surat</label>
-                      <input type="text" name="tanggal_rujukan" id="tanggal_rujukan_kontrol" class="form-control tanggal_rujukan_kontrol"/>
+                      <input type="text" name="tanggal_rujukan_kontrol" id="tanggal_rujukan_kontrol" class="form-control tanggal_rujukan_kontrol"/>
                   </div>
               </div>
               <div class="col-md-6">
                   <div class="form-group">
                       <label>Tanggal Kontrol</label>
-                      <input type="text" name="tanggal_datang" id="tanggal_datang_kontrol" class="form-control tanggal_datang_kontrol"/>
+                      <input type="text" name="tanggal_datang_kontrol" id="tanggal_datang_kontrol" class="form-control tanggal_datang_kontrol"/>
                   </div>
               </div>
           </div>
           <div class="row clearfix">
-              <div class="col-md-12">
-                  <button type="button" class="btn btn-primary" id="simpan_kontrol">Simpan</button>
-                  <button type="button" class="btn btn-primary" id="load_kontrol">Load</button>
+              <div class="col-md-12 add_update_kontrol">
+                <button type="button" class="btn btn-primary" id="load_kontrol">Load</button>
+                <button type="button" class="btn btn-primary simpan_kontrol" id="simpan_kontrol">Simpan</button>
               </div>
           </div>
         </div>
@@ -109,8 +131,8 @@
     var no_sep          = $('#no_sep_kontrol').val();
     var tanggal_surat   = $('#tanggal_rujukan_kontrol').val();
     var tanggal_periksa = $('#tanggal_datang_kontrol').val();
-    var poli            = $('#poli_kontrol').val();
-    var dokter          = $('#dokter_kontrol').val();
+    var poli            = $('#kd_poli_bpjs_kontrol').val();
+    var dokter          = $('#kd_dokter_bpjs_kontrol').val();
     // alert(tanggal_surat)
 
     var url = baseURL + '/vclaim/savekontrol?t=' + mlite.token;
@@ -147,5 +169,134 @@
     $('input:text[name=sep_nomor_skdp]').val(no_surat);
     $('input:text[name=sep_nomor_rujukan]').val(no_sep);
     $('#kontrolModal').modal('hide');
+  });
+
+  $("#kontroldisplay").on("click", ".edit", function(event){
+
+    $('.simpan_kontrol').remove()
+    $('#update_kontrol').remove()
+    $('.add_update_kontrol').append('<button type="button" class="btn btn-primary" id="update_kontrol">Update</button>')
+
+
+    var kd_dokter_bpjs_kontrol = $(this).attr("data-kd_dokter");
+    var kd_poli_bpjs_kontrol = $(this).attr("data-kd_poli");
+    var tgl_surat = $(this).attr("data-tgl_surat");
+    var tgl_rencana = $(this).attr("data-tgl_rencana");
+    var nm_dokter = $(this).attr("data-nm_dokter");
+    var nm_poli = $(this).attr("data-nm_poli");
+
+    
+    var tanggal_surat   = $('input:text[name=tanggal_rujukan_kontrol]').val(tgl_rencana);
+    var tanggal_periksa = $('input:text[name=tanggal_datang_kontrol]').val(tgl_surat);
+    var poli            = $('input:text[name=kd_poli_bpjs_kontrol]').val(kd_poli_bpjs_kontrol);
+    var dokter          = $('input:text[name=kd_dokter_bpjs_kontrol]').val(kd_dokter_bpjs_kontrol);
+    $('input:text[name=nm_dokter_bpjs_kontrol]').val(nm_dokter);
+    $('input:text[name=nm_poli_bpjs_kontrol]').val(nm_poli);
+    
+  });
+
+
+  $("#kontroldisplay").on("click", "#update_kontrol", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var url = baseURL + '/vclaim/updatekontrol/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
+
+    $.post(url,{
+      tanggal_surat : tanggal_surat,
+      tanggal_periksa : tanggal_periksa,
+      dokter : dokter,
+      poli : poli
+    } ,function(data) {
+      $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
+      if (data == 200) {
+        Swal.fire(
+          'Good job!',
+          'SPRI berhasil diupdate',
+          'success'
+        )
+      } else {
+        Swal.fire(
+          'Gagal!',
+          data,
+          'error'
+        )
+      }
+    });
+  });
+              
+
+  
+</script>
+</script>
+<script type="text/javascript">
+  $('#nm_dokter_bpjs_kontrol').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/admin/vclaim/mappingdokter/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     var dokter = json_obj[0];
+                     if(dokter != '') {
+                       for (var i in dokter) {
+                         output+='<li class=\"list-group-item link-class\">' + dokter[i].kd_dokter_bpjs + ': ' + dokter[i].nm_dokter_bpjs + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">Dokter tidak ditemukan</li>';
+                     }
+                     output+='';
+                     $('#dpjplayananList_kontrol').fadeIn();
+                     $('#dpjplayananList_kontrol').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#dpjplayananList_kontrol').on('click', 'li', function(){
+       $('#nm_dokter_bpjs_kontrol').val($(this).text().split(': ')[1]);
+       $('#kd_dokter_bpjs_kontrol').val($(this).text().split(': ')[0]);
+       var dokter = $('#kd_dokter_bpjs_kontrol').val();
+       $('#dpjplayananList_kontrol').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $('#nm_poli_bpjs_kontrol').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/admin/vclaim/mappingpoli/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     var poli = json_obj[0];
+                     if(poli != '') {
+                       for (var i in poli) {
+                         output+='<li class=\"list-group-item link-class\">' + poli[i].kd_poli_bpjs + ': ' + poli[i].nm_poli_bpjs + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">Poliklinik tidak ditemukan</li>';
+                     }
+                     output+='';
+                     $('#poliList_ubah_kontrol').fadeIn();
+                     $('#poliList_ubah_kontrol').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#poliList_ubah_kontrol').on('click', 'li', function(){
+       $('#nm_poli_bpjs_kontrol').val($(this).text().split(': ')[1]);
+       $('#kd_poli_bpjs_kontrol').val($(this).text().split(': ')[0]);
+       var poli = $('#kd_poli_bpjs_kontrol').val();
+       $('#poliList_ubah_kontrol').fadeOut();
   });
 </script>

@@ -22,7 +22,13 @@
         <button type="button" name="button" class="btn btn-xs btn-danger hapus" data-no_surat="{$value.no_surat}"><span class="fa fa-trash"></span> Hapus</button> 
       </td>
       <td>
-        <button type="button" name="button" class="btn btn-xs btn-info edit" data-no_surat="{$value.no_surat}"><span class="fa fa-pencil"></span> Edit</button>
+        <button type="button" name="button" class="btn btn-xs btn-info edit" 
+        data-kd_dokter="{$value.kd_dokter_bpjs}" 
+        data-kd_poli="{$value.kd_poli_bpjs}" 
+        data-tgl_surat="{$value.tgl_surat}" 
+        data-nm_dokter="{$value.nm_dokter_bpjs}" 
+        data-nm_poli="{$value.nm_poli_bpjs}" 
+        data-tgl_rencana="{$value.tgl_rencana}"><span class="fa fa-pencil"></span> Edit</button>
       </td>
       <td>
         <button type="button" name="button" class="btn btn-xs btn-success cetak" data-no_surat="{$value.no_surat}"><span class="fa fa-print"></span> Cetak</button>

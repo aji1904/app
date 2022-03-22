@@ -490,7 +490,7 @@ class Admin extends AdminModule
             ]);
             
           
-            echo $data = "Berhasil update data SEP";
+            echo $data = '200';
           
         } else if($data['metaData']['code'] == 201){
           echo $message = $data['metaData']['message'];
@@ -790,6 +790,20 @@ class Admin extends AdminModule
           }
         }
         exit();
+    }
+
+    public function getMappingDokter($keyword)
+    {
+      $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->orWhere('nm_dokter_bpjs', 'like', '%' . $keyword . '%')->toArray(); 
+      echo json_encode($maping_dokter_dpjpvclaim);  
+      exit();
+    }
+
+    public function getMappingPoli($keyword)
+    {
+      $maping_poli_dpjpvclaim = $this->db('maping_poli_bpjs')->orWhere('nm_poli_bpjs', 'like', '%' . $keyword . '%')->toArray(); 
+      echo json_encode($maping_poli_dpjpvclaim);  
+      exit();
     }
 
     public function getObatPRB($keyword)
@@ -2610,7 +2624,62 @@ class Admin extends AdminModule
             'nm_dokter_bpjs' => $maping_dokter_dpjpvclaim['nm_dokter_bpjs'],
             'kd_poli_bpjs' => $_POST['poli'],
             'nm_poli_bpjs' => $maping_poli_bpjs['nm_poli_bpjs'],
-            'diagnosa' => $diagnosa_pasien['diagawal'].' - '.$diagnosa_pasien['nmdiagnosaawal'],
+            'diagnosa' => $diagnosa_pasien['nmdiagnosaawal'],
+            'no_sep' => $diagnosa_pasien['no_sep']
+          ]);
+
+          echo $data['metaData']['code'];
+        } else{
+          echo $data['metaData']['message'];
+        }
+        exit();
+    }
+
+    public function postUpdateSPRI($no_kartu, $no_rawat)
+    {
+        date_default_timezone_set('UTC');
+        $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
+        $key = $this->consid.$this->secretkey.$tStamp;
+        $_POST['sep_user']	= $this->core->getUserInfo('fullname', null, true);
+
+        $data = [
+          'request' => [
+              'noKartu' => $no_kartu,
+              'kodeDokter' => $_POST['dokter'],
+              'poliKontrol' => $_POST['poli'],
+              'tglRencanaKontrol' => $_POST['tanggal_periksa'],
+              'user' => $_POST['sep_user']
+          ]
+        ];
+
+        $data = json_encode($data);
+
+        $url = $this->api_url.'RencanaKontrol/InsertSPRI';
+        $output = BpjsService::post($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+        $data = json_decode($output, true);
+        if ($data == NULL) {
+          echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';
+        } else if ($data['metaData']['code'] == 200) {
+          $stringDecrypt = stringDecrypt($key, $data['response']);
+          $decompress = '""';
+          $decompress = decompress($stringDecrypt);
+          $spri = json_decode($decompress, true);
+          // echo $spri['noSPRI'];
+          $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter_bpjs', $_POST['dokter'])->oneArray();
+          $maping_poli_bpjs = $this->db('maping_poli_bpjs')->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
+          $diagnosa_pasien =  $this->db('bridging_sep')->where('no_rawat', revertNorawat($no_rawat))->oneArray();
+
+          $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')->save([
+            'no_rawat' => revertNorawat($no_rawat),
+            'no_kartu' => $no_kartu,
+            'tgl_surat' => $_POST['tanggal_surat'],
+            'no_surat' => $spri['noSPRI'],
+            'tgl_rencana' => $_POST['tanggal_periksa'],
+            'kd_dokter_bpjs' => $_POST['dokter'],
+            'nm_dokter_bpjs' => $maping_dokter_dpjpvclaim['nm_dokter_bpjs'],
+            'kd_poli_bpjs' => $_POST['poli'],
+            'nm_poli_bpjs' => $maping_poli_bpjs['nm_poli_bpjs'],
+            'diagnosa' => $diagnosa_pasien['nmdiagnosaawal'],
             'no_sep' => $diagnosa_pasien['no_sep']
           ]);
 
@@ -3087,6 +3156,57 @@ class Admin extends AdminModule
         exit();
     }
 
+    public function postUpdateKontrol()
+    {
+        date_default_timezone_set('UTC');
+        $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
+        $key = $this->consid.$this->secretkey.$tStamp;
+        $_POST['sep_user']	= $this->core->getUserInfo('fullname', null, true);
+
+        $data = [
+          'request' => [
+              'noSEP' => $_POST['no_sep'],
+              'kodeDokter' => $_POST['dokter'],
+              'poliKontrol' => $_POST['poli'],
+              'tglRencanaKontrol' => $_POST['tanggal_periksa'],
+              'user' => $_POST['sep_user']
+          ]
+        ];
+
+        $data = json_encode($data);
+
+        $url = $this->api_url.'RencanaKontrol/insert';
+        $output = BpjsService::post($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+        $data = json_decode($output, true);
+        //echo $data['metaData']['message'];
+        if ($data == NULL) {
+          echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';
+        } else if ($data['metaData']['code'] == 200) {
+          $stringDecrypt = stringDecrypt($key, $data['response']);
+          $decompress = '""';
+          $decompress = decompress($stringDecrypt);
+          $spri = json_decode($decompress, true);
+          //echo $spri['noSuratKontrol'];
+          $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter_bpjs', $_POST['dokter'])->oneArray();
+          $maping_poli_bpjs = $this->db('maping_poli_bpjs')->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
+
+          $bridging_surat_pri_bpjs = $this->db('bridging_surat_kontrol_bpjs')->save([
+            'no_sep' => $_POST['no_sep'],
+            'tgl_surat' => $_POST['tanggal_surat'],
+            'no_surat' => $spri['noSuratKontrol'],
+            'tgl_rencana' => $_POST['tanggal_periksa'],
+            'kd_dokter_bpjs' => $_POST['dokter'],
+            'nm_dokter_bpjs' => $maping_dokter_dpjpvclaim['nm_dokter_bpjs'],
+            'kd_poli_bpjs' => $_POST['poli'],
+            'nm_poli_bpjs' => $maping_poli_bpjs['nm_poli_bpjs']
+          ]);
+
+          echo $data['metaData']['code'];
+        } else {
+          echo $data['metaData']['message'];
+        }
+        exit();
+    }
     public function getDataKontrol()
     {
         date_default_timezone_set('UTC');
