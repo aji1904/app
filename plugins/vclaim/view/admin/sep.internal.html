@@ -1,135 +1,241 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span> Tutup</button>
-    <h4 class="modal-title">Riwayat SPRI</h4>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span> Tutup</button>
+  <h4 class="modal-title">SEP Internal</h4>
 </div>
 <div class="modal-body">
 
-  <div id="form_spri">
-    <div class="col-md-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="row clearfix">
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Dokter</label>
-                      <select class="form-control" name="dokter_spri" id="dokter_spri" data-use-search="true" required>
-                        {loop: $maping_dokter_dpjpvclaim}
-                        <option value="{$value.kd_dokter_bpjs}">{$value.nm_dokter_bpjs}</option>
-                        {/loop}
-                      </select>
-                  </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Poli/Unit</label>
-                      <select class="form-control" name="poli_spri" id="poli_spri" data-use-search="true" required>
-                        {loop: $maping_poli_bpjs}
-                        <option value="{$value.kd_poli_bpjs}">{$value.nm_poli_bpjs}</option>
-                        {/loop}
-                      </select>
-                  </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Tanggal Surat</label>
-                      <input type="text" name="tanggal_rujukan_spri" id="tanggal_rujukan_spri" class="form-control tanggal_spri_1"/>
-                  </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Tanggal Mulai Inap</label>
-                      <input type="text" name="tanggal_datang_spri" id="tanggal_datang_spri" class="form-control tanggal_spri_1"/>
-                  </div>
-              </div>
-          </div>
-          <div class="row clearfix">
-              <div class="col-md-12">
-                  <button type="button" class="btn btn-primary" id="simpan_spri">Simpan</button>
-                  <button type="button" class="btn btn-primary" id="load_spri">Load</button>
-              </div>
-          </div>
+<div id="form_int">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Dokter</label>
+                    <input
+                      type="text"
+                      name="nm_dokter_bpjs_int"
+                      id="nm_dokter_bpjs_int"
+                      class="form-control"
+                    />
+                    <input
+                      type="hidden"
+                      name="kd_dokter_bpjs_int"
+                      id="kd_dokter_bpjs_int"
+                    />
+                    <ul
+                      class="list-group"
+                      id="dpjplayananList_int"
+                      style="z-index: 1000; position: absolute; width: 100%"
+                    ></ul>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Poli/Unit</label>
+                    <input
+                      type="text"
+                      name="nm_poli_bpjs_int"
+                      id="nm_poli_bpjs_int"
+                      class="form-control"
+                    />
+                    <input
+                      type="hidden"
+                      name="kd_poli_bpjs_int"
+                      id="kd_poli_bpjs_int"
+                    />
+                    <ul
+                      class="list-group"
+                      id="poliList_ubah_int"
+                      style="z-index: 1000; position: absolute; width: 100%"
+                    ></ul>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-12 add_update">
+              <button type="button" class="btn btn-primary" id="load_int">Load</button>
+              <button type="button" class="btn btn-primary simpan_int" id="simpan_int">Simpan</button>
+            </div>
         </div>
       </div>
     </div>
   </div>
-  <br><br>
+</div>
+<br><br>
 
-  <div id="spridisplay">
-  </div>
+<div id="intdisplay">
+</div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+  <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
 </div>
+
+
 <script type="text/javascript">
-   $('select').selectator();
-   $(function () {
-       $('.tanggal_spri_1').datetimepicker({
-         defaultDate: '{?=date('Y-m-d')?}',
-         format: 'YYYY-MM-DD',
-         locale: 'id'
-       });
-   });
-   $(function () {
-       $('.jam').datetimepicker({
-         format: 'HH:mm:ss',
-         locale: 'id'
-       });
-   });
+$("#form_int").on("click","#load_int", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  $("#intdisplay").show().load(baseURL + '/vclaim/intdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+});
+
+$(document).ready(function() {
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  $("#intdisplay").show().load(baseURL + '/vclaim/intdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+});
+
+$("#form_int").on("click","#simpan_int", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+
+  var poli            = $('#kd_poli_bpjs_int').val();
+  var dokter          = $('#kd_dokter_bpjs_int').val();
+  // alert(tanggal_surat)
+
+  var url = baseURL + '/vclaim/saveint/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
+
+  $.post(url,{
+    dokter : dokter,
+    poli : poli
+  } ,function(data) {
+    $("#intdisplay").show().load(baseURL + '/vclaim/intdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+    if (data == 200) {
+      Swal.fire(
+        'Good job!',
+        'SEP Internal berhasil disimpan',
+        'success'
+      )
+    } else {
+      Swal.fire(
+        'Gagal!',
+        data,
+        'error'
+      )
+    }
+  });
+
+});
+
+$("#intdisplay").on("click", ".edit", function(event){
+
+  $('.simpan_int').remove()
+  $('#update_int').remove()
+  $('.add_update').append('<button type="button" class="btn btn-primary" id="update_int">Update</button>')
+
+
+  var kd_dokter_bpjs_int = $(this).attr("data-kd_dokter");
+  var kd_poli_bpjs_int = $(this).attr("data-kd_poli");
+  var nm_dokter = $(this).attr("data-nm_dokter");
+  var nm_poli = $(this).attr("data-nm_poli");
+
+  var poli            = $('input:text[name=kd_poli_bpjs_int]').val(kd_poli_bpjs_int);
+  var dokter          = $('input:text[name=kd_dokter_bpjs_int]').val(kd_dokter_bpjs_int);
+  $('input:text[name=nm_dokter_bpjs_int]').val(nm_dokter);
+  $('input:text[name=nm_poli_bpjs_int]').val(nm_poli);
+  
+});
+
+
+$("#intdisplay").on("click", "#update_int", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  var url = baseURL + '/vclaim/updateint/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
+
+  $.post(url,{
+    tanggal_surat : tanggal_surat,
+    tanggal_periksa : tanggal_periksa,
+    dokter : dokter,
+    poli : poli
+  } ,function(data) {
+    $("#intdisplay").show().load(baseURL + '/vclaim/intdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+    if (data == 200) {
+      Swal.fire(
+        'Good job!',
+        'SEP Internal berhasil diupdate',
+        'success'
+      )
+    } else {
+      Swal.fire(
+        'Gagal!',
+        data,
+        'error'
+      )
+    }
+  });
+});
+
+
 </script>
 <script type="text/javascript">
-  $("#form_spri").on("click","#load_spri", function(event){
-    var baseURL = mlite.url + '/' + mlite.admin;
-    event.preventDefault();
-    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
-  });
-
-  $(document).ready(function() {
-    var baseURL = mlite.url + '/' + mlite.admin;
-    event.preventDefault();
-    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
-  });
-
-  $("#form_spri").on("click","#simpan_spri", function(event){
-    var baseURL = mlite.url + '/' + mlite.admin;
-    event.preventDefault();
-
-    var tanggal_surat   = $('#tanggal_rujukan_spri').val();
-    var tanggal_periksa = $('#tanggal_datang_spri').val();
-    var poli            = $('#poli_spri').val();
-    var dokter          = $('#dokter_spri').val();
-    // alert(tanggal_surat)
-
-    var url = baseURL + '/vclaim/savespri/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
-
-    $.post(url,{
-      tanggal_surat : tanggal_surat,
-      tanggal_periksa : tanggal_periksa,
-      dokter : dokter,
-      poli : poli
-    } ,function(data) {
-      $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
-      if (data == 200) {
-        Swal.fire(
-          'Good job!',
-          'SPRI berhasil disimpan',
-          'success'
-        )
-      } else {
-        Swal.fire(
-          'Gagal!',
-          data,
-          'error'
-        )
-      }
-    });
-
-  });
-
-  $("#spridisplay").on("click", ".pilih_nosurat", function(event){
-    var no_surat = $(this).attr("data-no_surat");
-    var no_sep = $(this).attr("data-no_sep");
-    $('input:text[name=sep_nomor_skdp]').val(no_surat);
-    $('input:text[name=sep_nomor_rujukan]').val(no_sep);
-    $('#spriModal').modal('hide');
-  });
+$('#nm_dokter_bpjs_int').keyup(function(){
+     var query = $(this).val();
+     if(query != '')
+     {
+          $.ajax({
+               url: '{?=url()?}/admin/vclaim/mappingdokter/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
+               method:"GET",
+               data:{},
+               success:function(data)
+               {
+                   var data = JSON.parse(data);
+                   var json_obj = [data];
+                   var output='';
+                   var dokter = json_obj[0];
+                   if(dokter != '') {
+                     for (var i in dokter) {
+                       output+='<li class=\"list-group-item link-class\">' + dokter[i].kd_dokter_bpjs + ': ' + dokter[i].nm_dokter_bpjs + '</li>';
+                     }
+                   } else {
+                     output+='<li class=\"list-group-item link-class\">Dokter tidak ditemukan</li>';
+                   }
+                   output+='';
+                   $('#dpjplayananList_int').fadeIn();
+                   $('#dpjplayananList_int').html(output).show();
+               }
+          });
+     }
+});
+$('#dpjplayananList_int').on('click', 'li', function(){
+     $('#nm_dokter_bpjs_int').val($(this).text().split(': ')[1]);
+     $('#kd_dokter_bpjs_int').val($(this).text().split(': ')[0]);
+     var dokter = $('#kd_dokter_bpjs_int').val();
+     $('#dpjplayananList_int').fadeOut();
+});
+</script>
+<script type="text/javascript">
+$('#nm_poli_bpjs_int').keyup(function(){
+     var query = $(this).val();
+     if(query != '')
+     {
+          $.ajax({
+               url: '{?=url()?}/admin/vclaim/mappingpoli/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
+               method:"GET",
+               data:{},
+               success:function(data)
+               {
+                   var data = JSON.parse(data);
+                   var json_obj = [data];
+                   var output='';
+                   var poli = json_obj[0];
+                   if(poli != '') {
+                     for (var i in poli) {
+                       output+='<li class=\"list-group-item link-class\">' + poli[i].kd_poli_bpjs + ': ' + poli[i].nm_poli_bpjs + '</li>';
+                     }
+                   } else {
+                     output+='<li class=\"list-group-item link-class\">Poliklinik tidak ditemukan</li>';
+                   }
+                   output+='';
+                   $('#poliList_ubah_int').fadeIn();
+                   $('#poliList_ubah_int').html(output).show();
+               }
+          });
+     }
+});
+$('#poliList_ubah_int').on('click', 'li', function(){
+     $('#nm_poli_bpjs_int').val($(this).text().split(': ')[1]);
+     $('#kd_poli_bpjs_int').val($(this).text().split(': ')[0]);
+     var poli = $('#kd_poli_bpjs_int').val();
+     $('#poliList_ubah_int').fadeOut();
+});
 </script>
