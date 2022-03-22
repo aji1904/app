@@ -548,6 +548,13 @@
       </div>
   </div>
 </div>
+<div class="modal fade" id="rujukModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          ...
+      </div>
+  </div>
+</div>
 <div class="modal fade" id="pulangModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -643,7 +650,7 @@
   });
 </script>
 <script type="text/javascript">
-  $("#form_sep").on("click",".pulang", function(event){
+  $("#form_sep").on("click",".rujuk", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     var no_peserta = $('input:text[name=sep_no_kartu]').val();
@@ -657,6 +664,26 @@
     } else {
       var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + $('#id_sep').val() + '?t=' + mlite.token;
     }
+
+    var modal = $('#prbModal');
+    var modalContent = $('#prbModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click",".sep_pulang", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    
+    var no_sep = $(this).attr("data-no_sep");
+    var loadURL =  baseURL + '/vclaim/seppulang/' + no_sep + '?t=' + mlite.token;
 
     var modal = $('#pulangModal');
     var modalContent = $('#pulangModal .modal-content');
@@ -669,20 +696,12 @@
   });
 </script>
 <script type="text/javascript">
-  $("#form_sep").on("click",".internal", function(event){
+  $("#form_sep").on("click",".sep_internal", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    var no_peserta = $('input:text[name=sep_no_kartu]').val();
-    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
-    var no_rawat = find_no_rawat.replace(/\//g,'');
-
-    if ($('#id_sep').val() == '') {
-      var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + "Kosong" + '?t=' + mlite.token;
-    } else if($('#id_pel').val() == 'Rawat Inap') {
-      var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + "Kosong" + '?t=' + mlite.token;
-    } else {
-      var loadURL =  baseURL + '/vclaim/suratprb/' + no_peserta + '/' + no_rawat + '/' + $('#id_sep').val() + '?t=' + mlite.token;
-    }
+    
+    var no_sep = $(this).attr("data-no_sep");
+    var loadURL =  baseURL + '/vclaim/sepinternal/' + no_sep + '?t=' + mlite.token;
 
     var modal = $('#internalModal');
     var modalContent = $('#internalModal .modal-content');
@@ -1363,11 +1382,11 @@
                 output+="<div class=\"panel-footer\">";
                   if (histori[i].ppkPelayanan.toLowerCase() == nama_rs) {
                     if (histori[i].jnsPelayanan == 2 && histori[i].poli.toLowerCase() != 'instalasi gawat darurat') {
-                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button><button class=\"btn btn-warning btn-xs sep_internal\" data-no_sep=" + histori[i].noSep + ">Internal</button> <button class=\"btn btn-warning btn-xs\" data-no_sep=" + histori[i].noSep + " id=\"prb\">PRB</button>";
+                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button><button class=\"btn btn-warning btn-xs sep_internal\" data-no_sep=" + histori[i].noSep + ">Internal</button> <button class=\"btn btn-warning btn-xs\" data-no_sep=" + histori[i].noSep + " id=\"prb\">PRB</button> <button class=\"btn btn-warning btn-xs rujuk\" data-no_sep=" + histori[i].noSep + ">Rujuk</button>";
                     } else if(histori[i].poli.toLowerCase() == 'instalasi gawat darurat') {
-                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button>";
+                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button> <button class=\"btn btn-warning btn-xs rujuk\" data-no_sep=" + histori[i].noSep + ">Rujuk</button>";
                     } else {
-                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button><button class=\"btn btn-warning btn-xs sep_pulang\" data-no_sep=" + histori[i].noSep + ">Pulang</button>";
+                      output+="<button class=\"btn btn-success btn-xs ubah_sep\" data-no_sep=" + histori[i].noSep + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">SEP</button> <button class=\"btn btn-primary btn-xs print_sjp\" data-no_sep=" + histori[i].noSep + ">SJP</button><button class=\"btn btn-warning btn-xs sep_pulang\" data-no_sep=" + histori[i].noSep + ">Pulang</button> <button class=\"btn btn-warning btn-xs rujuk\" data-no_sep=" + histori[i].noSep + ">Rujuk</button>";
                     }
                   }else {
                     output+="<button class=\"btn btn-success btn-xs btn-block\">########</button>";

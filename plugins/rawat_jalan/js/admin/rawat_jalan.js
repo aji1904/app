@@ -176,13 +176,14 @@ $("#form").on("click","#hapus", function(event){
   var no_rawat = $('input:text[name=no_rawat]').val();
 
   // tampilkan dialog konfirmasi
-  bootbox.confirm("Apakah Anda yakin ingin menghapus data ini?", function(result){
+  bootbox.confirm("Apakah Anda yakin ingin menghapus data ini ? <br> Semua Tindakan dan Obat Akan Terhapus", function(result){
     // ketika ditekan tombol ok
     if (result){
       // mengirimkan perintah penghapusan
       $.post(url, {
         no_rawat: no_rawat
       } ,function(data) {
+        // alert(data)
         // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
         $("#display").load(baseURL + '/rawat_jalan/display?t=' + mlite.token);
         bersih();

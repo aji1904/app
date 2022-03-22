@@ -368,6 +368,162 @@ class Admin extends AdminModule
         exit();
     }
 
+    public function postSaveSEPUbah()
+    {
+        date_default_timezone_set('UTC');
+        $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
+        $key = $this->consid.$this->secretkey.$tStamp;
+
+        $_POST['sep_user']	= $this->core->getUserInfo('fullname', null, true);
+
+        $data = [
+            'request' => [
+               't_sep' => [
+                  'noSep' => $_POST['no_sep'],
+                  'klsRawat' => [
+                     'klsRawatHak' => $_POST['klsRawatHak'],
+                     'klsRawatNaik' => $_POST['klsRawatNaik'],
+                     'pembiayaan' => $_POST['pembiayaan'],
+                     'penanggungJawab' => $_POST['penanggungJawab']
+                  ],
+                  'noMR' => $_POST['noMR'],
+                  'catatan' => $_POST['catatan'],
+                  'diagAwal' => $_POST['diagAwal'],
+                  'poli' => [
+                     'tujuan' => $_POST['kdpolitujuan'],
+                     'eksekutif' => $_POST['eksekutif']
+                  ],
+                  'cob' => [
+                     'cob' => $_POST['cob']
+                  ],
+                  'katarak' => [
+                     'katarak' => $_POST['katarak']
+                  ],
+                  'jaminan' => [
+                     'lakaLantas' => $_POST['lakalantas'],
+                     'penjamin' => [
+                         'tglKejadian' => $_POST['tglkkl'],
+                         'keterangan' => $_POST['keterangankkl'],
+                         'suplesi' => [
+                             'suplesi' => $_POST['suplesi'],
+                             'noSepSuplesi' => $_POST['no_sep_suplesi'],
+                             'lokasiLaka' => [
+                                 'kdPropinsi' => $_POST['kdprop'],
+                                 'kdKabupaten' => $_POST['kdkab'],
+                                 'kdKecamatan' => $_POST['kdkec']
+                             ]
+                         ]
+                     ]
+                  ],
+                  'dpjpLayan' => $_POST['kddpjppelayanan'],
+                  'noTelp' => $_POST['notelep'],
+                  'user' => $_POST['sep_user']
+               ]
+            ]
+        ];
+
+        $data = json_encode($data);
+
+        $url = $this->api_url.'SEP/2.0/update';
+        $output = BpjsService::put($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+        $data = json_decode($output, true);
+
+        if ($_POST['eksekutif'] == 0) {
+          $eksekutif = '0. Tidak';
+        } else {
+          $eksekutif = '1.Ya';
+        }
+
+        if ($_POST['cob'] == 0) {
+          $cob = '0. Tidak';
+        } else {
+          $cob = '1.Ya';
+        }
+
+        if ($_POST['katarak'] == 0) {
+          $katarak = '0. Tidak';
+        } else {
+          $katarak = '1.Ya';
+        }
+        
+        if ($_POST['suplesi'] == 0) {
+          $suplesi = '0. Tidak';
+        } else {
+          $suplesi = '1.Ya';
+        } 
+
+        if($data == NULL) {
+
+          echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';
+
+        } else if($data['metaData']['code'] == 200){
+
+          $code = $data['metaData']['code'];
+          $message = $data['metaData']['message'];
+          
+          $stringDecrypt = stringDecrypt($key, $data['response']);
+          $decompress = '""';
+          if(!empty($stringDecrypt)) {
+            $decompress = decompress($stringDecrypt);
+          }
+           if($data != null) {
+              $data = '{
+              	"metaData": {
+              		"code": "'.$code.'",
+              		"message": "'.$message.'"
+              	},
+              	"response": '.$decompress.'}';
+
+              $data = json_decode($data, true);
+
+              $_POST['sep_no_sep'] = $data['response']['sep']['noSep'];
+
+              $simpan_sep = $this->db('bridging_sep')->where('no_sep',$_POST['no_sep'])->update([
+                'klsrawat' => $_POST['klsrawat'],
+                'klsnaik' => $_POST['klsnaik'],
+                'pembiayaan' => $_POST['pembiayaan'],
+                'pjnaikkelas' => $_POST['penanggungJawab'],
+                'catatan' => $_POST['catatan'],
+                'diagawal' => $_POST['diagawal'],
+                'nmdiagnosaawal' => $_POST['nmdiagnosaawal'],
+                'kdpolitujuan' => $_POST['kdpolitujuan'],
+                'nmpolitujuan' => $_POST['nmpolitujuan'],
+                'eksekutif' => $eksekutif,
+                'cob' => $cob,
+                'katarak' => $katarak,
+                'lakalantas' => $_POST['lakalantas'],
+                'tglkkl' => $_POST['tglkkl'],
+                'keterangankkl' => $_POST['keterangankkl'],
+                'suplesi' => $suplesi,
+                'no_sep_suplesi' => $_POST['no_sep_suplesi'],
+                'kdprop' => $_POST['kdprop'],
+                'nmprop' => $_POST['nmprop'],
+                'kdkab' => $_POST['kdkab'],
+                'nmkab' => $_POST['nmkab'],
+                'kdkec' => $_POST['kdkec'],
+                'nmkec' => $_POST['nmkec'],
+                'kddpjplayanan' => $_POST['kddpjppelayanan'],
+                'nmdpjplayanan' => $_POST['nmdpjppelayanan'],
+                'notelep' => $_POST['notelep'],
+                'user' => $_POST['sep_user'],
+              ]);
+              if($simpan_sep != ''){
+                echo $simpan_sep;
+              }
+
+            } else {
+              echo '{
+              	"metaData": {
+              		"code": "5000",
+              		"message": "ERROR SERVICE BPJS"
+              	},
+              	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
+            }
+          }
+
+        exit();
+    }
+
     public function postHapusSEP()
     {
         $_POST['sep_user']	= $this->core->getUserInfo('fullname', null, true);
@@ -2338,6 +2494,38 @@ class Admin extends AdminModule
     }
 
     public function getUbahSEP($no_sep)
+    {
+      $this->_addHeaderFiles();
+      $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();
+      $maping_poli_bpjs = $this->db('maping_poli_bpjs')->toArray();
+      $bridging_sep = $this->db('bridging_sep')
+      ->join('reg_periksa','reg_periksa.no_rawat=bridging_sep.no_rawat')
+      ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+      ->where('bridging_sep.no_sep', $no_sep)->toArray();
+      $this->tpl->set('ubahsep', $this->tpl->noParse_array(htmlspecialchars_array($bridging_sep)));
+      $this->tpl->set('maping_dokter_dpjpvclaim', $this->tpl->noParse_array(htmlspecialchars_array($maping_dokter_dpjpvclaim)));
+      $this->tpl->set('maping_poli_bpjs', $this->tpl->noParse_array(htmlspecialchars_array($maping_poli_bpjs)));
+      echo $this->draw('ubahsep.html');
+      exit();
+    }
+
+    public function getSEPPulang($no_sep)
+    {
+      $this->_addHeaderFiles();
+      $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();
+      $maping_poli_bpjs = $this->db('maping_poli_bpjs')->toArray();
+      $bridging_sep = $this->db('bridging_sep')
+      ->join('reg_periksa','reg_periksa.no_rawat=bridging_sep.no_rawat')
+      ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+      ->where('bridging_sep.no_sep', $no_sep)->toArray();
+      $this->tpl->set('ubahsep', $this->tpl->noParse_array(htmlspecialchars_array($bridging_sep)));
+      $this->tpl->set('maping_dokter_dpjpvclaim', $this->tpl->noParse_array(htmlspecialchars_array($maping_dokter_dpjpvclaim)));
+      $this->tpl->set('maping_poli_bpjs', $this->tpl->noParse_array(htmlspecialchars_array($maping_poli_bpjs)));
+      echo $this->draw('ubahsep.html');
+      exit();
+    }
+
+    public function getSEPInternal($no_sep)
     {
       $this->_addHeaderFiles();
       $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();

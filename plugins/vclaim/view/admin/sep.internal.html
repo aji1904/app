@@ -1,0 +1,135 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span> Tutup</button>
+    <h4 class="modal-title">Riwayat SPRI</h4>
+</div>
+<div class="modal-body">
+
+  <div id="form_spri">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row clearfix">
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label>Dokter</label>
+                      <select class="form-control" name="dokter_spri" id="dokter_spri" data-use-search="true" required>
+                        {loop: $maping_dokter_dpjpvclaim}
+                        <option value="{$value.kd_dokter_bpjs}">{$value.nm_dokter_bpjs}</option>
+                        {/loop}
+                      </select>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label>Poli/Unit</label>
+                      <select class="form-control" name="poli_spri" id="poli_spri" data-use-search="true" required>
+                        {loop: $maping_poli_bpjs}
+                        <option value="{$value.kd_poli_bpjs}">{$value.nm_poli_bpjs}</option>
+                        {/loop}
+                      </select>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label>Tanggal Surat</label>
+                      <input type="text" name="tanggal_rujukan_spri" id="tanggal_rujukan_spri" class="form-control tanggal_spri_1"/>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                      <label>Tanggal Mulai Inap</label>
+                      <input type="text" name="tanggal_datang_spri" id="tanggal_datang_spri" class="form-control tanggal_spri_1"/>
+                  </div>
+              </div>
+          </div>
+          <div class="row clearfix">
+              <div class="col-md-12">
+                  <button type="button" class="btn btn-primary" id="simpan_spri">Simpan</button>
+                  <button type="button" class="btn btn-primary" id="load_spri">Load</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br>
+
+  <div id="spridisplay">
+  </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+</div>
+<script type="text/javascript">
+   $('select').selectator();
+   $(function () {
+       $('.tanggal_spri_1').datetimepicker({
+         defaultDate: '{?=date('Y-m-d')?}',
+         format: 'YYYY-MM-DD',
+         locale: 'id'
+       });
+   });
+   $(function () {
+       $('.jam').datetimepicker({
+         format: 'HH:mm:ss',
+         locale: 'id'
+       });
+   });
+</script>
+<script type="text/javascript">
+  $("#form_spri").on("click","#load_spri", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+  });
+
+  $(document).ready(function() {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+  });
+
+  $("#form_spri").on("click","#simpan_spri", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+
+    var tanggal_surat   = $('#tanggal_rujukan_spri').val();
+    var tanggal_periksa = $('#tanggal_datang_spri').val();
+    var poli            = $('#poli_spri').val();
+    var dokter          = $('#dokter_spri').val();
+    // alert(tanggal_surat)
+
+    var url = baseURL + '/vclaim/savespri/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
+
+    $.post(url,{
+      tanggal_surat : tanggal_surat,
+      tanggal_periksa : tanggal_periksa,
+      dokter : dokter,
+      poli : poli
+    } ,function(data) {
+      $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+      if (data == 200) {
+        Swal.fire(
+          'Good job!',
+          'SPRI berhasil disimpan',
+          'success'
+        )
+      } else {
+        Swal.fire(
+          'Gagal!',
+          data,
+          'error'
+        )
+      }
+    });
+
+  });
+
+  $("#spridisplay").on("click", ".pilih_nosurat", function(event){
+    var no_surat = $(this).attr("data-no_surat");
+    var no_sep = $(this).attr("data-no_sep");
+    $('input:text[name=sep_nomor_skdp]').val(no_surat);
+    $('input:text[name=sep_nomor_rujukan]').val(no_sep);
+    $('#spriModal').modal('hide');
+  });
+</script>

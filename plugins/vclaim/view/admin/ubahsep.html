@@ -119,7 +119,7 @@
                   name="diagnosa_ubah"
                   id="diagnosa_ubah"
                   class="form-control"
-                  value="{$value.diagawal}: {$value.nmdiagnosaawal}"
+                  value="{$value.nmdiagnosaawal}"
                 />
                 <input
                   type="hidden"
@@ -148,7 +148,7 @@
                 />
                 <input
                 type="hidden"
-                name="eksekutif_ubah"
+                name="eksekutif_kode_ubah"
                 id="eksekutif_kode_ubah"
                 />
                 <ul
@@ -472,7 +472,82 @@
 <script>
   $("#form_sep_ubah").on("click", "#simpan_update", function (event) {
     var sep_ubah = $('#sep_ubah').val()
-    var sep_ubah = $('#sep_ubah').val()
+    var klsrawat_ubah = $('#sep_kelas_kode_ubah').val()
+    var klsrawatnaik_ubah = $('#sep_naik_kelas_kode_ubah').val()
+    var pembiayaan_ubah= $('#sep_pembiayaan_kode_ubah').val()
+    var sep_penjab_ubah = $('#sep_penjab_ubah').val()
+    var mr_ubah = $('#mr_ubah').val()
+    var catatan_ubah = $('#catatan_ubah').val()
+    var poli_ubah = $('#poli_ubah').find('option:selected').val();
+    var poli_ubah_nm = $('#poli_ubah').text();
+    var eksekutif_kode_ubah = $('#eksekutif_kode_ubah').val()
+    var sep_cob_kode_ubah = $('#sep_cob_kode_ubah').val()
+    var sep_katarak_kode_ubah = $('#sep_katarak_kode_ubah').val()
+    var sep_status_kecelakaan_kode_ubah = $('#sep_status_kecelakaan_kode_ubah').val()
+    var kejadian_ubah = $('#kejadian_ubah').val()
+    var ket_ubah = $('#ket_ubah').val()
+    var diagnosa_kode_ubah = $('#diagnosa_kode_ubah').val()
+    var diagnosa_ubah = $('#diagnosa_ubah').val()
+    var sep_suplesi_kode_ubah = $('#sep_suplesi_kode_ubah').val()
+    var no_suplesi_ubah = $('#no_suplesi_ubah').val()
+    var id_provinsi_ubah = $('#id_provinsi_ubah').val()
+    var provinsi_ubah = $('#provinsi_ubah').val()
+    var id_kabupaten_ubah = $('#id_kabupaten_ubah').val()
+    var kabupaten_ubah = $('#kabupaten_ubah').val()
+    var id_kecamatan_ubah = $('#id_kecamatan_ubah').val()
+    var kecamatan_ubah = $('#kecamatan_ubah').val()
+    var dokter_ubah = $('#dokter_ubah').find('option:selected').val();
+    var dokter_ubah_nm = $('#dokter_ubah').text();
+    var telepon_ubah = $('#telepon_ubah').val()
+
+    $.ajax({
+      type: "POST",
+      url: "{?=url([ADMIN,'vclaim','savesepubah'])?}",
+      data: {
+        no_sep : sep_ubah,
+        klsRawatHak: klsrawat_ubah,
+        klsRawatNaik: klsrawatnaik_ubah,
+        pembiayaan: pembiayaan_ubah,
+        penanggungJawab: pembiayaan_ubah,
+        noMR: mr_ubah,
+        catatan: catatan_ubah,
+        diagAwal: diagnosa_kode_ubah,
+        nmdiagnosaawal: diagnosa_ubah,
+        kdpolitujuan: poli_ubah,
+        nmpolitujuan: poli_ubah_nm,
+        eksekutif: eksekutif_kode_ubah,
+        cob: sep_cob_kode_ubah,
+        katarak: sep_katarak_kode_ubah,
+        lakalantas: sep_status_kecelakaan_kode_ubah,
+        tglkkl: kejadian_ubah,
+        keterangankkl: ket_ubah,
+        suplesi: sep_suplesi_kode_ubah,
+        no_sep_suplesi: no_suplesi_ubah,
+        kdprop : id_provinsi_ubah,
+        nmprop : provinsi_ubah,
+        kdkab : id_kabupaten_ubah,
+        nmkab : kabupaten_ubah,
+        kdkec : id_kecamatan_ubah,
+        nmkec : kecamatan_ubah,
+        nmdpjppelayanan: dokter_ubah_nm,
+        kddpjppelayanan: dokter_ubah,
+        notelep: telepon_ubah,
+      },
+      success: function(result){
+        var messages = result.split(' ');
+        if (messages.length == 1) {
+          Swal.fire(
+            'Good job!',
+            'SEP Berhasil diubah',
+            'success'
+          );
+        } else if(messages.length > 1) {
+          alert(result)
+        } else {
+          alert('Gagal menyimpan data ke database SIMRS');
+        }
+      }
+    })
   })
 </script>
 <script type="text/javascript">
