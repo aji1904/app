@@ -64,6 +64,7 @@
                   </div>
               </div>
           </div>
+          <input type="hidden" name="noSPRI" id="noSPRI" value=""/>
           <div class="row clearfix">
               <div class="col-md-12 add_update">
                 <button type="button" class="btn btn-primary" id="load_spri">Load</button>
@@ -159,7 +160,7 @@
 
     $('.simpan_spri').remove()
     $('#update_spri').remove()
-    $('.add_update').append('<button type="button" class="btn btn-primary" id="update_spri">Update</button>')
+    $('.add_update').append('<button type="button" class="btn btn-primary update_spri" id="update_spri">Update</button>')
 
 
     var kd_dokter_bpjs_spri = $(this).attr("data-kd_dokter");
@@ -168,22 +169,29 @@
     var tgl_rencana = $(this).attr("data-tgl_rencana");
     var nm_dokter = $(this).attr("data-nm_dokter");
     var nm_poli = $(this).attr("data-nm_poli");
-
+    var noSPRI = $(this).attr("data-no_spri");
     
     var tanggal_surat   = $('input:text[name=tanggal_rujukan_spri]').val(tgl_rencana);
     var tanggal_periksa = $('input:text[name=tanggal_datang_spri]').val(tgl_surat);
-    var poli            = $('input:text[name=kd_poli_bpjs_spri]').val(kd_poli_bpjs_spri);
-    var dokter          = $('input:text[name=kd_dokter_bpjs_spri]').val(kd_dokter_bpjs_spri);
+    var poli            = $('#kd_poli_bpjs_spri').val(kd_poli_bpjs_spri);
+    var dokter          = $('#kd_dokter_bpjs_spri').val(kd_dokter_bpjs_spri);
+    var no_surat          = $('#noSPRI').val(noSPRI);
     $('input:text[name=nm_dokter_bpjs_spri]').val(nm_dokter);
     $('input:text[name=nm_poli_bpjs_spri]').val(nm_poli);
     
   });
 
 
-  $("#spridisplay").on("click", "#update_spri", function(event){
+  $("#form_spri").on("click", ".update_spri", function(event){
+    var no_surat  = $('#noSPRI').val();
+    var tanggal_surat   = $('#tanggal_rujukan_spri').val();
+    var tanggal_periksa = $('#tanggal_datang_spri').val();
+    var poli            = $('#kd_poli_bpjs_spri').val();
+    var dokter          = $('#kd_dokter_bpjs_spri').val();
+
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    var url = baseURL + '/vclaim/updatespri/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
+    var url = baseURL + '/vclaim/updatespri/'+ no_surat +'/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
 
     $.post(url,{
       tanggal_surat : tanggal_surat,

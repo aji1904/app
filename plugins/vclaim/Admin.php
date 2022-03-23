@@ -2590,7 +2590,7 @@ class Admin extends AdminModule
       $this->tpl->set('no_kartu', $no_kartu);
       $this->tpl->set('no_rawat', revertNorawat($no_rawat));
       $this->tpl->set('spri', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_pri_bpjs)));
-      echo $this->draw('int.display.html');
+      echo $this->draw('intupdate.display.html');
       exit();
     }
 
@@ -2649,7 +2649,7 @@ class Admin extends AdminModule
         exit();
     }
 
-    public function postUpdateSPRI($no_kartu, $no_rawat)
+    public function postUpdateSPRI($no_surat, $no_rawat)
     {
         date_default_timezone_set('UTC');
         $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
@@ -2658,7 +2658,7 @@ class Admin extends AdminModule
 
         $data = [
           'request' => [
-              'noKartu' => $no_kartu,
+              'noSPRI' => $no_surat,
               'kodeDokter' => $_POST['dokter'],
               'poliKontrol' => $_POST['poli'],
               'tglRencanaKontrol' => $_POST['tanggal_periksa'],
@@ -2668,8 +2668,8 @@ class Admin extends AdminModule
 
         $data = json_encode($data);
 
-        $url = $this->api_url.'RencanaKontrol/InsertSPRI';
-        $output = BpjsService::post($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+        $url = $this->api_url.'RencanaKontrol/UpdateSPRI';
+        $output = BpjsService::put($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
         $data = json_decode($output, true);
         if ($data == NULL) {
           echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';
@@ -2683,18 +2683,14 @@ class Admin extends AdminModule
           $maping_poli_bpjs = $this->db('maping_poli_bpjs')->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
           $diagnosa_pasien =  $this->db('bridging_sep')->where('no_rawat', revertNorawat($no_rawat))->oneArray();
 
-          $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')->save([
-            'no_rawat' => revertNorawat($no_rawat),
-            'no_kartu' => $no_kartu,
+          $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')->where('no_surat', $no_surat)->update([
             'tgl_surat' => $_POST['tanggal_surat'],
-            'no_surat' => $spri['noSPRI'],
             'tgl_rencana' => $_POST['tanggal_periksa'],
             'kd_dokter_bpjs' => $_POST['dokter'],
             'nm_dokter_bpjs' => $maping_dokter_dpjpvclaim['nm_dokter_bpjs'],
             'kd_poli_bpjs' => $_POST['poli'],
             'nm_poli_bpjs' => $maping_poli_bpjs['nm_poli_bpjs'],
             'diagnosa' => $diagnosa_pasien['nmdiagnosaawal'],
-            'no_sep' => $diagnosa_pasien['no_sep']
           ]);
 
           echo $data['metaData']['code'];
@@ -3179,6 +3175,7 @@ class Admin extends AdminModule
 
         $data = [
           'request' => [
+              'noSuratKontrol' => $_POST['no_surat'],
               'noSEP' => $_POST['no_sep'],
               'kodeDokter' => $_POST['dokter'],
               'poliKontrol' => $_POST['poli'],
@@ -3189,8 +3186,8 @@ class Admin extends AdminModule
 
         $data = json_encode($data);
 
-        $url = $this->api_url.'RencanaKontrol/insert';
-        $output = BpjsService::post($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+        $url = $this->api_url.'RencanaKontrol/Update';
+        $output = BpjsService::put($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
         $data = json_decode($output, true);
         //echo $data['metaData']['message'];
         if ($data == NULL) {
@@ -3204,10 +3201,8 @@ class Admin extends AdminModule
           $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter_bpjs', $_POST['dokter'])->oneArray();
           $maping_poli_bpjs = $this->db('maping_poli_bpjs')->where('kd_poli_bpjs', $_POST['poli'])->oneArray();
 
-          $bridging_surat_pri_bpjs = $this->db('bridging_surat_kontrol_bpjs')->save([
-            'no_sep' => $_POST['no_sep'],
+          $bridging_surat_pri_bpjs = $this->db('bridging_surat_kontrol_bpjs')->where('no_surat',$_POST['no_surat'])->update([
             'tgl_surat' => $_POST['tanggal_surat'],
-            'no_surat' => $spri['noSuratKontrol'],
             'tgl_rencana' => $_POST['tanggal_periksa'],
             'kd_dokter_bpjs' => $_POST['dokter'],
             'nm_dokter_bpjs' => $maping_dokter_dpjpvclaim['nm_dokter_bpjs'],

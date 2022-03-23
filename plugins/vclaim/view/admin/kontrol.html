@@ -12,7 +12,7 @@
               <div class="col-md-12">
                   <div class="form-group">
                       <label>Nomor SEP</label>
-                      <input type="text" name="no_sep" id="no_sep_kontrol" class="form-control" value="{$no_sep}" readonly />
+                      <input type="text" name="no_sep_kontrol" id="no_sep_kontrol" class="form-control" value="{$no_sep}" readonly />
                   </div>
               </div>
               <div class="col-md-6">
@@ -70,6 +70,7 @@
                   </div>
               </div>
           </div>
+          <input type="hidden" name="no_surat_edit" id="no_surat_edit" value=""/>
           <div class="row clearfix">
               <div class="col-md-12 add_update_kontrol">
                 <button type="button" class="btn btn-primary" id="load_kontrol">Load</button>
@@ -115,13 +116,13 @@
   $("#form_skontrol").on("click","#load_kontrol", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
+    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
   });
 
   $(document).ready(function() {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
+    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
   });
 
   $("#form_skontrol").on("click","#simpan_kontrol", function(event){
@@ -145,7 +146,7 @@
       poli : poli
     } ,function(data) {
         // alert(data);
-        $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{$no_kartu}?t=' + mlite.token);
+        $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
         if (data == 200) {
         Swal.fire(
           'Good job!',
@@ -184,24 +185,37 @@
     var tgl_rencana = $(this).attr("data-tgl_rencana");
     var nm_dokter = $(this).attr("data-nm_dokter");
     var nm_poli = $(this).attr("data-nm_poli");
-
+    var no_surat = $(this).attr("data-no_surat");
+    var no_sep = $(this).attr("data-no_sep");
     
-    var tanggal_surat   = $('input:text[name=tanggal_rujukan_kontrol]').val(tgl_rencana);
-    var tanggal_periksa = $('input:text[name=tanggal_datang_kontrol]').val(tgl_surat);
-    var poli            = $('input:text[name=kd_poli_bpjs_kontrol]').val(kd_poli_bpjs_kontrol);
-    var dokter          = $('input:text[name=kd_dokter_bpjs_kontrol]').val(kd_dokter_bpjs_kontrol);
+    var tanggal_surat   = $('#tanggal_rujukan_kontrol').val(tgl_rencana);
+    var tanggal_periksa = $('#tanggal_datang_kontrol').val(tgl_surat);
+    var poli            = $('#kd_poli_bpjs_kontrol').val(kd_poli_bpjs_kontrol);
+    var dokter          = $('#kd_dokter_bpjs_kontrol').val(kd_dokter_bpjs_kontrol);
     $('input:text[name=nm_dokter_bpjs_kontrol]').val(nm_dokter);
     $('input:text[name=nm_poli_bpjs_kontrol]').val(nm_poli);
+    $('#no_surat_edit').val(no_surat);
+    $('#no_sep_kontrol').val(no_sep);
     
   });
 
 
-  $("#kontroldisplay").on("click", "#update_kontrol", function(event){
+  $("#form_skontrol").on("click", "#update_kontrol", function(event){
+    var tanggal_surat   = $('#tanggal_rujukan_kontrol').val();
+    var tanggal_periksa = $('#tanggal_datang_kontrol').val();
+    var poli            = $('#kd_poli_bpjs_kontrol').val();
+    var dokter          = $('#kd_dokter_bpjs_kontrol').val();
+    var no_surat        = $('#no_surat_edit').val();
+    var no_sep          = $('#no_sep_kontrol').val();
+    
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     var url = baseURL + '/vclaim/updatekontrol/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
 
+
     $.post(url,{
+      no_surat: no_surat,
+      no_sep: no_sep,
       tanggal_surat : tanggal_surat,
       tanggal_periksa : tanggal_periksa,
       dokter : dokter,
@@ -211,7 +225,7 @@
       if (data == 200) {
         Swal.fire(
           'Good job!',
-          'SPRI berhasil diupdate',
+          'Surat Kontrol berhasil diupdate',
           'success'
         )
       } else {
