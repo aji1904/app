@@ -96,6 +96,9 @@ class Admin extends AdminModule
         $_POST['nmppkpelayanan'] = $this->settings->get('settings.nama_instansi');
         $_POST['sep_user']	= $this->core->getUserInfo('fullname', null, true);
 
+        // cek sep 
+        // $data_sep = $this->db('bridging_sep')->where('no_rawat' => $_POST['no_rawat'], 'jenisPelayanan')->oneArray();
+
         $data = [
             'request' => [
                't_sep' => [
@@ -161,6 +164,7 @@ class Admin extends AdminModule
         ];
 
         $data = json_encode($data);
+        
 
         $url = $this->api_url.'SEP/2.0/insert';
         $output = BpjsService::post($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
@@ -536,9 +540,9 @@ class Admin extends AdminModule
           $hapus_sep = $this->db('bridging_sep')->where('no_sep', $_POST['no_sep'])->delete();
           $hapus_sep_internal = $this->db('bridging_sep_internal')->where('no_sep', $_POST['no_sep'])->delete();
           $hapus_prb = $this->db('bpjs_prb')->where('no_sep', $_POST['no_sep'])->delete();
-          echo $data['metaData']['message'].'!! Menghapus data SEP dengan nomor '.$_POST['no_sep'];
-        } else if($data['metaData']['code'] != 200){
           echo $data['metaData']['code'];
+        } else if($data['metaData']['code'] != 200){
+          echo $data['metaData']['message'];
         } else {
           echo $data['metaData']['message'];
         }
@@ -2520,18 +2524,16 @@ class Admin extends AdminModule
       exit();
     }
 
-    public function getSEPInternal($no_sep)
+    public function getSEPInternal($no_sep, $no_kartu)
     {
-      $this->_addHeaderFiles();
-      $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();
-      $maping_poli_bpjs = $this->db('maping_poli_bpjs')->toArray();
-      $bridging_sep = $this->db('bridging_sep')
-      ->join('reg_periksa','reg_periksa.no_rawat=bridging_sep.no_rawat')
+      $bridging_int = $this->db('bridging_sep_internal')
+      ->join('reg_periksa','reg_periksa.no_rawat=bridging_sep_internal.no_rawat')
       ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
-      ->where('bridging_sep.no_sep', $no_sep)->toArray();
-      $this->tpl->set('ubahsep', $this->tpl->noParse_array(htmlspecialchars_array($bridging_sep)));
-      $this->tpl->set('maping_dokter_dpjpvclaim', $this->tpl->noParse_array(htmlspecialchars_array($maping_dokter_dpjpvclaim)));
-      $this->tpl->set('maping_poli_bpjs', $this->tpl->noParse_array(htmlspecialchars_array($maping_poli_bpjs)));
+      ->where('bridging_sep_internal.no_sep', $no_sep)->toArray();
+      
+      $this->tpl->set('int', $this->tpl->noParse_array(htmlspecialchars_array($bridging_int)));
+      $this->tpl->set('no_sep', $no_sep);
+      $this->tpl->set('no_kartu', $no_kartu);
       echo $this->draw('sep.internal.html');
       exit();
     }
@@ -2544,7 +2546,6 @@ class Admin extends AdminModule
       ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
       ->where('reg_periksa.no_rawat', $no_rawat)->toArray();
       
-      $this->tpl->set('spri', $this->tpl->noParse_array(htmlspecialchars_array($bridging_srb)));
       $this->tpl->set('no_kartu', $no_kartu);
       $this->tpl->set('no_rawat', revertNorawat($no_rawat));
       $this->tpl->set('no_sep', $no_sep);
@@ -2582,15 +2583,15 @@ class Admin extends AdminModule
 
     public function getIntDisplay($no_kartu, $no_rawat)
     {
-      $bridging_surat_pri_bpjs = $this->db('bridging_surat_pri_bpjs')
+      $bridging_surat_pri_bpjs = $this->db('bridging_sep_internal')
       ->join('reg_periksa', 'reg_periksa.no_rawat=bridging_surat_pri_bpjs.no_rawat')
       ->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
-      ->where('no_kartu', $no_kartu)->toArray();
+      ->where('bridging_sep_internal.no_kartu', $no_kartu)->toArray();
 
       $this->tpl->set('no_kartu', $no_kartu);
       $this->tpl->set('no_rawat', revertNorawat($no_rawat));
       $this->tpl->set('spri', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_pri_bpjs)));
-      echo $this->draw('intupdate.display.html');
+      echo $this->draw('internal.display.html');
       exit();
     }
 

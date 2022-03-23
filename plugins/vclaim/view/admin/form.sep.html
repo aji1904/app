@@ -697,11 +697,13 @@
 </script>
 <script type="text/javascript">
   $("#form_sep").on("click",".sep_internal", function(event){
+    var no_sep = $(this).attr("data-no_sep");
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     
     var no_sep = $(this).attr("data-no_sep");
-    var loadURL =  baseURL + '/vclaim/sepinternal/' + no_sep + '?t=' + mlite.token;
+    var loadURL =  baseURL + '/vclaim/sepinternal/' + no_sep + '/' + no_peserta + '?t=' + mlite.token;
 
     var modal = $('#internalModal');
     var modalContent = $('#internalModal .modal-content');
@@ -876,16 +878,16 @@
         $.post(url, {
         no_sep: no_sep
         } ,function(data) {
-          if (data == 201) {
+          if (data != 200) {
             Swal.fire(
                 'Gagal!',
-                'Surat Kontrol sudah diterbitkan',
+                data,
                 'error'
               );
             } else {
               Swal.fire(
                 'Good job!',
-                data,
+                'Berhasil Menghapus SEP',
                 'success'
               );
           }      

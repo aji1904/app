@@ -1,241 +1,319 @@
 <div class="modal-header">
-  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span> Tutup</button>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span> Tutup
+  </button>
   <h4 class="modal-title">SEP Internal</h4>
 </div>
 <div class="modal-body">
-
-<div id="form_int">
-  <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="row clearfix">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label>Dokter</label>
-                    <input
-                      type="text"
-                      name="nm_dokter_bpjs_int"
-                      id="nm_dokter_bpjs_int"
-                      class="form-control"
-                    />
-                    <input
-                      type="hidden"
-                      name="kd_dokter_bpjs_int"
-                      id="kd_dokter_bpjs_int"
-                    />
-                    <ul
-                      class="list-group"
-                      id="dpjplayananList_int"
-                      style="z-index: 1000; position: absolute; width: 100%"
-                    ></ul>
-                </div>
+  <div id="form_int">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row clearfix">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Nomor SEP</label>
+                <input
+                  type="text"
+                  name="no_sep_kontrol"
+                  id="no_sep_kontrol"
+                  class="form-control"
+                  value="{$no_sep}"
+                  readonly
+                />
+              </div>
             </div>
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label>Poli/Unit</label>
-                    <input
-                      type="text"
-                      name="nm_poli_bpjs_int"
-                      id="nm_poli_bpjs_int"
-                      class="form-control"
-                    />
-                    <input
-                      type="hidden"
-                      name="kd_poli_bpjs_int"
-                      id="kd_poli_bpjs_int"
-                    />
-                    <ul
-                      class="list-group"
-                      id="poliList_ubah_int"
-                      style="z-index: 1000; position: absolute; width: 100%"
-                    ></ul>
-                </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Nama</label>
+                {loop: $int}
+                <input
+                  type="text"
+                  name="nama_int"
+                  id="nama_int"
+                  class="form-control"
+                  value="{$value.nm_pasien}"
+                  readonly
+                />
+                {/loop}
+              </div>
             </div>
-        </div>
-        <div class="row clearfix">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Nomor Rawat</label>
+                {loop: $int}
+                <input
+                  type="text"
+                  name="nama_int"
+                  id="nama_int"
+                  class="form-control"
+                  value="{$value.no_rawat}"
+                  readonly
+                />
+                {/loop}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Diagnosa Pasien</label>
+                <input
+                  type="text"
+                  name="nm_dokter_bpjs_int"
+                  id="nm_dokter_bpjs_int"
+                  class="form-control"
+                />
+                <input
+                  type="hidden"
+                  name="kd_dokter_bpjs_int"
+                  id="kd_dokter_bpjs_int"
+                />
+                <ul
+                  class="list-group"
+                  id="dpjplayananList_int"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Dokter</label>
+                <input
+                  type="text"
+                  name="nm_dokter_bpjs_int"
+                  id="nm_dokter_bpjs_int"
+                  class="form-control"
+                />
+                <input
+                  type="hidden"
+                  name="kd_dokter_bpjs_int"
+                  id="kd_dokter_bpjs_int"
+                />
+                <ul
+                  class="list-group"
+                  id="dpjplayananList_int"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Poli/Unit</label>
+                <input
+                  type="text"
+                  name="nm_poli_bpjs_int"
+                  id="nm_poli_bpjs_int"
+                  class="form-control"
+                />
+                <input
+                  type="hidden"
+                  name="kd_poli_bpjs_int"
+                  id="kd_poli_bpjs_int"
+                />
+                <ul
+                  class="list-group"
+                  id="poliList_ubah_int"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+              </div>
+            </div>
+          </div>
+          <div class="row clearfix">
             <div class="col-md-12 add_update">
-              <button type="button" class="btn btn-primary" id="load_int">Load</button>
-              <button type="button" class="btn btn-primary simpan_int" id="simpan_int">Simpan</button>
+              <button type="button" class="btn btn-primary" id="load_int">
+                Load
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary simpan_int"
+                id="simpan_int"
+              >
+                Simpan
+              </button>
             </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<br><br>
+  <br /><br />
 
-<div id="intdisplay">
-</div>
+  <div id="intdisplay"></div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+  <button type="button" class="btn btn-primary" data-dismiss="modal">
+    Tutup
+  </button>
 </div>
 
-
 <script type="text/javascript">
-$("#form_int").on("click","#load_int", function(event){
-  var baseURL = mlite.url + '/' + mlite.admin;
-  event.preventDefault();
-  $("#intdisplay").show().load(baseURL + '/vclaim/intdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
-});
-
-$(document).ready(function() {
-  var baseURL = mlite.url + '/' + mlite.admin;
-  event.preventDefault();
-  $("#intdisplay").show().load(baseURL + '/vclaim/intdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
-});
-
-$("#form_int").on("click","#simpan_int", function(event){
-  var baseURL = mlite.url + '/' + mlite.admin;
-  event.preventDefault();
-
-  var poli            = $('#kd_poli_bpjs_int').val();
-  var dokter          = $('#kd_dokter_bpjs_int').val();
-  // alert(tanggal_surat)
-
-  var url = baseURL + '/vclaim/saveint/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
-
-  $.post(url,{
-    dokter : dokter,
-    poli : poli
-  } ,function(data) {
-    $("#intdisplay").show().load(baseURL + '/vclaim/intdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
-    if (data == 200) {
-      Swal.fire(
-        'Good job!',
-        'SEP Internal berhasil disimpan',
-        'success'
-      )
-    } else {
-      Swal.fire(
-        'Gagal!',
-        data,
-        'error'
-      )
-    }
+  $("#form_int").on("click", "#load_int", function (event) {
+    var baseURL = mlite.url + "/" + mlite.admin;
+    event.preventDefault();
+    $("#intdisplay")
+      .show()
+      .load(
+        baseURL + "/vclaim/intdisplay/{$no_kartu}/{$no_sep}?t=" + mlite.token
+      );
   });
 
-});
-
-$("#intdisplay").on("click", ".edit", function(event){
-
-  $('.simpan_int').remove()
-  $('#update_int').remove()
-  $('.add_update').append('<button type="button" class="btn btn-primary" id="update_int">Update</button>')
-
-
-  var kd_dokter_bpjs_int = $(this).attr("data-kd_dokter");
-  var kd_poli_bpjs_int = $(this).attr("data-kd_poli");
-  var nm_dokter = $(this).attr("data-nm_dokter");
-  var nm_poli = $(this).attr("data-nm_poli");
-
-  var poli            = $('input:text[name=kd_poli_bpjs_int]').val(kd_poli_bpjs_int);
-  var dokter          = $('input:text[name=kd_dokter_bpjs_int]').val(kd_dokter_bpjs_int);
-  $('input:text[name=nm_dokter_bpjs_int]').val(nm_dokter);
-  $('input:text[name=nm_poli_bpjs_int]').val(nm_poli);
-  
-});
-
-
-$("#intdisplay").on("click", "#update_int", function(event){
-  var baseURL = mlite.url + '/' + mlite.admin;
-  event.preventDefault();
-  var url = baseURL + '/vclaim/updateint/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
-
-  $.post(url,{
-    tanggal_surat : tanggal_surat,
-    tanggal_periksa : tanggal_periksa,
-    dokter : dokter,
-    poli : poli
-  } ,function(data) {
-    $("#intdisplay").show().load(baseURL + '/vclaim/intdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
-    if (data == 200) {
-      Swal.fire(
-        'Good job!',
-        'SEP Internal berhasil diupdate',
-        'success'
-      )
-    } else {
-      Swal.fire(
-        'Gagal!',
-        data,
-        'error'
-      )
-    }
+  $(document).ready(function () {
+    var baseURL = mlite.url + "/" + mlite.admin;
+    event.preventDefault();
+    $("#intdisplay")
+      .show()
+      .load(
+        baseURL + "/vclaim/intdisplay/{$no_kartu}/{$no_sep}?t=" + mlite.token
+      );
   });
-});
 
+  $("#form_int").on("click", "#simpan_int", function (event) {
+    var baseURL = mlite.url + "/" + mlite.admin;
+    event.preventDefault();
 
+    var poli = $("#kd_poli_bpjs_int").val();
+    var dokter = $("#kd_dokter_bpjs_int").val();
+    // alert(tanggal_surat)
+
+    var url = baseURL + "/vclaim/saveint?t=" + mlite.token;
+
+    $.post(
+      url,
+      {
+        dokter: dokter,
+        poli: poli,
+      },
+      function (data) {
+        $("#intdisplay")
+          .show()
+          .load(
+            baseURL + "/vclaim/intdisplay/{$no_kartu}/{no_sep}?t=" + mlite.token
+          );
+        if (data == 200) {
+          Swal.fire("Good job!", "SEP Internal berhasil disimpan", "success");
+        } else {
+          Swal.fire("Gagal!", data, "error");
+        }
+      }
+    );
+  });
+
+  $("#intdisplay").on("click", ".edit", function (event) {
+    $(".simpan_int").remove();
+    $("#update_int").remove();
+    $(".add_update").append(
+      '<button type="button" class="btn btn-primary" id="update_int">Update</button>'
+    );
+
+    var kd_dokter_bpjs_int = $(this).attr("data-kd_dokter");
+    var kd_poli_bpjs_int = $(this).attr("data-kd_poli");
+    var nm_dokter = $(this).attr("data-nm_dokter");
+    var nm_poli = $(this).attr("data-nm_poli");
+
+    var poli = $("input:text[name=kd_poli_bpjs_int]").val(kd_poli_bpjs_int);
+    var dokter = $("input:text[name=kd_dokter_bpjs_int]").val(
+      kd_dokter_bpjs_int
+    );
+    $("input:text[name=nm_dokter_bpjs_int]").val(nm_dokter);
+    $("input:text[name=nm_poli_bpjs_int]").val(nm_poli);
+  });
+
+  $("#intdisplay").on("click", "#update_int", function (event) {
+    var baseURL = mlite.url + "/" + mlite.admin;
+    event.preventDefault();
+    var url = baseURL + "/vclaim/updateint?t=" + mlite.token;
+
+    $.post(
+      url,
+      {
+        tanggal_surat: tanggal_surat,
+        tanggal_periksa: tanggal_periksa,
+        dokter: dokter,
+        poli: poli,
+      },
+      function (data) {
+        $("#intdisplay")
+          .show()
+          .load(
+            baseURL + "/vclaim/intdisplay/{$no_kartu}/{no_sep}?t=" + mlite.token
+          );
+        if (data == 200) {
+          Swal.fire("Good job!", "SEP Internal berhasil diupdate", "success");
+        } else {
+          Swal.fire("Gagal!", data, "error");
+        }
+      }
+    );
+  });
 </script>
 <script type="text/javascript">
-$('#nm_dokter_bpjs_int').keyup(function(){
-     var query = $(this).val();
-     if(query != '')
-     {
-          $.ajax({
-               url: '{?=url()?}/admin/vclaim/mappingdokter/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
-               method:"GET",
-               data:{},
-               success:function(data)
-               {
-                   var data = JSON.parse(data);
-                   var json_obj = [data];
-                   var output='';
-                   var dokter = json_obj[0];
-                   if(dokter != '') {
-                     for (var i in dokter) {
-                       output+='<li class=\"list-group-item link-class\">' + dokter[i].kd_dokter_bpjs + ': ' + dokter[i].nm_dokter_bpjs + '</li>';
+  $('#nm_dokter_bpjs_int').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/admin/vclaim/mappingdokter/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     var dokter = json_obj[0];
+                     if(dokter != '') {
+                       for (var i in dokter) {
+                         output+='<li class=\"list-group-item link-class\">' + dokter[i].kd_dokter_bpjs + ': ' + dokter[i].nm_dokter_bpjs + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">Dokter tidak ditemukan</li>';
                      }
-                   } else {
-                     output+='<li class=\"list-group-item link-class\">Dokter tidak ditemukan</li>';
-                   }
-                   output+='';
-                   $('#dpjplayananList_int').fadeIn();
-                   $('#dpjplayananList_int').html(output).show();
-               }
-          });
-     }
-});
-$('#dpjplayananList_int').on('click', 'li', function(){
-     $('#nm_dokter_bpjs_int').val($(this).text().split(': ')[1]);
-     $('#kd_dokter_bpjs_int').val($(this).text().split(': ')[0]);
-     var dokter = $('#kd_dokter_bpjs_int').val();
-     $('#dpjplayananList_int').fadeOut();
-});
+                     output+='';
+                     $('#dpjplayananList_int').fadeIn();
+                     $('#dpjplayananList_int').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#dpjplayananList_int').on('click', 'li', function(){
+       $('#nm_dokter_bpjs_int').val($(this).text().split(': ')[1]);
+       $('#kd_dokter_bpjs_int').val($(this).text().split(': ')[0]);
+       var dokter = $('#kd_dokter_bpjs_int').val();
+       $('#dpjplayananList_int').fadeOut();
+  });
 </script>
 <script type="text/javascript">
-$('#nm_poli_bpjs_int').keyup(function(){
-     var query = $(this).val();
-     if(query != '')
-     {
-          $.ajax({
-               url: '{?=url()?}/admin/vclaim/mappingpoli/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
-               method:"GET",
-               data:{},
-               success:function(data)
-               {
-                   var data = JSON.parse(data);
-                   var json_obj = [data];
-                   var output='';
-                   var poli = json_obj[0];
-                   if(poli != '') {
-                     for (var i in poli) {
-                       output+='<li class=\"list-group-item link-class\">' + poli[i].kd_poli_bpjs + ': ' + poli[i].nm_poli_bpjs + '</li>';
+  $('#nm_poli_bpjs_int').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/admin/vclaim/mappingpoli/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     var poli = json_obj[0];
+                     if(poli != '') {
+                       for (var i in poli) {
+                         output+='<li class=\"list-group-item link-class\">' + poli[i].kd_poli_bpjs + ': ' + poli[i].nm_poli_bpjs + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">Poliklinik tidak ditemukan</li>';
                      }
-                   } else {
-                     output+='<li class=\"list-group-item link-class\">Poliklinik tidak ditemukan</li>';
-                   }
-                   output+='';
-                   $('#poliList_ubah_int').fadeIn();
-                   $('#poliList_ubah_int').html(output).show();
-               }
-          });
-     }
-});
-$('#poliList_ubah_int').on('click', 'li', function(){
-     $('#nm_poli_bpjs_int').val($(this).text().split(': ')[1]);
-     $('#kd_poli_bpjs_int').val($(this).text().split(': ')[0]);
-     var poli = $('#kd_poli_bpjs_int').val();
-     $('#poliList_ubah_int').fadeOut();
-});
+                     output+='';
+                     $('#poliList_ubah_int').fadeIn();
+                     $('#poliList_ubah_int').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#poliList_ubah_int').on('click', 'li', function(){
+       $('#nm_poli_bpjs_int').val($(this).text().split(': ')[1]);
+       $('#kd_poli_bpjs_int').val($(this).text().split(': ')[0]);
+       var poli = $('#kd_poli_bpjs_int').val();
+       $('#poliList_ubah_int').fadeOut();
+  });
 </script>
