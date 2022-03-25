@@ -15,61 +15,55 @@
                 <label>Nomor SEP</label>
                 <input
                   type="text"
-                  name="no_sep_kontrol"
-                  id="no_sep_kontrol"
+                  name="no_sep_int"
+                  id="no_sep_int"
                   class="form-control"
                   value="{$no_sep}"
                   readonly
                 />
               </div>
             </div>
+            {loop: $int}
             <div class="col-md-6">
               <div class="form-group">
                 <label>Nama</label>
-                {loop: $int}
                 <input
                   type="text"
-                  name="nama_int"
-                  id="nama_int"
                   class="form-control"
                   value="{$value.nm_pasien}"
                   readonly
                 />
-                {/loop}
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Nomor Rawat</label>
-                {loop: $int}
                 <input
                   type="text"
-                  name="nama_int"
-                  id="nama_int"
                   class="form-control"
                   value="{$value.no_rawat}"
                   readonly
                 />
-                {/loop}
               </div>
             </div>
+            {/loop}
             <div class="col-md-6">
               <div class="form-group">
                 <label>Diagnosa Pasien</label>
                 <input
                   type="text"
-                  name="nm_dokter_bpjs_int"
-                  id="nm_dokter_bpjs_int"
+                  name="sep_diagnosa_nama_int"
+                  id="sep_diagnosa_nama_int"
                   class="form-control"
                 />
                 <input
                   type="hidden"
-                  name="kd_dokter_bpjs_int"
-                  id="kd_dokter_bpjs_int"
+                  name="sep_diagnosa_kode_int"
+                  id="sep_diagnosa_kode_int"
                 />
                 <ul
                   class="list-group"
-                  id="dpjplayananList_int"
+                  id="diagnosaList_int"
                   style="z-index: 1000; position: absolute; width: 100%"
                 ></ul>
               </div>
@@ -116,6 +110,40 @@
                 ></ul>
               </div>
             </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Tanggal SEP Internal</label>
+                <input
+                  type="text"
+                  name="tanggal_int"
+                  id="tanggal_int"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            {if: $value.tujuankunjungan != '0'}
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Asesment Pelayanan</label>
+                <input
+                  type="text"
+                  name="nm_asesment_int"
+                  id="nm_asesment_int"
+                  class="form-control"
+                />
+                <input
+                  type="hidden"
+                  name="kd_asesment_int"
+                  id="kd_asesment_int"
+                />
+                <ul
+                  class="list-group"
+                  id="asesmentList_int"
+                  style="z-index: 1000; position: absolute; width: 100%"
+                ></ul>
+              </div>
+            </div>
+            {/if}
           </div>
           <div class="row clearfix">
             <div class="col-md-12 add_update">
@@ -170,17 +198,30 @@
     var baseURL = mlite.url + "/" + mlite.admin;
     event.preventDefault();
 
-    var poli = $("#kd_poli_bpjs_int").val();
-    var dokter = $("#kd_dokter_bpjs_int").val();
-    // alert(tanggal_surat)
+    var kd_poli_int = $("#kd_poli_bpjs_int").val();
+    var nm_poli_int = $("#nm_poli_bpjs_int").val();
+    var kd_dokter_int = $("#kd_dokter_bpjs_int").val();
+    var nm_dokter_int = $("#nm_dokter_bpjs_int").val();
+    var no_sep_int = $("#no_sep_int").val();
+    var tgl_sep_int = $("#tanggal_int").val();
+    var kd_diagnosa_int = $("#sep_diagnosa_kode_int").val();
+    var nm_diagnosa_int = $("#sep_diagnosa_nama_int").val();
+    var kd_asesmen_int = $("#kd_asesment_int").val();
 
     var url = baseURL + "/vclaim/saveint?t=" + mlite.token;
 
     $.post(
       url,
       {
-        dokter: dokter,
-        poli: poli,
+        no_sep: no_sep_int,
+        tglsepint: tgl_sep_int,
+        diagawal: kd_diagnosa_int,
+        nmdiagawal: nm_diagnosa_int,
+        kdpolitujuan: kd_poli_int,
+        nmpolitujuan: nm_poli_int,
+        assesmentPel: kd_asesmen_int,
+        kddpjppelayanan: kd_dokter_int,
+        nmdpjppelayanan: nm_dokter_int,
       },
       function (data) {
         $("#intdisplay")
@@ -188,11 +229,12 @@
           .load(
             baseURL + "/vclaim/intdisplay/{$no_kartu}/{no_sep}?t=" + mlite.token
           );
-        if (data == 200) {
-          Swal.fire("Good job!", "SEP Internal berhasil disimpan", "success");
-        } else {
-          Swal.fire("Gagal!", data, "error");
-        }
+        // if (data == 200) {
+        //   Swal.fire("Good job!", "SEP Internal berhasil disimpan", "success");
+        // } else {
+        //   Swal.fire("Gagal!", data, "error");
+        // }
+        console.log(data)
       }
     );
   });
@@ -315,5 +357,71 @@
        $('#kd_poli_bpjs_int').val($(this).text().split(': ')[0]);
        var poli = $('#kd_poli_bpjs_int').val();
        $('#poliList_ubah_int').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $('#sep_diagnosa_nama_int').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/admin/vclaim/diagnosa/' + encodeURIComponent(query) + '?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     if(json_obj[0].metaData.code == 200) {
+                       var diagnosa = json_obj[0].response.diagnosa;
+                       for (var i in diagnosa) {
+                         output+='<li class=\"list-group-item link-class\">' + diagnosa[i].kode + ': ' + diagnosa[i].nama + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
+                     }
+                     output+='';
+                     //console.log(output);
+                     $('#diagnosaList_int').fadeIn();
+                     $('#diagnosaList_int').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#diagnosaList_int').on('click', 'li', function(){
+       $('#sep_diagnosa_nama_int').val($(this).text().split(': ')[1]);
+       $('#sep_diagnosa_kode_int').val($(this).text().split(': ')[0]);
+       var sep_diagnosa_kode = $('#sep_diagnosa_kode_int').val();
+       $('#diagnosaList_int').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $('#nm_asesment_int').on('click',function(){
+    var output='';
+       output+='<li class=\"list-group-item link-class\">1: Poli spesialis tidak tersedia pada hari sebelumnya</li>';
+       output+='<li class=\"list-group-item link-class\">2: Jam Poli telah berakhir pada hari sebelumnya</li>';
+       output+='<li class=\"list-group-item link-class\">3: Dokter Spesialis yang dimaksud tidak praktek pada hari sebelumnya</li>';
+       output+='<li class=\"list-group-item link-class\">4: Atas Instruksi RS</li>';
+       output+='<li class=\"list-group-item link-class\">5: Tujuan Kontrol</li>';
+       output+='';
+    $('#asesmentList_int').fadeIn();
+    $('#asesmentList_int').html(output).show();
+  
+  $('#asesmentList_int').on('click', 'li', function(){
+    $('#nm_asesment_int').val($(this).text().split(': ')[1]);
+    $('#kd_asesment_int').val($(this).text().split(': ')[0]);
+    var sep_assesment_kode = $('#kd_asesment_int').val();
+    $('#asesmentList_int').fadeOut();
+    });
+  });
+</script>
+<script type="text/javascript">
+  $(function () {
+      $('#tanggal_int').datetimepicker({
+        defaultDate: '{?=date('Y-m-d')?}',
+        format: 'YYYY-MM-DD',
+        locale: 'id'
+      });
   });
 </script>

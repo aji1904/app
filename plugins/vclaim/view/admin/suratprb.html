@@ -190,65 +190,46 @@
     var nama_obat = document.getElementsByName('nama_obat[]'); 
 
     var newArray_obat_nm = [];
-    for (let index = 0; index < nama_obat.length; index++) {
-      var nm_obat_1 = nama_obat[index].value;
-      var nm_obat_2 = nm_obat_1;
-      newArray_obat_nm.push(nm_obat_2++);
+    for (var index = 0; index < nama_obat.length; index++) {
+      newArray_obat_nm.push(nama_obat[index].value);
     }
-
-    console.log(nm_obat_1)
-      
+    console.log(newArray_obat_nm);
+    
     var newArray_obat = [];
     for (let index = 0; index < kd_obat.length; index++) {
-      var kode_obat = kd_obat[index].value;
-      var kode_obat2 = kode_obat;
-      newArray_obat.push(kode_obat2++);
+      newArray_obat.push(kd_obat[index].value);
     }
 
-    // console.log(newArray_obat);
+    console.log(newArray_obat);
 
     var newArray_jml_obat = [];
     for (let index = 0; index < jml_obat.length; index++) {
-      var jumlah_obat = jml_obat[index];
-      var jumlah_obat2 = jumlah_obat.value;
-      newArray_jml_obat.push(jumlah_obat2++);
+      newArray_jml_obat.push(jml_obat[index].value);
     }
 
-    // console.log(newArray_jml_obat)
+    console.log(newArray_jml_obat)
 
     var newArray_signa1 = [];
     for (let index = 0; index < signa1.length; index++) {
-      var signa1_obat = signa1[index];
-      var signa1_obat2 = signa1_obat.value;
-      newArray_signa1.push(signa1_obat2++);
+      newArray_signa1.push(signa1[index].value);
     }
 
-    // console.log(newArray_signa1)
+    console.log(newArray_signa1)
 
     var newArray_signa2 = [];
     for (let index = 0; index < signa2.length; index++) {
-      var signa2_obat= signa2[index];
-      var signa2_obat2 = signa2_obat.value;
-      newArray_signa2.push(signa2_obat2++);
+      newArray_signa2.push(signa2[index].value);
     }
 
-    // console.log(newArray_signa2)
+    console.log(newArray_signa2)
 
 
-    var newArray = newArray_obat.map(function(value, index) {
-      return value +' '+ newArray_obat_nm[index] +' '+ newArray_jml_obat[index] +' '+ newArray_signa1[index] +' '+ newArray_signa2[index];
-    });
-    // console.log(newArray);
 
-    console.log(newArray)
+    // var newArray = newArray_obat.map(function(value, index) {
+    //   return value.push(newArray_obat_nm[index].push(newArray_jml_obat[index]).push(newArray_signa1[index]).push(newArray_signa2[index]));
+    // });
+
       
-      // {
-      //   "kdObat": kd_obat,
-      //   "signa1":jml_obat,
-      //   "signa2":signa1,
-      //   "jmlObat":signa2
-      // }
-    // ];
 
     // var url = baseURL + '/vclaim/saveprb/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
 

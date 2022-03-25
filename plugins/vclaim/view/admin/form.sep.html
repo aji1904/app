@@ -699,6 +699,7 @@
   $("#form_sep").on("click",".sep_internal", function(event){
     var no_sep = $(this).attr("data-no_sep");
     var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    var nama_peserta = $('.nama_peserta').text()
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     
@@ -1128,7 +1129,7 @@
             $('input:text[name=sep_spesialis_kode]').val(json_obj[0].response.rujukan.poliRujukan.kode);
             $('input:text[name=sep_spesialis_nama]').val(json_obj[0].response.rujukan.poliRujukan.nama);
             $('input:text[name=sep_diagnosa_kode]').val(json_obj[0].response.rujukan.diagnosa.kode);
-            $('input:text[name=sep_diagnosa_nama]').val(json_obj[0].response.rujukan.diagnosa.nama);
+            $('input:text[name=sep_diagnosa_nama]').val(json_obj[0].response.rujukan.diagnosa.kode+' - '+json_obj[0].response.rujukan.diagnosa.nama);
             $('input:text[name=sep_nomor_telepon]').val(json_obj[0].response.rujukan.peserta.mr.noTelepon);
           } else {
             alert(json_obj[0].metaData.message);
@@ -1194,7 +1195,7 @@
             $('input:text[name=sep_spesialis_kode]').val(json_obj[0].response.rujukan.poliRujukan.kode);
             $('input:text[name=sep_spesialis_nama]').val(json_obj[0].response.rujukan.poliRujukan.nama);
             $('input:text[name=sep_diagnosa_kode]').val(json_obj[0].response.rujukan.diagnosa.kode);
-            $('input:text[name=sep_diagnosa_nama]').val(json_obj[0].response.rujukan.diagnosa.nama);
+            $('input:text[name=sep_diagnosa_nama]').val(json_obj[0].response.rujukan.diagnosa.kode+' - '+json_obj[0].response.rujukan.diagnosa.nama);
             $('input:text[name=sep_nomor_telepon]').val(json_obj[0].response.rujukan.peserta.mr.noTelepon);
           } else {
             alert(json_obj[0].metaData.message);
@@ -1262,7 +1263,7 @@
             $('input:text[name=sep_spesialis_kode]').val(json_obj[0].response.rujukan.poliRujukan.kode);
             $('input:text[name=sep_spesialis_nama]').val(json_obj[0].response.rujukan.poliRujukan.nama);
             $('input:text[name=sep_diagnosa_kode]').val(json_obj[0].response.rujukan.diagnosa.kode);
-            $('input:text[name=sep_diagnosa_nama]').val(json_obj[0].response.rujukan.diagnosa.nama);
+            $('input:text[name=sep_diagnosa_nama]').val(json_obj[0].response.rujukan.diagnosa.kode+' - '+json_obj[0].response.rujukan.diagnosa.nama);
             $('input:text[name=sep_nomor_telepon]').val(json_obj[0].response.rujukan.peserta.mr.noTelepon);
           } else {
             alert(json_obj[0].metaData.message);
@@ -1329,7 +1330,7 @@
             $('input:text[name=sep_spesialis_kode]').val(json_obj[0].response.rujukan.poliRujukan.kode);
             $('input:text[name=sep_spesialis_nama]').val(json_obj[0].response.rujukan.poliRujukan.nama);
             $('input:text[name=sep_diagnosa_kode]').val(json_obj[0].response.rujukan.diagnosa.kode);
-            $('input:text[name=sep_diagnosa_nama]').val(json_obj[0].response.rujukan.diagnosa.nama);
+            $('input:text[name=sep_diagnosa_nama]').val(json_obj[0].response.rujukan.diagnosa.kode+' - '+json_obj[0].response.rujukan.diagnosa.nama);
             $('input:text[name=sep_nomor_telepon]').val(json_obj[0].response.rujukan.peserta.mr.noTelepon);
           } else {
             alert(json_obj[0].metaData.message);

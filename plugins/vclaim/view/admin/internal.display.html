@@ -1,42 +1,28 @@
-<table class="table table-striped no-padding dataTables displayKontrol">
+<table class="table table-striped no-padding dataTables intdisplay">
   <thead>
     <tr>
       <th>Hapus</th>
-      <th>Edit</th>
       <th>Cetak</th>
       <th>Nama</th>
-      <th>No_Surat</th>
+      <th>No_SEP_Internal</th>
       <th>No_Rawat</th>
-      <th>No_SEP</th>
       <th>No_Kartu</th>
-      <th>Tgl.Surat</th>
-      <th>Tgl.Periksa</th>
+      <th>Tgl.SEP</th>
       <th>Dokter</th>
-      <th>Poli</th>
+      <th>Poliklinik</th>
+      <th>Diagnosa</th>
     </tr>
   </thead>
   <tbody style="cursor: pointer;">
-    {loop: $kontrol}
+    {loop: $int}
     <tr>
       <td>
         <button type="button" name="button" class="btn btn-xs btn-danger hapus" data-no_surat="{$value.no_surat}"><span class="fa fa-trash"></span> Hapus</button> 
       </td>
       <td>
-        <button type="button" name="button" class="btn btn-xs btn-info edit"
-        data-kd_dokter="{$value.kd_dokter_bpjs}" 
-        data-kd_poli="{$value.kd_poli_bpjs}" 
-        data-tgl_surat="{$value.tgl_surat}" 
-        data-nm_dokter="{$value.nm_dokter_bpjs}" 
-        data-nm_poli="{$value.nm_poli_bpjs}"  
-        data-no_sep="{$value.no_sep}"  
-        data-no_surat="{$value.no_surat}"  
-        data-tgl_rencana="{$value.tgl_rencana}"><span class="fa fa-pencil"></span> Edit</button>
-      </td>
-      <td>
         <button type="button" name="button" class="btn btn-xs btn-success cetak" data-no_surat="{$value.no_surat}"><span class="fa fa-print"></span> Cetak</button>
       </td>
       <td>{$value.nm_pasien}</td>
-      <td onclick="alert('{$value.no_surat}')" class="pilih_nosurat" data-no_surat="{$value.no_surat}" data-no_sep="{$value.no_sep}">{$value.no_surat}</td>
       <td>{$value.no_rawat}</td>
       <td>{$value.no_sep}</td>
       <td>{$value.no_kartu}</td>
@@ -58,7 +44,7 @@
   });
 </script>
 <script>
-  $(".displayKontrol").on('click','.hapus', function() {
+  $("#intdisplay").on('click','.hapus', function() {
     
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
@@ -87,7 +73,7 @@
   })
 </script>
 <script>
-  $(".displayKontrol").on('click','.cetak', function() {
+  $(".intdisplay").on('click','.cetak', function() {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     let no_surat = $(this).attr("data-no_surat");
