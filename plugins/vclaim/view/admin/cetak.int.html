@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>SEP</title>
+  <title>SEP INTERNAL</title>
   <script>
     function printContent(el){
       var restorepage = document.body.innerHTML;
@@ -270,20 +270,9 @@
               <td>
                 :
               </td>
-              <td width="450">
+              <td>
                 {$data_sep.nmdpdjp}
               </td>
-              {if: $data_sep.klsnaik != ''}
-              <td width="90">
-                Naik Kelas
-              </td>
-              <td>
-                :
-              </td>
-              <td style="font-weight: bold;">
-                {if: $data_sep.klsnaik == '1'}VVIP{elseif: $data_sep.klsnaik == '2'}VIP{elseif: $data_sep.klsnaik == '3'}KELAS I{elseif: $data_sep.klsnaik == '4'}KELAS II{elseif: $data_sep.klsnaik == '5'}KELAS III{elseif: $data_sep.klsnaik == '6'}ICCU{elseif: $data_sep.klsnaik == '7'}ICU{/if}
-              </td>
-              {/if}
             </tr>
           </table>
         </td>

@@ -121,7 +121,6 @@
                 />
               </div>
             </div>
-            {if: $value.tujuankunjungan != '0'}
             <div class="col-md-6">
               <div class="form-group">
                 <label>Asesment Pelayanan</label>
@@ -143,7 +142,6 @@
                 ></ul>
               </div>
             </div>
-            {/if}
           </div>
           <div class="row clearfix">
             <div class="col-md-12 add_update">
@@ -180,8 +178,9 @@
     $("#intdisplay")
       .show()
       .load(
-        baseURL + "/vclaim/intdisplay/{$no_kartu}/{$no_sep}?t=" + mlite.token
-      );
+        baseURL + "/vclaim/InternalDisplay/{$no_sep}?t=" + mlite.token
+        );
+        console.log(data)
   });
 
   $(document).ready(function () {
@@ -190,7 +189,7 @@
     $("#intdisplay")
       .show()
       .load(
-        baseURL + "/vclaim/intdisplay/{$no_kartu}/{$no_sep}?t=" + mlite.token
+        baseURL + "/vclaim/InternalDisplay/{$no_sep}?t=" + mlite.token
       );
   });
 
@@ -227,59 +226,10 @@
         $("#intdisplay")
           .show()
           .load(
-            baseURL + "/vclaim/intdisplay/{$no_kartu}/{no_sep}?t=" + mlite.token
-          );
-        // if (data == 200) {
-        //   Swal.fire("Good job!", "SEP Internal berhasil disimpan", "success");
-        // } else {
-        //   Swal.fire("Gagal!", data, "error");
-        // }
-        console.log(data)
-      }
-    );
-  });
-
-  $("#intdisplay").on("click", ".edit", function (event) {
-    $(".simpan_int").remove();
-    $("#update_int").remove();
-    $(".add_update").append(
-      '<button type="button" class="btn btn-primary" id="update_int">Update</button>'
-    );
-
-    var kd_dokter_bpjs_int = $(this).attr("data-kd_dokter");
-    var kd_poli_bpjs_int = $(this).attr("data-kd_poli");
-    var nm_dokter = $(this).attr("data-nm_dokter");
-    var nm_poli = $(this).attr("data-nm_poli");
-
-    var poli = $("input:text[name=kd_poli_bpjs_int]").val(kd_poli_bpjs_int);
-    var dokter = $("input:text[name=kd_dokter_bpjs_int]").val(
-      kd_dokter_bpjs_int
-    );
-    $("input:text[name=nm_dokter_bpjs_int]").val(nm_dokter);
-    $("input:text[name=nm_poli_bpjs_int]").val(nm_poli);
-  });
-
-  $("#intdisplay").on("click", "#update_int", function (event) {
-    var baseURL = mlite.url + "/" + mlite.admin;
-    event.preventDefault();
-    var url = baseURL + "/vclaim/updateint?t=" + mlite.token;
-
-    $.post(
-      url,
-      {
-        tanggal_surat: tanggal_surat,
-        tanggal_periksa: tanggal_periksa,
-        dokter: dokter,
-        poli: poli,
-      },
-      function (data) {
-        $("#intdisplay")
-          .show()
-          .load(
-            baseURL + "/vclaim/intdisplay/{$no_kartu}/{no_sep}?t=" + mlite.token
+            baseURL + "/vclaim/InternalDisplay/{no_sep}?t=" + mlite.token
           );
         if (data == 200) {
-          Swal.fire("Good job!", "SEP Internal berhasil diupdate", "success");
+          Swal.fire("Good job!", "SEP Internal berhasil disimpan", "success");
         } else {
           Swal.fire("Gagal!", data, "error");
         }
@@ -382,7 +332,6 @@
                        output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
                      }
                      output+='';
-                     //console.log(output);
                      $('#diagnosaList_int').fadeIn();
                      $('#diagnosaList_int').html(output).show();
                  }

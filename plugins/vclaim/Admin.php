@@ -2,6 +2,7 @@
 
 namespace Plugins\Vclaim;
 
+use stdClass;
 use Systems\AdminModule;
 use Systems\Lib\BpjsService;
 use Systems\Lib\QRCode;
@@ -434,7 +435,7 @@ class Admin extends AdminModule
               ]
             ]
           ],
-          'tujuanKunj' => '0',
+          'tujuanKunj' => $select_sep['tujuankunjungan'],
           'flagProcedure' => '',
           'kdPenunjang' => '',
           'assesmentPel' => $_POST['assesmentPel'],
@@ -451,143 +452,113 @@ class Admin extends AdminModule
 
     $data = json_encode($data);
 
-    echo $data;
+    $url = $this->api_url . 'SEP/2.0/insert';
+    $output = BpjsService::post($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+    $data = json_decode($output, true);
 
-    // $url = $this->api_url . 'SEP/2.0/insert';
-    // $output = BpjsService::post($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
-    // $data = json_decode($output, true);
+    // get data INternal
+    $url_internal = $this->api_url . 'SEP/Internal/'.$_POST['no_sep'];
+    $output_internal = BpjsService::get($url_internal, NULL, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+    $data_internal = json_decode($output_internal, true);
 
-    // if ($_POST['eksekutif'] == 0) {
-    //   $eksekutif = '0. Tidak';
-    // } else {
-    //   $eksekutif = '1.Ya';
-    // }
+    
+    if ($data == NULL) {
+      echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';
+    } else if ($data['metaData']['code'] == 200 && $data_internal['metaData']['code'] == 200) {
+      $code = $data['metaData']['code'];
+      $message = $data['metaData']['message'];
 
-    // if ($_POST['cob'] == 0) {
-    //   $cob = '0. Tidak';
-    // } else {
-    //   $cob = '1.Ya';
-    // }
+      
+      $stringDecrypt_internal = stringDecrypt($key, $data_internal['response']);
+      
+      if (!empty($stringDecrypt_internal)) {
+        $decompress_internal = decompress($stringDecrypt_internal);
+      }
 
-    // if ($_POST['katarak'] == 0) {
-    //   $katarak = '0. Tidak';
-    // } else {
-    //   $katarak = '1.Ya';
-    // }
+      // $data = new stdClass();
+      $data_internal = json_decode($decompress_internal,true);
+      
+      $stringDecrypt = stringDecrypt($key, $data['response']);
+      $decompress = '""';
+      if (!empty($stringDecrypt)) {
+        $decompress = decompress($stringDecrypt);
+      }
+      if ($data != null) {
+        $data = '{
+                  "metaData": {
+                    "code": "' . $code . '",
+                    "message": "' . $message . '"
+                  },
+                  "response": ' . $decompress . '}';
 
-    // if ($_POST['suplesi'] == 0) {
-    //   $suplesi = '0. Tidak';
-    // } else {
-    //   $suplesi = '1.Ya';
-    // }
+      $data = json_decode($data, true);
 
-    // if ($data == NULL) {
-
-    //   echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';
-    // } else if ($data['metaData']['code'] == 200) {
-
-    //   $code = $data['metaData']['code'];
-    //   $message = $data['metaData']['message'];
-    //   if ($this->vclaim_version == 1) {
-    //     echo json_encode($json);
-    //   } else {
-    //     $stringDecrypt = stringDecrypt($key, $data['response']);
-    //     $decompress = '""';
-    //     if (!empty($stringDecrypt)) {
-    //       $decompress = decompress($stringDecrypt);
-    //     }
-    //     if ($data != null) {
-    //       $data = '{
-    //           	"metaData": {
-    //           		"code": "' . $code . '",
-    //           		"message": "' . $message . '"
-    //           	},
-    //           	"response": ' . $decompress . '}';
-
-    //       $data = json_decode($data, true);
-
-    //       $_POST['sep_no_sep'] = $data['response']['sep']['noSep'];
-
-    //       if ($_POST['jnspelayanan'] == 1) {
-    //         $this->db('bridging_surat_pri_bpjs')->where('no_surat', $_POST['noskdp'])->update([
-    //           'no_sep' => $_POST['sep_no_sep']
-    //         ]);
-    //       }
-    //       $select_sep = $this->db('bridging_sep')->where('no_sep', $_POST['no_sep'])->orWhere('jnspelayanan', '2')->oneArray();
-
-    //       $simpan_sep = $this->db('bridging_sep_internal')->save([
-    //         'no_sep' => $select_sep['no_sep'],
-    //         'no_rawat' => $select_sep['no_rawat'],
-    //         'tglsep' => $_POST['tglsep'],
-    //         'tglrujukan' => $_POST['tglrujukan'],
-    //         'no_rujukan' => $_POST['norujukan'],
-    //         'kdppkrujukan' => $_POST['kdppkrujukan'],
-    //         'nmppkrujukan' => $_POST['nmppkrujukan'],
-    //         'kdppkpelayanan' => $_POST['kdppkpelayanan'],
-    //         'nmppkpelayanan' => $_POST['nmppkpelayanan'],
-    //         'jnspelayanan' => $_POST['jnspelayanan'],
-    //         'catatan' => $_POST['catatan'],
-    //         'diagawal' => $_POST['diagawal'],
-    //         'nmdiagnosaawal' => $_POST['nmdiagnosaawal'],
-    //         'kdpolitujuan' => $_POST['kdpolitujuan'],
-    //         'nmpolitujuan' => $_POST['nmpolitujuan'],
-    //         'klsrawat' => $_POST['klsrawat'],
-    //         'klsnaik' => $_POST['klsnaik'],
-    //         'pembiayaan' => $_POST['pembiayaan'],
-    //         'pjnaikkelas' => $_POST['pjnaikkelas'],
-    //         'lakalantas' => $_POST['lakalantas'],
-    //         'user' => $_POST['sep_user'],
-    //         'nomr' => $_POST['nomr'],
-    //         'nama_pasien' => $_POST['nama_pasien'],
-    //         'tanggal_lahir' => $_POST['tanggal_lahir'],
-    //         'peserta' => $_POST['peserta'],
-    //         'jkel' => $_POST['jenis_kelamin'],
-    //         'no_kartu' => $_POST['no_kartu'],
-    //         'tglpulang' => $_POST['tglpulang'],
-    //         'asal_rujukan' => $_POST['asal_rujukan'],
-    //         'eksekutif' => $_POST['eksekutif'],
-    //         'cob' => $_POST['cob'],
-    //         'notelep' => $_POST['notelep'],
-    //         'katarak' => $_POST['katarak'],
-    //         'tglkkl' => $_POST['tglkkl'],
-    //         'keterangankkl' => $_POST['keterangankkl'],
-    //         'suplesi' => $_POST['suplesi'],
-    //         'no_sep_suplesi' => $_POST['no_sep_suplesi'],
-    //         'kdprop' => $_POST['kdprop'],
-    //         'nmprop' => $_POST['nmprop'],
-    //         'kdkab' => $_POST['kdkab'],
-    //         'nmkab' => $_POST['nmkab'],
-    //         'kdkec' => $_POST['kdkec'],
-    //         'nmkec' => $_POST['nmkec'],
-    //         'noskdp' => $_POST['noskdp'],
-    //         'kddpjp' => $_POST['kddpjp'],
-    //         'nmdpdjp' => $_POST['nmdpdjp'],
-    //         'tujuankunjungan' => $_POST['tujuanKunj'],
-    //         'flagprosedur' => $_POST['flagProcedure'],
-    //         'penunjang' => $_POST['kdPenunjang'],
-    //         'asesmenpelayanan' => $_POST['assesmentPel'],
-    //         'kddpjplayanan' => $_POST['kddpjppelayanan'],
-    //         'nmdpjplayanan' => $_POST['nmdpjppelayanan']
-    //       ]);
-    //       if ($_POST['prolanis_prb'] !== '') {
-    //         $simpan_prb = $this->db('bpjs_prb')->save([
-    //           'no_sep' => $_POST['sep_no_sep'],
-    //           'prb' => $_POST['prolanis_prb']
-    //         ]);
-    //       }
-    //       echo $_POST['sep_no_sep'];
-    //     } else {
-    //       echo '{
-    //           	"metaData": {
-    //           		"code": "5000",
-    //           		"message": "ERROR SERVICE BPJS"
-    //           	},
-    //           	"response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
-    //       }
-    //     }
-    //   } else {
-    //     echo $data['metaData']['message'];
-    //   }
+      $simpan_sep = $this->db('bridging_sep_internal')->save([
+        'no_sep' => $select_sep['no_sep'],
+        'no_rawat' => $select_sep['no_rawat'],
+        'tglsep' => $_POST['tglsepint'],
+        'tglrujukan' => $select_sep['tglrujukan'],
+        'no_rujukan' => $select_sep['no_rujukan'],
+        'kdppkrujukan' => $select_sep['kdppkrujukan'],
+        'nmppkrujukan' => $select_sep['nmppkrujukan'],
+        'kdppkpelayanan' => $select_sep['kdppkpelayanan'],
+        'nmppkpelayanan' => $select_sep['nmppkpelayanan'],
+        'jnspelayanan' => $select_sep['jnspelayanan'],
+        'catatan' => $select_sep['catatan'],
+        'diagawal' => $_POST['diagawal'],
+        'nmdiagnosaawal' => $_POST['nmdiagawal'],
+        'kdpolitujuan' => $_POST['kdpolitujuan'],
+        'nmpolitujuan' => $_POST['nmpolitujuan'],
+        'klsrawat' => $select_sep['klsrawat'],
+        'klsnaik' => $select_sep['klsnaik'],
+        'pembiayaan' => $select_sep['pembiayaan'],
+        'pjnaikkelas' => $select_sep['pjnaikkelas'],
+        'lakalantas' => $select_sep['lakalantas'],
+        'user' => $_POST['sep_user'],
+        'nomr' => $select_sep['nomr'],
+        'nama_pasien' => $select_sep['nama_pasien'],
+        'tanggal_lahir' => $select_sep['tanggal_lahir'],
+        'peserta' => $select_sep['peserta'],
+        'jkel' => $select_sep['jkel'],
+        'no_kartu' => $select_sep['no_kartu'],
+        'tglpulang' => $select_sep['tglpulang'],
+        'asal_rujukan' => $select_sep['asal_rujukan'],
+        'eksekutif' => $select_sep['eksekutif'],
+        'cob' => $select_sep['cob'],
+        'notelep' => $select_sep['notelep'],
+        'katarak' => $select_sep['katarak'],
+        'tglkkl' => $select_sep['tglkkl'],
+        'keterangankkl' => $select_sep['keterangankkl'],
+        'suplesi' => $select_sep['suplesi'],
+        'no_sep_suplesi' => $select_sep['no_sep_suplesi'],
+        'kdprop' => $select_sep['kdprop'],
+        'nmprop' => $select_sep['nmprop'],
+        'kdkab' => $select_sep['kdkab'],
+        'nmkab' => $select_sep['nmkab'],
+        'kdkec' => $select_sep['kdkec'],
+        'nmkec' => $select_sep['nmkec'],
+        'noskdp' => $data_internal['list'][0]['nosurat'],
+        'kddpjp' => $_POST['kddpjppelayanan'],
+        'nmdpdjp' => $_POST['nmdpjppelayanan'],
+        'tujuankunjungan' => $select_sep['tujuankunjungan'],
+        'flagprosedur' => $select_sep['flagprosedur'],
+        'penunjang' => $select_sep['penunjang'],
+        'asesmenpelayanan' => $_POST['assesmentPel'],
+        'kddpjplayanan' => $_POST['kddpjppelayanan'],
+        'nmdpjplayanan' => $_POST['nmdpjppelayanan']
+      ]);
+      echo $data['metaData']['code'];
+    } else {
+      echo '{
+            "metaData": {
+              "code": "5000",
+              "message": "ERROR SERVICE BPJS"
+            },
+            "response": "ADA KESALAHAN ATAU SAMBUNGAN KE SERVER BPJS TERPUTUS."}';
+    }
+  } else {
+    echo $data['metaData']['message'];
+  }
 
     exit();
   }
@@ -831,6 +802,17 @@ class Admin extends AdminModule
       ->where('no_surat', $no_surat)->oneArray();
 
     echo $this->draw('cetak.spri.html', ['data_spri' => $data_spri]);
+    exit();
+  }
+
+  public function getCetakINT($no_surat)
+  {
+    $settings = $this->settings('settings');
+    $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
+    $data_int = $this->db('bridging_sep_internal')
+      ->where('no_surat', $no_surat)->oneArray();
+
+    echo $this->draw('cetak.int.html', ['data_sep' => $data_int]);
     exit();
   }
 
@@ -2794,15 +2776,15 @@ class Admin extends AdminModule
     exit();
   }
 
-  public function getIntDisplay($no_sep, $no_kartu)
+  public function getInternalDisplay($no_sep)
   {
-    $bridging_surat_int_bpjs = $this->db('bridging_sep_internal')
+    $bridging_surat_internal = $this->db('bridging_sep_internal')
       ->join('reg_periksa', 'reg_periksa.no_rawat=bridging_sep_internal.no_rawat')
       ->join('pasien', 'pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
-      ->where('bridging_sep_internal.no_sep', $no_sep)->toArray();
+      ->where('no_sep', $no_sep)->toArray();
 
-    $this->tpl->set('no_kartu', $no_kartu);
-    $this->tpl->set('int', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_int_bpjs)));
+    $this->tpl->set('no_sep', $no_sep);
+    $this->tpl->set('int', $this->tpl->noParse_array(htmlspecialchars_array($bridging_surat_internal)));
     echo $this->draw('internal.display.html');
     exit();
   }

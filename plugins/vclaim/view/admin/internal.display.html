@@ -1,35 +1,35 @@
-<table class="table table-striped no-padding dataTables intdisplay">
+<table class="table table-striped no-padding dataTables displayINTERNAL">
   <thead>
     <tr>
       <th>Hapus</th>
       <th>Cetak</th>
       <th>Nama</th>
-      <th>No_SEP_Internal</th>
+      <th>No_Surat_Internal</th>
       <th>No_Rawat</th>
       <th>No_Kartu</th>
-      <th>Tgl.SEP</th>
+      <th>No_SEP</th>
+      <th>Tgl.Surat</th>
       <th>Dokter</th>
-      <th>Poliklinik</th>
-      <th>Diagnosa</th>
+      <th>Poli</th>
     </tr>
   </thead>
   <tbody style="cursor: pointer;">
     {loop: $int}
     <tr>
       <td>
-        <button type="button" name="button" class="btn btn-xs btn-danger hapus" data-no_surat="{$value.no_surat}"><span class="fa fa-trash"></span> Hapus</button> 
+        <button type="button" name="button" class="btn btn-xs btn-danger hapus" data-no_surat="{$value.noskdp}"><span class="fa fa-trash"></span> Hapus</button> 
       </td>
       <td>
-        <button type="button" name="button" class="btn btn-xs btn-success cetak" data-no_surat="{$value.no_surat}"><span class="fa fa-print"></span> Cetak</button>
+        <button type="button" name="button" class="btn btn-xs btn-success cetak" data-no_surat="{$value.noskdp}"><span class="fa fa-print"></span> Cetak</button>
       </td>
       <td>{$value.nm_pasien}</td>
+      <td>{$value.noskdp}</td>
       <td>{$value.no_rawat}</td>
-      <td>{$value.no_sep}</td>
       <td>{$value.no_kartu}</td>
-      <td>{$value.tgl_surat}</td>
-      <td>{$value.tgl_rencana}</td>
-      <td>{$value.nm_dokter_bpjs}</td>
-      <td>{$value.nm_poli_bpjs}</td>
+      <td>{$value.no_sep}</td>
+      <td>{$value.tglsep}</td>
+      <td>{$value.nmdpdjp}</td>
+      <td>{$value.nmpolitujuan}</td>
     </tr>
     {/loop}
   </tbody>
@@ -44,15 +44,15 @@
   });
 </script>
 <script>
-  $("#intdisplay").on('click','.hapus', function() {
+  $(".displaySPRI").on('click','.hapus', function() {
     
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    var url = baseURL + '/vclaim/hapuskontrol?t=' + mlite.token;
+    var url = baseURL + '/vclaim/hapusinternal?t=' + mlite.token;
     let no_surat = $(this).attr("data-no_surat");
     
     Swal.fire({
-      title: 'Hapus data Surat Kontrol '+no_surat,
+      title: 'Hapus data SPRI '+no_surat,
       showCancelButton: true,
       confirmButtonText: 'Hapus',
     }).then((result) => {
@@ -66,18 +66,18 @@
             data,
             'success'
           );
-          $("#intdisplay").show().load(baseURL + '/vclaim/intdisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+          $("#spridisplay").show().load(baseURL + '/vclaim/internaldisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
         });
       }
     })
   })
 </script>
 <script>
-  $(".intdisplay").on('click','.cetak', function() {
+  $(".displaySPRI").on('click','.cetak', function() {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     let no_surat = $(this).attr("data-no_surat");
-    window.open(baseURL + '/vclaim/cetakint/' + no_surat + '?t=' + mlite.token);
-    // console.log(no_surat);
+    window.open(baseURL + '/vclaim/cetakinternal/' + no_surat + '?t=' + mlite.token);
   })
 </script>
+
