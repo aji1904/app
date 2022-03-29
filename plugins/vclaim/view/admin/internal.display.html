@@ -60,13 +60,21 @@
         // console.log(no_surat)
         $.post(url, {
           no_surat: no_surat
-        } ,function(data) {      
-          Swal.fire(
-            'Good job!',
-            data,
-            'success'
-          );
-          $("#intdisplay").show().load(baseURL + '/vclaim/internaldisplay/{$no_sep}?t=' + mlite.token);
+        } ,function(data) {   
+          if (data == 200) {
+            Swal.fire(
+              'Good job!',
+              data,
+              'success'
+            );
+            $("#intdisplay").show().load(baseURL + '/vclaim/internaldisplay/{$no_sep}?t=' + mlite.token);
+          } else {
+            Swal.fire(
+              'Gagal!',
+              data,
+              'error'
+            );
+          }   
         });
       }
     })

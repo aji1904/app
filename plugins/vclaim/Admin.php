@@ -376,7 +376,7 @@ class Admin extends AdminModule
   {
     $cek_internal = $this->db('bridging_sep_internal')->where('no_sep', $_POST['no_sep'])->count();
 
-    if ($cek_internal > 0) {
+    if ($cek_internal > 1) {
       echo $data = 'Sep Internal Sudah Terbit';
     } else {
       
@@ -3016,6 +3016,45 @@ class Admin extends AdminModule
     } else if ($data['metaData']['code'] == 200) {
       $hapus_sep = $this->db('bridging_surat_pri_bpjs')->where('no_surat', $_POST['no_surat'])->delete();
       echo $data['metaData']['message'] . '!! Menghapus data SPRI';
+    } else {
+      echo $data['metaData']['message'];
+    }
+    exit();
+  }
+
+  public function postHapusINTERNAL($no_surat)
+  {
+    $_POST['sep_user']  = $this->core->getUserInfo('fullname', null, true);
+    $data_int = $this->db('bridging_sep_internal')->where('noskdp', $no_surat)->oneArray();
+
+    $data = [
+      'request' => [
+        't_suratkontrol' => [
+          'noSep' => $data_int['no_sep'],
+          'noSurat' => $no_surat,
+          'tglRujukanInternal' => $data_int['tglsep'],
+          'kdPoliTuj' => $data_int['kdpolitujuan'],
+          'user' => $_POST['sep_user']
+        ]
+      ]
+    ];
+
+    $data = json_encode($data);
+
+    date_default_timezone_set('UTC');
+    $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
+    $key = $this->consid . $this->secretkey . $tStamp;
+
+    $url = $this->api_url . 'SEP/Internal/delete';
+    $output = BpjsService::delete($url, $data, $this->consid, $this->secretkey, $this->user_key, $tStamp);
+    $data = json_decode($output, true);
+
+    if ($data == NULL) {
+
+      echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';
+    } else if ($data['metaData']['code'] == 200) {
+      $hapus_sep = $this->db('bridging_surat_pri_bpjs')->where('no_surat', $_POST['no_surat'])->delete();
+      echo $data['metaData']['code'];
     } else {
       echo $data['metaData']['message'];
     }
