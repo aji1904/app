@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>SEP INTERNAL</title>
+  <title>SJP INTERNAL</title>
   <script>
     function printContent(el){
       var restorepage = document.body.innerHTML;
@@ -12,9 +12,7 @@
       window.close();
     }
     </script>
-
-    <script src="{?=url()?}/assets/jscripts/barcode.js"></script>
-    <script src="{?=url()?}/assets/jscripts/qrcode2.js"></script>
+    
 </head>
 
 <body>
@@ -65,22 +63,24 @@
         bottom: 10px;
         right: 10px;
     	}
+      .box1 {
+        width: 13px;
+        height: 13px;
+        border: 1px solid;
+      }
     </style>
     <table width="1000">
       <tr>
         <td>
           <table>
-            <tr>
-              <td width="420">
-                <img src="{?=url()?}/plugins/vclaim/img/bpjslogo.png" alt="Image" width="400" height="68">
-              </td>
-              <td width="580">
-                <div style="font-size:28px;text-align:center;font-weight:bold;">
-                  SURAT ELEGIBILITAS PESERTA
-                </div>
-                <div style="font-size:21px;text-align:center;">
+            <tr align="center">
+              <td width="1000">
+                <div style="font-size:25px;text-align:center;">
                   {$settings.nama_instansi}
                 </div>
+                <div style="font-size:25px;text-align:center;">
+                  SURAT JAMINAN PELAYANAN BPJS RAWAT {if: $data_sep.jnspelayanan == '2' }JALAN{else}INAP{/if}
+                </div>
               </td>
             </tr>
           </table>
@@ -91,13 +91,9 @@
           <table>
             <tr>
               <td width="420">
-                  <b><u>{$data_sep.potensi_prb}</u></b>
+              </br>
               </td>
               <td width="580">
-                <center>
-                  <svg id="barcode" style="max-width:200px"></svg>
-                  <!-- <img src="{?=url()?}/systems/lib/Barcode.php?codetype=code39&size=60&text={$data_sep.no_sep}" alt="" width="200px"> -->
-                </center>
               </td>
             </tr>
           </table>
@@ -107,14 +103,23 @@
         <td>
           <table>
             <tr>
-              <td width="170">
+              <td width="100">
                 No. SEP
               </td>
               <td>
                 :
               </td>
-              <td width="300">
+              <td width="400">
                 {$data_sep.no_sep}
+              </td>
+              <td width="100">
+                No. SJP
+              </td>
+              <td>
+                :
+              </td>
+              <td>
+                {$data_sep.no_rawat}
               </td>
             </tr>
           </table>
@@ -124,8 +129,17 @@
         <td>
           <table>
             <tr>
-              <td width="170">
-                Tgl. SEP Internal
+              <td width="100">
+                Tgl. SEP
+              </td>
+              <td>
+                :
+              </td>
+              <td width="400">
+                {$data_sep.tglsep}
+              </td>
+              <td width="100">
+                Tgl. SJP
               </td>
               <td>
                 :
@@ -141,92 +155,49 @@
         <td>
           <table>
             <tr>
-              <td width="170">
-                No. Surat Internal
-              </td>
-              <td>
-                :
-              </td>
-              <td>
-                {$data_sep.noskdp}
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <table>
-            <tr>
-              <td width="170">
+              <td width="100">
                 No. Kartu
               </td>
               <td>
                 :
               </td>
-              <td width="450">
-                {$data_sep.no_kartu} (MR: {$data_sep.nomr})
+              <td width="400">
+                {$data_sep.no_kartu} ( MR: {$data_sep.nomr} )
               </td>
-              <td width="90">
-                Peserta
-              </td>
-              <td>
-                :
-              </td>
-              <td>
-                {$data_sep.peserta}
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <table>
-            <tr>
-              <td width="170">
-                Nama Peserta
-              </td>
-              <td>
-                :
-              </td>
-              <td width="450">
-                {$data_sep.nama_pasien} ({$data_sep.jkel})
-              </td>
-              <td width="90">
-                COB
-              </td>
-              <td>
-                :
-              </td>
-              <td>
-                {if: $data_sep.cob == 0}0. Tidak{else}1. Ya{/if}
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <table>
-            <tr>
-              <td width="170">
+              <td width="100">
                 Tgl. Lahir
               </td>
               <td>
                 :
               </td>
-              <td width="450">
+              <td>
                 {$data_sep.tanggal_lahir}
               </td>
-              <td width="90">
-                Jns. Rawat
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td width="100">
+                No. Rujukan
               </td>
               <td>
                 :
               </td>
+              <td width="400">
+                {$data_sep.no_rujukan}
+              </td>
+              <td width="100">
+                Nama
+              </td>
               <td>
-                {if: $data_sep.jnspelayanan == 1}1. R. Inap{else}2. R.Jalan{/if}
+                :
+              </td>
+              <td style="max-width: 300px; width: 300px;">
+                {$data_sep.nama_pasien}
               </td>
             </tr>
           </table>
@@ -236,59 +207,23 @@
         <td>
           <table>
             <tr>
-              <td width="170">
-                No. Telepon
+              <td width="100">
+                Tgl. Rujukan
               </td>
               <td>
                 :
               </td>
-              <td width="450">
-                {$data_sep.notelep}
+              <td width="400">
+                {$data_sep.tglsep}
               </td>
-              <td width="90">
-                Kls. Rawat
-              </td>
-              <td>
-                :
-              </td>
-              <td>
-                Kelas {$data_sep.klsrawat}
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      {if: $data_sep.jnspelayanan == 2}
-      <tr>
-        <td>
-          <table>
-            <tr>
-              <td width="170">
-                Spesialis/Sub Spesialis
-              </td>
-              <td>
-                :
-              </td>
-              <td width="450">
-                {$data_sep.nmpolitujuan}
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      {/if}
-      <tr>
-        <td>
-          <table>
-            <tr>
-              <td width="170">
-                DPJP Yg Melayani
+              <td width="100">
+                Jns Kelamin
               </td>
               <td>
                 :
               </td>
               <td>
-                {$data_sep.nmdpdjp}
+                {if: $data_sep.jkel == 'L'}LAKI-LAKI{else}PEREMPUAN{/if}
               </td>
             </tr>
           </table>
@@ -296,98 +231,159 @@
       </tr>
       <tr>
         <td>
-          <table>
-            <tr>
-              <td width="170">
-                Faskes Perujuk
-              </td>
-              <td>
-                :
-              </td>
-              <td>
-                {$data_sep.nmppkrujukan}
-              </td>
-            </tr>
-          </table>
+        <br>
+        Penunjang
         </td>
+      </tr>
+      <tr>
+        <table>
+          <tr>
+            <td width="200">
+              <div class="box1"><font style="padding-left: 20px;">LABORATORIUM</font></div>
+            </td>
+            <td width="200">
+              <div class="box1"><font style="padding-left: 20px;">RADIOLOGI</font></div>
+            </td>
+            <td width="200">
+              <div class="box1"><font style="padding-left: 20px;">USG</font></div>
+            </td>
+            <td width="200">
+              <div class="box1"><font style="padding-left: 20px;">EKG</font></div></td>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              </br>
+              <div class="box1"><font style="padding-left: 20px;">FISIOTERAPI</font></div>
+            </td>
+            <td>
+              </br>
+              <div class="box1"><font style="padding-left: 20px;">ECHOCARDIOGRAPH</font></div>
+            </td>
+            <td>
+              </br>
+              <div class="box1"><font style="padding-left: 20px;">TREADMIL</font></div>
+            </td>
+            <td>
+              </br>
+              <div class="box1"><font style="padding-left: 20px;">LAINNYA........</font></div>
+            </td>
+          </tr>
+        </table>
+        <br><br>
       </tr>
       <tr>
         <td>
           <table>
             <tr>
-              <td width="170">
-                Diagnosa Awal
+              <td width="900">
+                <font style="font-weight: bold;">Diagnosa Utama</font>
               </td>
               <td>
-                :
-              </td>
-              <td>
-                {$data_sep.nmdiagnosaawal}
+                <font style="font-weight: bold;">ICD 10</font>
               </td>
             </tr>
           </table>
         </td>
+        <td>
+          <br><br>
+        </td>
+        <div style="border: 1px solid; width: 900px;"></div>
       </tr>
       <tr>
         <td>
+          <br>
           <table>
             <tr>
-              <td width="170" valign="top">
-                Catatan
+              <td width="900">
+                <font style="font-weight: bold;">Diagnosa Sekunder</font>
               </td>
-              <td valign="top">
-                :
-              </td>
-              <td width="280" valign="top" style="max-width: 280px;">
-                {$data_sep.catatan}
-              </td>
-              <td width="200" halign="center" valign="bottom" style="text-align: center;">
-                Pasien/Keluarga Pasien
-              </td>
-              <td width="200" halign="center" valign="bottom" style="text-align: center;">
-                
-                Petugas
+              <td>
+                <font style="font-weight: bold;">ICD 10</font>
               </td>
             </tr>
           </table>
         </td>
+        <td>
+          <br><br>
+        </td>
+        <div style="border: 1px solid; width: 900px;"></div>
+        <td>
+          <br><br>
+        </td>
+        <div style="border: 1px solid; width: 900px;"></div>
       </tr>
       <tr>
         <td>
+          <br>
           <table>
             <tr>
-              <td width="460" height="0">
-                <i style="font-size:11px;">
-                  *Saya Menyetujui BPJS Kesehatan menggunakan informasi Medis Pasien jika diperlukan.<br>
-                  **SEP bukan sebagai bukti penjaminan peserta<br>
-                  Cetakan ke 1 {?=date('d/m/Y H:i:s')?} PM<br>
-                  Masa berlaku {$data_sep.tglrujukan} s/d {$data_sep.batas_rujukan}
-                </i>
+              <td width="900">
+                <font style="font-weight: bold;">Tindakan</font>
               </td>
-              <td valign="bottom" width="200"  halign="center" padding="0" margin="0" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: clip;">
-                <center>
-                  <div id="qrcode" style="padding-bottom: 10px;"></div>
-                  {$data_sep.nama_pasien}<br>
-                </center>
-                -----------------------------------
+              <td>
+                <font style="font-weight: bold;">ICD 9</font>
               </td>
-              <td valign="bottom" width="200" halign="center" padding="0" margin="0" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: clip;">
-                <center>
-                  <div id="qrcode_pendaftaran" style="padding-bottom: 10px;"></div>
-                  {$data_sep.user}<br>
-                </center>
-                -----------------------------------
-              </td>
-              
             </tr>
           </table>
         </td>
+        <td>
+          <br><br>
+        </td>
+        <div style="border: 1px solid; width: 900px;"></div>
+        <br>
       </tr>
+
+      <tr>
+        <table>
+          <tr style="text-align: center;">
+            <td width="230">Pasien/Keluarga</td>
+            <td width="230">Verifikator RS</td>
+            <td width="230">Dokter DPJP</td>
+            <td width="230">Verifikator BPJS</td>
+          </tr>
+          <tr>
+            <td><br><br></td>
+          </tr>
+          <tr style="text-align: center;">
+            <td width="230">________________</td>
+            <td width="230">________________</td>
+            <td width="230">________________</td>
+            <td width="230">________________</td>
+          </tr>
+        </table>
+      </tr>
+      <tr>
+        <br><br><br>
+        <table>
+          <tr>
+            <td width="100">No. Resep</td>
+            <td> : </td>
+            <td width="300"></td>
+            <td>Dokter</td>
+            <td> : </td>
+            <td>{$data_sep.nmdpdjp}</td>
+
+          </tr>
+          <tr>
+            <td>Tgl. Resep</td>
+            <td> : </td>
+            <td>{$data_sep.tglsep}</td>
+            <td>Total biaya resep</td>
+            <td> : </td>
+            <td></td>
+
+          </tr>
+        </table>
+      </tr>
+
+    
+      
     </table>
   </div>
   <center style="margin-top:100px;">
     <button class="tutup" type="button" onclick="javascript:window.close();opener.window.focus();">Tutup Window</button>
-    <button class="cetak" onclick="printContent('cetaksep')" type="button">Cetak SEP</button>
+    <button class="cetak" onclick="printContent('cetaksep')" type="button">Cetak SJP</button>
   </center>
   {else}
     <center>
@@ -543,33 +539,5 @@
           });
     </script>
   {/if}
-  <script>
-    JsBarcode("#barcode", "{$data_sep.no_sep}", {
-    width: 1.6,
-    height: 30,
-    displayValue: false
-  });
-  </script>
-  <script type="text/javascript">
-    var qrcode = new QRCode(document.getElementById("qrcode"), {
-	  text: "{$data_sep.no_sep}",
-      width: 80,
-      height: 80,
-      // colorDark : "#000000",
-      colorDark : "#ffffff",
-      colorLight : "#ffffff",
-      correctLevel : QRCode.CorrectLevel.L
-    });
-
-    var qrcode = new QRCode(document.getElementById("qrcode_pendaftaran"), {
-	  text: "{$data_sep.user}",
-      width: 80,
-      height: 80,
-      colorDark : "#ffffff",
-      colorLight : "#ffffff",
-      correctLevel : QRCode.CorrectLevel.L
-    });
-  </script>
 </body>
 </html>
-

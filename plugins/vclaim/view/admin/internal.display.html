@@ -17,7 +17,7 @@
     {loop: $int}
     <tr>
       <td>
-        <button type="button" name="button" class="btn btn-xs btn-danger hapus" data-no_surat="{$value.noskdp}"><span class="fa fa-trash"></span> Hapus</button> 
+        <button type="button" name="button" class="btn btn-xs btn-danger hapus" data-no_surat="{$value.noskdp}" data-no_sep="{$value.no_sep}"><span class="fa fa-trash"></span> Hapus</button> 
       </td>
       <td>
         <button type="button" name="button" class="btn btn-xs btn-success cetak" data-no_surat="{$value.noskdp}"><span class="fa fa-print"></span> Cetak</button>
@@ -44,7 +44,7 @@
   });
 </script>
 <script>
-  $(".displaySPRI").on('click','.hapus', function() {
+  $(".displayINTERNAL").on('click','.hapus', function() {
     
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
@@ -52,7 +52,7 @@
     let no_surat = $(this).attr("data-no_surat");
     
     Swal.fire({
-      title: 'Hapus data SPRI '+no_surat,
+      title: 'Hapus data SEP Internal '+no_surat,
       showCancelButton: true,
       confirmButtonText: 'Hapus',
     }).then((result) => {
@@ -66,18 +66,19 @@
             data,
             'success'
           );
-          $("#spridisplay").show().load(baseURL + '/vclaim/internaldisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+          $("#intdisplay").show().load(baseURL + '/vclaim/internaldisplay/{$no_sep}?t=' + mlite.token);
         });
       }
     })
   })
 </script>
 <script>
-  $(".displaySPRI").on('click','.cetak', function() {
+  $(".displayINTERNAL").on('click','.cetak', function() {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     let no_surat = $(this).attr("data-no_surat");
     window.open(baseURL + '/vclaim/cetakinternal/' + no_surat + '?t=' + mlite.token);
+    window.open(baseURL + '/vclaim/cetaksjpinternal/' + no_surat + '?t=' + mlite.token);
   })
 </script>
 

@@ -374,7 +374,13 @@ class Admin extends AdminModule
 
   public function postSaveINT()
   {
+    $cek_internal = $this->db('bridging_sep_internal')->where('no_sep', $_POST['no_sep'])->count();
 
+    if ($cek_internal > 0) {
+      echo $data = 'Sep Internal Sudah Terbit';
+    } else {
+      
+      
     date_default_timezone_set('UTC');
     $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
     $key = $this->consid . $this->secretkey . $tStamp;
@@ -492,7 +498,7 @@ class Admin extends AdminModule
                   "response": ' . $decompress . '}';
 
       $data = json_decode($data, true);
-
+      
       $simpan_sep = $this->db('bridging_sep_internal')->save([
         'no_sep' => $select_sep['no_sep'],
         'no_rawat' => $select_sep['no_rawat'],
@@ -559,7 +565,8 @@ class Admin extends AdminModule
   } else {
     echo $data['metaData']['message'];
   }
-
+}
+  
     exit();
   }
 
@@ -805,12 +812,35 @@ class Admin extends AdminModule
     exit();
   }
 
-  public function getCetakINT($no_surat)
+  public function getCetakINTERNAL($no_surat)
   {
     $settings = $this->settings('settings');
     $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
     $data_int = $this->db('bridging_sep_internal')
-      ->where('no_surat', $no_surat)->oneArray();
+      ->where('noskdp', $no_surat)->oneArray();
+    
+    $batas_rujukan = strtotime('+87 days', strtotime($data_int['tglrujukan']));
+
+    $data_int['batas_rujukan'] = date('Y-m-d', $batas_rujukan);
+    $potensi_prb = $this->db('bpjs_prb')->where('no_sep', $data_int['no_sep'])->oneArray();
+    $data_int['potensi_prb'] = $potensi_prb['prb'];
+
+    echo $this->draw('cetak.sjpint.html', ['data_sep' => $data_int]);
+    exit();
+  }
+
+  public function getCetakSjpINTERNAL($no_surat)
+  {
+    $settings = $this->settings('settings');
+    $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
+    $data_int = $this->db('bridging_sep_internal')
+      ->where('noskdp', $no_surat)->oneArray();
+    
+    $batas_rujukan = strtotime('+87 days', strtotime($data_int['tglrujukan']));
+
+    $data_int['batas_rujukan'] = date('Y-m-d', $batas_rujukan);
+    $potensi_prb = $this->db('bpjs_prb')->where('no_sep', $data_int['no_sep'])->oneArray();
+    $data_int['potensi_prb'] = $potensi_prb['prb'];
 
     echo $this->draw('cetak.int.html', ['data_sep' => $data_int]);
     exit();
