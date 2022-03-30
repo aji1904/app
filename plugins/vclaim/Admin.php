@@ -90,10 +90,10 @@ class Admin extends AdminModule
   public function postSaveSEP()
   {
     // cek sep 
-    $data_sep = $this->db('bridging_sep')->where('no_rawat', $_POST['no_rawat'])->where('jnspelayanan', '2')->count();
+    $data_sep = $this->db('bridging_sep')->where('no_kartu', $_POST['no_kartu'])->where('jnspelayanan', '2')->where('tglsep',$_POST['tglsep'])->count();
 
     if ($data_sep >= '1') {
-      echo 'Data Sep Rawat Jalan Sudah Terbit';
+      echo 'Data Sep Rawat Jalan Sudah Terbit tanggal '.$_POST['tglsep'];
     } else {
       date_default_timezone_set('UTC');
       $tStamp = strval(time() - strtotime("1970-01-01 00:00:00"));
@@ -470,7 +470,6 @@ class Admin extends AdminModule
       $url_internal = $this->api_url . 'SEP/Internal/' . $_POST['no_sep'];
       $output_internal = BpjsService::get($url_internal, NULL, $this->consid, $this->secretkey, $this->user_key, $tStamp);
       $data_internal = json_decode($output_internal, true);
-
 
       if ($data == NULL) {
         echo 'Koneksi ke server BPJS terputus. Silahkan ulangi beberapa saat lagi!';

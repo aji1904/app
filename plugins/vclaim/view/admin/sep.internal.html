@@ -177,9 +177,7 @@
     event.preventDefault();
     $("#intdisplay")
       .show()
-      .load(
-        baseURL + "/vclaim/InternalDisplay/{$no_sep}?t=" + mlite.token
-        );
+      .load(baseURL + "/vclaim/InternalDisplay/{$no_sep}?t=" + mlite.token);
   });
 
   $(document).ready(function () {
@@ -187,9 +185,7 @@
     event.preventDefault();
     $("#intdisplay")
       .show()
-      .load(
-        baseURL + "/vclaim/InternalDisplay/{$no_sep}?t=" + mlite.token
-      );
+      .load(baseURL + "/vclaim/InternalDisplay/{$no_sep}?t=" + mlite.token);
   });
 
   $("#form_int").on("click", "#simpan_int", function (event) {
@@ -224,9 +220,7 @@
       function (data) {
         $("#intdisplay")
           .show()
-          .load(
-            baseURL + "/vclaim/InternalDisplay/{no_sep}?t=" + mlite.token
-          );
+          .load(baseURL + "/vclaim/InternalDisplay/{$no_sep}?t=" + mlite.token);
         if (data == 200) {
           Swal.fire("Good job!", "SEP Internal berhasil disimpan", "success");
         } else {
@@ -345,22 +339,26 @@
   });
 </script>
 <script type="text/javascript">
-  $('#nm_asesment_int').on('click',function(){
-    var output='';
-       output+='<li class=\"list-group-item link-class\">1: Poli spesialis tidak tersedia pada hari sebelumnya</li>';
-       output+='<li class=\"list-group-item link-class\">2: Jam Poli telah berakhir pada hari sebelumnya</li>';
-       output+='<li class=\"list-group-item link-class\">3: Dokter Spesialis yang dimaksud tidak praktek pada hari sebelumnya</li>';
-       output+='<li class=\"list-group-item link-class\">4: Atas Instruksi RS</li>';
-       output+='<li class=\"list-group-item link-class\">5: Tujuan Kontrol</li>';
-       output+='';
-    $('#asesmentList_int').fadeIn();
-    $('#asesmentList_int').html(output).show();
-  
-  $('#asesmentList_int').on('click', 'li', function(){
-    $('#nm_asesment_int').val($(this).text().split(': ')[1]);
-    $('#kd_asesment_int').val($(this).text().split(': ')[0]);
-    var sep_assesment_kode = $('#kd_asesment_int').val();
-    $('#asesmentList_int').fadeOut();
+  $("#nm_asesment_int").on("click", function () {
+    var output = "";
+    output +=
+      '<li class="list-group-item link-class">1: Poli spesialis tidak tersedia pada hari sebelumnya</li>';
+    output +=
+      '<li class="list-group-item link-class">2: Jam Poli telah berakhir pada hari sebelumnya</li>';
+    output +=
+      '<li class="list-group-item link-class">3: Dokter Spesialis yang dimaksud tidak praktek pada hari sebelumnya</li>';
+    output +=
+      '<li class="list-group-item link-class">4: Atas Instruksi RS</li>';
+    output += '<li class="list-group-item link-class">5: Tujuan Kontrol</li>';
+    output += "";
+    $("#asesmentList_int").fadeIn();
+    $("#asesmentList_int").html(output).show();
+
+    $("#asesmentList_int").on("click", "li", function () {
+      $("#nm_asesment_int").val($(this).text().split(": ")[1]);
+      $("#kd_asesment_int").val($(this).text().split(": ")[0]);
+      var sep_assesment_kode = $("#kd_asesment_int").val();
+      $("#asesmentList_int").fadeOut();
     });
   });
 </script>
